@@ -4,9 +4,9 @@ We will focus on how neural architectures evolved from treating the label hierar
 This evolution is characterized by a fundamental architectural divergence between local and global approaches, a conflict that was ultimately resolved through the powerful synthesis of Transformer-based text encoders and Graph Neural Networks (GNNs) for structure encoding.
 
 \subsection{From flat to hierarchical models}
-Early deep-learning methods for hierarchical multi-label classification often treated the task as a standard (flat) multi-label problem and ignored the label taxonomy. While these models learned strong text representations, they did not use the hierarchy's relationships. That matters because mistakes at higher levels of the taxonomy are semantically worse than small, nearby errors: for example, assigning a paper on "Quantum Mechanics" to "Arts" is much more serious than confusing "Physics" with "Chemistry." Flat models cannot distinguish these degrees of error. \cite{xu-etal-2021-hierarchical}
+Early deep-learning methods for hierarchical multi-label classification often treated the task as a standard (flat) multi-label problem and ignored the label taxonomy. While these models learned strong text representations, they did not use the hierarchy's relationships. That matters because mistakes at higher levels of the taxonomy are semantically worse than small, nearby errors: for example, assigning a paper on "Quantum Mechanics" to "Arts" is much more serious than confusing "Physics" with "Chemistry." Flat models cannot distinguish these degrees of error.~\cite{xu-etal-2021-hierarchical}
 
-The paradigm shift occurred with the recognition that the hierarchy could be treated as a feature to guide learning, rather than just an output format. By making models "hierarchy-aware," it becomes possible to share statistical strength between parent and child nodes. For example, the few training instances available for a rare, specific label like "Superstring Theory" can be supplemented by the more abundant data from its parent labels, "String Theory" and "Theoretical Physics." This is especially crucial for improving performance on the long tail of infrequent labels that characterizes most real-world HMLC datasets. \cite{Zangari2024}
+The paradigm shift occurred with the recognition that the hierarchy could be treated as a feature to guide learning, rather than just an output format. By making models "hierarchy-aware," it becomes possible to share statistical strength between parent and child nodes. For example, the few training instances available for a rare, specific label like "Superstring Theory" can be supplemented by the more abundant data from its parent labels, "String Theory" and "Theoretical Physics." This is especially crucial for improving performance on the long tail of infrequent labels that characterizes most real-world HMLC datasets.~\cite{Zangari2024}
 
 \subsection{Local vs global approaches}
 
@@ -15,32 +15,32 @@ The first generation of truly hierarchical models diverged into two main archite
 \subsubsection{Local approaches (Top down)}
 The local approach decomposes the hierarchical classification problem into a set of smaller, more manageable classification tasks distributed across the taxonomy. This is typically implemented as a top-down or "divide and conquer" strategy.
 
-During inference, an instance is typically classified in a top-down manner. It is first evaluated by the classifier at the root; if a positive prediction is made for a node, the instance is then passed down to the classifiers of its children, and this process continues until a leaf node is reached or no further positive predictions are made.\cite{Romero2022}. While this approach excels at capturing the specific features that distinguish between closely related sibling classes, it suffers from a critical problem: \textbf{error propagation.} A single misclassification at a higher level of the hierarchy can irreversibly steer the prediction down an incorrect path, making it impossible to classify the instance into its correct, more specific sub-categories. \cite{Wehrmann2018}
+During inference, an instance is typically classified in a top-down manner. It is first evaluated by the classifier at the root; if a positive prediction is made for a node, the instance is then passed down to the classifiers of its children, and this process continues until a leaf node is reached or no further positive predictions are made.~\cite{Romero2022}. While this approach excels at capturing the specific features that distinguish between closely related sibling classes, it suffers from a critical problem: \textbf{error propagation.} A single misclassification at a higher level of the hierarchy can irreversibly steer the prediction down an incorrect path, making it impossible to classify the instance into its correct, more specific sub-categories.~\cite{Wehrmann2018}
 
 \subsubsection{Global approaches (single classifier)}
-In contrast, the global approach uses a single, unified model to predict all labels in the hierarchy simultaneously. This is typically framed as a large multi-label classification problem where the output layer corresponds to the entire set of labels in the taxonomy. \cite{Wehrmann2018}
+In contrast, the global approach uses a single, unified model to predict all labels in the hierarchy simultaneously. This is typically framed as a large multi-label classification problem where the output layer corresponds to the entire set of labels in the taxonomy.~\cite{Wehrmann2018}
 
-The primary advantage of the global approach is that it inherently avoids the error propagation problem of local models, as all decisions are made in parallel by a single classifier. This makes the model more robust to errors at higher levels. Furthermore, global models are often more computationally efficient, as they require training only one model instead of a potentially large cascade of local classifiers. However, early global models faced a significant challenge: they struggled to effectively incorporate the complex structural information of the entire hierarchy into a single model. By treating the problem as a flat multi-label task, they often failed to capture the nuanced, local distinctions between sibling classes and could underfit the hierarchical relationships, thereby losing the very information that hierarchical classification aims to exploit. \cite{Wehrmann2018, zhou-etal-2020-hierarchy}
+The primary advantage of the global approach is that it inherently avoids the error propagation problem of local models, as all decisions are made in parallel by a single classifier. This makes the model more robust to errors at higher levels. Furthermore, global models are often more computationally efficient, as they require training only one model instead of a potentially large cascade of local classifiers. However, early global models faced a significant challenge: they struggled to effectively incorporate the complex structural information of the entire hierarchy into a single model. By treating the problem as a flat multi-label task, they often failed to capture the nuanced, local distinctions between sibling classes and could underfit the hierarchical relationships, thereby losing the very information that hierarchical classification aims to exploit.~\cite{Wehrmann2018, zhou-etal-2020-hierarchy}
 
 \subsection{Encoding the Hierarchy with Transformers and Graph Neural Networks}
 
-In recent years a common, simple pattern has emerged and is widely used in
-hierarchy-aware text models: use a Transformer (or other strong text encoder)
-to build contextual representations for the instance, and use a Graph Neural
-Network to encode the hierarchy or other structural information (labels,
-label co-occurrence, or corpus/document graphs). The two modules play
-complementary roles. The Transformer captures rich, local and contextual
-features from the text, while the GNN injects global relational signals about
-the label taxonomy (or the corpus) so that information can flow between related
-labels or documents. At training time these components are typically joined so
-that the text encoder and the graph encoder are learned end-to-end: the
-Transformer produces node features, the GNN propagates structural context, and
-the final classifier combines both signals to make multi-label predictions.
+The solution to the local-versus-global problem came from combining two methods: Transformer models to understand text, and Graph Neural Networks (GNNs) to understand structure. This mix made it possible to build global models that are both efficient and aware of hierarchies. \cite{wang2024graphneuralnetworkstext, zhou-etal-2020-hierarchy}
 
-The practical upshot for hierarchical multi-label classification is simple:
-keep the powerful Transformer encoder for the instance-level signal, model the
-labels and their relations with a compact graph, and let a GNN mediate the
-exchange. This combination is robust to error propagation (compared to pure
-top-down local models) while still preserving the ability to make fine,
-label-specific distinctions.
+GNNs are especially useful for working with label hierarchies. \cite{li2021heterogeneous} We can represent the taxonomy as a graph, where labels are nodes and parent–child links are edges. A GNN learns label representations by passing messages between connected nodes. Each node gathers information from its parents, children, and siblings. This way, the final label embeddings capture not just their own meaning, but also their place and relationships within the whole taxonomy.
 
+A seminal work in this domain is the Hierarchy-Aware Global Model (HiAGM) by Zhou et al. (2020). HiAGM provides a blueprint for this new class of models. Its architecture consists of two main components:~\cite{zhou-etal-2020-hierarchy}
+
+\begin{itemize}
+	\item A Text Encoder (e.g., BERT, RoBERTa) that generates a powerful contextualized representation of the input document.
+	\item A Hierarchy-Aware Structure Encoder (e.g., a Bidirectional Tree-LSTM or a specialized Hierarchy-GCN) that operates on the label graph to produce hierarchy-aware label embeddings. This encoder models dependencies in both a top-down and bottom-up fashion, allowing information to flow in both directions across the hierarchy.
+\end{itemize}
+
+HiAGM further proposes two distinct fusion variants to combine text and structure features depending on the inference regime and efficiency/inductivity trade-offs.
+
+\paragraph{HiAGM-LA (Multi-Label Attention)}
+An inductive approach that uses a multi-label attention mechanism to compute document-specific label representations by attending from the text encoder outputs to the hierarchy-aware label embeddings. Because the attention weights are computed per document, the model can generalize to unseen instances without explicitly re-running a graph propagation step for each input — label embeddings can be pre-computed and stored, and the attention operation is applied at inference time.
+
+\paragraph{HiAGM-TP (Text Feature Propagation)}
+A deductive approach that propagates text features across the label hierarchy via graph propagation: document features are attached to label nodes and a GNN is run to diffuse these features through the taxonomy. This requires executing the GNN at inference time for each instance (or batch), which can be more computationally expensive but allows richer instance-specific propagation of evidence through the hierarchy.
+
+The principles demonstrated by HiAGM have been extended and refined in subsequent work. For instance, Xu et al. (2021) proposed a framework using a loosely coupled GCN to explicitly model not only the vertical correlations (parent-child dependencies) but also the horizontal correlations (relationships between sibling nodes at the same level). This allows the model to capture, for example, that "Computer Science" and "Electrical Engineering" are more closely related to each other than to "History," even if they share the same parent `Science \& Technology'.
