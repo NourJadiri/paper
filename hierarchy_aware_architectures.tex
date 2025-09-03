@@ -1,0 +1,46 @@
+\section{Hierearchy aware architectures}
+The limitations inherent in classical problem transformation methods, particularly their struggles with large label spaces and their inability to deeply integrate structural information, precipitated a paradigm shift toward deep learning.
+We will focus on how neural architectures evolved from treating the label hierarchy as a post-hoc constraint to using it as a central component of the learning process.
+This evolution is characterized by a fundamental architectural divergence between local and global approaches, a conflict that was ultimately resolved through the powerful synthesis of Transformer-based text encoders and Graph Neural Networks (GNNs) for structure encoding.
+
+\subsection{From flat to hierarchical models}
+Early deep-learning methods for hierarchical multi-label classification often treated the task as a standard (flat) multi-label problem and ignored the label taxonomy. While these models learned strong text representations, they did not use the hierarchy's relationships. That matters because mistakes at higher levels of the taxonomy are semantically worse than small, nearby errors: for example, assigning a paper on "Quantum Mechanics" to "Arts" is much more serious than confusing "Physics" with "Chemistry." Flat models cannot distinguish these degrees of error. \cite{xu-etal-2021-hierarchical}
+
+The paradigm shift occurred with the recognition that the hierarchy could be treated as a feature to guide learning, rather than just an output format. By making models "hierarchy-aware," it becomes possible to share statistical strength between parent and child nodes. For example, the few training instances available for a rare, specific label like "Superstring Theory" can be supplemented by the more abundant data from its parent labels, "String Theory" and "Theoretical Physics." This is especially crucial for improving performance on the long tail of infrequent labels that characterizes most real-world HMLC datasets. \cite{Zangari2024}
+
+\subsection{Local vs global approaches}
+
+The first generation of truly hierarchical models diverged into two main architectural philosophies: local and global. This division reflects a fundamental trade-off between capturing fine-grained, localized class relationships and maintaining a holistic, computationally tractable view of the entire label space.
+
+\subsubsection{Local approaches (Top down)}
+The local approach decomposes the hierarchical classification problem into a set of smaller, more manageable classification tasks distributed across the taxonomy. This is typically implemented as a top-down or "divide and conquer" strategy.
+
+During inference, an instance is typically classified in a top-down manner. It is first evaluated by the classifier at the root; if a positive prediction is made for a node, the instance is then passed down to the classifiers of its children, and this process continues until a leaf node is reached or no further positive predictions are made.\cite{Romero2022}. While this approach excels at capturing the specific features that distinguish between closely related sibling classes, it suffers from a critical problem: \textbf{error propagation.} A single misclassification at a higher level of the hierarchy can irreversibly steer the prediction down an incorrect path, making it impossible to classify the instance into its correct, more specific sub-categories. \cite{Wehrmann2018}
+
+\subsubsection{Global approaches (single classifier)}
+In contrast, the global approach uses a single, unified model to predict all labels in the hierarchy simultaneously. This is typically framed as a large multi-label classification problem where the output layer corresponds to the entire set of labels in the taxonomy. \cite{Wehrmann2018}
+
+The primary advantage of the global approach is that it inherently avoids the error propagation problem of local models, as all decisions are made in parallel by a single classifier. This makes the model more robust to errors at higher levels. Furthermore, global models are often more computationally efficient, as they require training only one model instead of a potentially large cascade of local classifiers. However, early global models faced a significant challenge: they struggled to effectively incorporate the complex structural information of the entire hierarchy into a single model. By treating the problem as a flat multi-label task, they often failed to capture the nuanced, local distinctions between sibling classes and could underfit the hierarchical relationships, thereby losing the very information that hierarchical classification aims to exploit. \cite{Wehrmann2018, zhou-etal-2020-hierarchy}
+
+\subsection{Encoding the Hierarchy with Transformers and Graph Neural Networks}
+
+In recent years a common, simple pattern has emerged and is widely used in
+hierarchy-aware text models: use a Transformer (or other strong text encoder)
+to build contextual representations for the instance, and use a Graph Neural
+Network to encode the hierarchy or other structural information (labels,
+label co-occurrence, or corpus/document graphs). The two modules play
+complementary roles. The Transformer captures rich, local and contextual
+features from the text, while the GNN injects global relational signals about
+the label taxonomy (or the corpus) so that information can flow between related
+labels or documents. At training time these components are typically joined so
+that the text encoder and the graph encoder are learned end-to-end: the
+Transformer produces node features, the GNN propagates structural context, and
+the final classifier combines both signals to make multi-label predictions.
+
+The practical upshot for hierarchical multi-label classification is simple:
+keep the powerful Transformer encoder for the instance-level signal, model the
+labels and their relations with a compact graph, and let a GNN mediate the
+exchange. This combination is robust to error propagation (compared to pure
+top-down local models) while still preserving the ability to make fine,
+label-specific distinctions.
+
