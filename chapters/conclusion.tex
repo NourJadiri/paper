@@ -1,3 +1,70 @@
-\chapter{Conclusion}
-The evolution from traditional fine-tuning to prompt-tuning and the integration of LLMs signifies a fundamental shift in the core research objective within HMLC. The focus is moving away from pure representation learning toward task alignment and holistic system design. The research questions are becoming more systemic: "How can we use an LLM's reasoning abilities to generate the very data we need for training?" or "How can we leverage an LLM to automate the costly process of evaluation?". 
-This represents a higher level of abstraction, focusing on aligning the downstream task with the model's pre-existing knowledge.
+\chapter{Open challenges and conclusion}
+
+Despite steady progress, several critical challenges remain; addressing them will shape the next phase of research in narrative detection and hierarchical multi-label classification (HMLC).
+
+\section{Key open challenges}
+
+\begin{itemize}
+	\item \textbf{Interpretability and faithfulness}
+		\begin{itemize}
+			\item Models must provide human-understandable explanations for predictions and demonstrate structural faithfulness (e.g., obey the true-path rule).
+			\item Beyond loss-based penalties, we need architectures and verification methods that guarantee or certify hierarchical consistency.
+		\end{itemize}
+
+	\item \textbf{Dynamic and evolving hierarchies}
+		\begin{itemize}
+			\item Real-world taxonomies change: new labels appear, labels split/merge, and relations shift.
+			\item Research directions: continual learning for label updates, modular label adapters, and lightweight schema evolution strategies that avoid full retraining.
+		\end{itemize}
+
+	\item \textbf{Robust cross-lingual and cross-cultural transfer}
+		\begin{itemize}
+			\item Transfer across typologically distant languages and across cultural framings remains unreliable.
+			\item Promising approaches: culture-aware adapters, contrastive cross-cultural fine-tuning, and evaluation protocols that measure cultural equivalence rather than literal translation.
+		\end{itemize}
+
+	\item \textbf{Modeling richer narrative structure}
+		\begin{itemize}
+			\item Narratives include causality, temporality, and actor-event relations that are not captured by simple taxonomies.
+			\item Move toward graph-structured prediction, joint event-role-narrative models, and hybrid symbolic–neural representations.
+		\end{itemize}
+
+	\item \textbf{Governance of LLM augmentation}
+		\begin{itemize}
+			\item LLM-generated training data is a powerful but noisy resource: it may amplify biases or introduce stylistic artifacts.
+			\item Needed tools: sampling and diversity controls, human-in-the-loop filters, bias audits, and provenance tracking for synthetic examples.
+		\end{itemize}
+\end{itemize}
+
+\section{Research directions and practical recommendations}
+
+\begin{itemize}
+	\item \textbf{Evaluation and verification}
+		\begin{itemize}
+			\item Standardise hierarchical faithfulness metrics and add cultural-equivalence tests to multilingual benchmarks.
+			\item Release datasets and challenge sets that target edge cases: label drift, low-resource languages, and narrative ambiguity.
+		\end{itemize}
+
+	\item \textbf{Algorithms and architectures}
+		\begin{itemize}
+			\item Invest in modular, adapter-style components that can be recomposed for new labels or domains with minimal retraining.
+			\item Explore structured-output learners (GNNs, structured prediction layers) for richer narrative modeling.
+		\end{itemize}
+
+	\item \textbf{Responsible LLM usage}
+		\begin{itemize}
+			\item Combine automated generation with human validation and implement provenance metadata for synthetic instances.
+			\item Implement bias-detection pipelines and calibrate synthetic sampling to preserve data diversity.
+		\end{itemize}
+
+	\item \textbf{Practical tooling}
+		\begin{itemize}
+			\item Provide lightweight tooling for schema evolution (label versioning, migration scripts) and for reproducible PEFT experiments.
+		\end{itemize}
+\end{itemize}
+
+\section{Concluding remarks}
+
+The field is shifting from purely representation-focused modelling toward systems that align pre-trained knowledge with downstream tasks (via prompts, adapters, or targeted synthetic data). Addressing interpretability, dynamics, cultural robustness, structured narratives and the governance of synthetic data will be the levers that determine whether HMLC methods are usable at scale in real-world narrative analysis.
+
+Progress will require integrated work across evaluation, modelling, data governance, and tooling, a multidisciplinary agenda that is both technically challenging and societally important.
