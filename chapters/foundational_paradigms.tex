@@ -1,4 +1,4 @@
-\section{Foundational paradigms of MLC}
+\chapter{Foundational paradigms of MLC}
 The main challenge in multi-label classification (MLC) was how to adapt algorithms designed for single-label (binary or multiclass) problems to handle multiple labels per instance. The core issue these methods faced was the presence of label correlations: in real-world data, labels are often not independent. For example, a news article tagged "Politics" is much more likely to also be tagged "Elections" than "Sports." Treating each label as a separate binary problem ignores these dependencies, potentially leading to suboptimal predictions.
 
 Classical MLC methods can be seen as different strategies for balancing computational simplicity with the need to model label correlations. Some methods, like Binary Relevance, treat each label independently for simplicity, but this can miss important relationships between labels. Others, such as Classifier Chains or Label Powerset, explicitly model these correlations, but at the cost of increased computational complexity. The choice of method reflects a trade-off between efficiency and the ability to capture the true structure of the data.

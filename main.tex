@@ -1,72 +1,143 @@
-\documentclass[12pt]{article}
+% !TeX spellcheck = en_US
+% !TeX encoding = UTF-8
 
-% Change "review" to "final" to generate the final (sometimes called camera-ready) version.
-% Change to "preprint" to generate a non-anonymous version with page numbers.
-\usepackage[preprint]{acl}
+% COMPILE WITH:
+% `latexmk`
+% You need lualatex and biber (in all TeXLive distributions)
 
-% Standard package includes
+\documentclass[
+    numbers=noenddot,
+    %listof=totoc,
+    parskip=half-,
+    fontsize=12pt,
+    paper=a4,
+    oneside,
+    titlepage,
+    bibliography=totoc,
+    chapterprefix=false,
+%    draft
+]{scrbook}
+
+% use lualatex or xelatex
+%\usepackage{fontspec}
+\usepackage{graphicx}
+\usepackage[onehalfspacing]{setspace}
+
+% better language support
+%\usepackage{polyglossia}
+%\setdefaultlanguage{english}
+%\setotherlanguage{german}
+
+\usepackage{tocbasic}
+\usepackage{booktabs}
+\usepackage{multicol}
+\usepackage{multirow}
+\usepackage{longtable}
+
+\usepackage[]{scrlayer-scrpage}
+
+% better bibliography (biblatex style)
+% use biber to compile
+\usepackage[citestyle=alphabetic, bibstyle=alphabetic, sorting=nyt, backend=biber, language=english, backref=true, maxcitenames=2]{biblatex}
+
+% better quotes
+% use \enquote{text}
+\usepackage[autostyle,english=american,german=quotes]{csquotes}
+\addbibresource{references.bib}
+\addbibresource{anthology.bib}
+
+% appendix
+\usepackage[titletoc]{appendix}
+
+% where to put all images and figures
+\graphicspath{{images/}}
+
+% YOUR ADDITIONAL PACKAGES
 \usepackage{times}
 \usepackage{latexsym}
-
-% For proper rendering and hyphenation of words containing Latin characters (including in bib files)
 \usepackage[T1]{fontenc}
-% For Vietnamese characters
-% \usepackage[T5]{fontenc}
-% See https://www.latex-project.org/help/documentation/encguide.pdf for other character sets
-
-% This assumes your files are encoded as UTF8
 \usepackage[utf8]{inputenc}
-
-% This is not strictly necessary, and may be commented out,
-% but it will improve the layout of the manuscript,
-% and will typically save some space.
 \usepackage{microtype}
-
-% This is also not strictly necessary, and may be commented out.
-% However, it will improve the aesthetics of text in
-% the typewriter font.
 \usepackage{inconsolata}
 
-%Including images in your LaTeX document requires adding
-%additional package(s)
-\usepackage{graphicx}
-% Allow tables to span multiple pages when necessary
-\usepackage{longtable}
-\usepackage{booktabs}
+% Title
+\title{Hierarchical Multi-Label Classification: A Comprehensive Review of Methods and Applications}
 
-% If the title and author information does not fit in the area allocated, uncomment the following
-%
-%\setlength\titlebox{<dim>}
-%
-% and set <dim> to something 5cm or larger.
+% Author
+\author{Nour Eljadiri}
 
+% Date
+\date{\today}
 
-\title{Instructions for *ACL Proceedings}
+% CHOOSE ACCORDINGLY
+%\newcommand{\thesisType}{Bachelorarbeit}
+\newcommand{\thesisType}{Masterarbeit}
 
-\author{Nour Eljadiri \\
-  University of Passau \\
-  INSA Lyon \\
-  \texttt{mohamed.eljadiri@insa-lyon.fr} \\
-}
+\makeatletter
+\let\thetitle\@title
+\let\theauthor\@author
+\let\thedate\@date
+\makeatother
+
+\pagestyle{scrheadings}
 
 \begin{document}
 
-\maketitle
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\frontmatter
+% CHOOSE ACCORDINGLY
+%\include{includes/BA-titlepage}
+\include{includes/MA-titlepage}
 
-\begin{abstract}
-    The task of assigning multiple, hierarchically-structured labels to text documents, known as Hierarchical Multi-Label Classification (HMLC), is critical in domains from scientific archiving to legal analysis. This review traces the methodological evolution of HMLC, beginning with foundational problem transformation methods like Binary Relevance and Classifier Chains, which primarily address the challenge of label correlation. We then examine the paradigm shift introduced by pre-trained Transformers, dissecting the dichotomy between local, top-down approaches prone to error propagation and global, hierarchy-aware models that integrate structural constraints via specialized loss functions or Graph Neural Networks. Finally, we explore the current frontier, where Large Language Models (LLMs) are reframing the task through generative paradigms, enabled by techniques such as LLM-powered data augmentation, instruction fine-tuning, and Parameter-Efficient Fine-Tuning (PEFT). This narrative highlights a progression towards increasingly sophisticated methods for embedding hierarchical prior knowledge into statistical models.
-\end{abstract}
+\tableofcontents
+\newpage
 
-\input{introduction}
+% -- ABSTRACT
+\include{includes/abstract}
+\newpage
 
-\input{foundational_paradigms}
+% -- Acknowledgements (optional)
+\include{includes/acknowledgements}
+\newpage
 
-\input{hierarchy_aware_architectures}
+% -- List of figures
+\thispagestyle{empty}
+\cleardoublepage
+\listoffigures
+\newpage
 
-\input{large_language_models}
+% -- List of tables
+\thispagestyle{empty}
+\cleardoublepage
+\listoftables
+\newpage
 
-\input{data_specific_challenges}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\mainmatter
 
-\input{conclusion}
-\bibliography{references, anthology}
+% -- Chapters
+\include{chapters/introduction}
+\include{chapters/foundational_paradigms}
+\include{chapters/hierarchy_aware_architectures}
+\include{chapters/large_language_models}
+\include{chapters/data_specific_challenges}
+\include{chapters/conclusion}
+
+% -- Appendix (optional)
+%\begin{appendices}
+%    \input{appendix.tex}
+%\end{appendices}
+%\newpage
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\backmatter
+
+% -- Bibliography
+\printbibliography
+
+% -- Eidesstattliche Erklärung (= Affidavit)
+\include{includes/eidesstattlicheErklaerung}
+
+
 \end{document}

@@ -1,9 +1,0 @@
-\section{Focus on data-specific challenges}
-While architectural innovations have driven significant progress, the performance of any HMLC model is ultimately constrained by the quality and characteristics of the available data. Real-world datasets for narrative detection and other complex classification tasks are rarely pristine; they are often imbalanced, small, and increasingly, multilingual.
-
-\subsection{Class imbalance and tail labels}
-Perhaps the most pervasive challenge in real-world classification is extreme class imbalance, often described as a long-tailed distribution. In such datasets, a small number of "head" classes are represented by a vast number of training examples, while the majority of "tail" classes are represented by very few, sometimes single-digit, examples. \cite{huang-etal-2021-balancing} This constitutes a severe challenge for standard training algorithms, which, when optimized for overall accuracy, tend to become biased towards the majority classes and perform poorly on the infrequent but often more interesting tail classes.
-
-The inadequation of conventional resampling
-
-In single-label classification, a common strategy to combat imbalance is data resampling—either oversampling the minority classes or undersampling the majority classes \cite{Luque2019The,Thabtah2020Data}. However, this approach is fundamentally ill-suited for the multi-label context. An instance in an MLC dataset can simultaneously belong to multiple classes, for example, one highly frequent head class and one extremely rare tail class. If one were to oversample this instance to increase the representation of the tail class, one would inadvertently also increase the representation of the already-dominant head class, potentially exacerbating the overall imbalance with respect to other labels. This entanglement makes simple resampling ineffective and often counterproductive. \cite{yuan2024research}
