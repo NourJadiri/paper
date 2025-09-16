@@ -1,14 +1,14 @@
-\chapter{SemEval-2025 Task 10: Multilingual Characterization and Extraction of Narratives}
+\section{Task description}
 \label{sec:semeval25-task10}
 
-\section{Overview}
+\subsection{SemEval2025 Task 10: Overview}
 SemEval-2025 Task 10 introduced a multilingual benchmark for the analysis of news narratives and entity framing across five languages and two high-impact domains (Ukraine–Russia War, Climate Change). The task is decomposed into entity framing, narrative classification, and narrative extraction subtasks, combining multi-label classification and evidence-grounded generation. Participating teams demonstrated the effectiveness of hierarchical prompting and targeted context selection; however, grounded explanation generation and label imbalance across languages remain unsolved challenges \cite{Piskorski2025, Fane2025, Singh2025, Fenu2025}.
 
 We participated in this shared task (together with Diana Nurbakova) as competitors in Subtask 2 (Narrative Classification); the experiments reported here were carried out in that shared-task context.
 
 This shared task asked teams to build systems that identify and extract dominant narratives from multilingual news, prioritising evidence-grounded explanations and robustness across languages. We ran multilingual evaluations to compare per-language behaviour.
 
-\section{Task decomposition}
+\subsection{Task decomposition}
 The shared task was split into three subtasks:
 \begin{enumerate}
   \item \textbf{Entity Framing (Subtask 1)}: Given an article and named-entity mentions, assign main and fine-grained role labels to each mention (multi-label, multi-class role classification). Grounding to spans and role taxonomies was required. \cite{Piskorski2025}
@@ -16,10 +16,10 @@ The shared task was split into three subtasks:
   \item \textbf{Narrative Extraction (Subtask 3)}: For a given article and its dominant narrative, generate a concise (max.~80 words) free-text explanation supporting that narrative, grounded in evidence from the article. This subtask focused on faithfulness and coverage of extracted explanations. \cite{Piskorski2025}
 \end{enumerate}
 
-\section{Data and annotation}
+\subsection{Data and annotation}
 Training and evaluation data were collected from online news sources spanning 2022-mid-2024. The dataset includes articles from a mix of mainstream and lower-credibility outlets; annotations follow multilingual guidelines and predefined taxonomies for entity roles and narratives. \cite{propaganda_site2025}
 
-\section{Participation and headline results}
+\subsection{Participation and headline results}
 The task attracted broad participation; hundreds of teams registered and dozens submitted official test results. Representative high-performing approaches included:
 \begin{itemize}
   \item \textbf{Fane et al. (``Fane'')} - zero-shot LLM prompting with a hierarchical decomposition for entity framing; reported Main Role Accuracy $\approx$ 89.4\% and Exact Match Ratio $\approx$ 34.5\% on English. \cite{Fane2025}
@@ -28,7 +28,7 @@ The task attracted broad participation; hundreds of teams registered and dozens 
 \end{itemize}
 These system papers illustrate a common trend: hierarchical or multi-step prompting and careful context selection (to fit model context windows) were effective strategies across teams. \cite{Fane2025, Singh2025, Ronningstad2025}
 
-\section{Evaluation of Subtask 2: Narrative Classification}
+\subsection{Evaluation of Subtask 2: Narrative Classification}
 \label{subsec:evaluation-subtask2}
 
 The second subtask of SemEval-2025 Task 10 required participants to assign
