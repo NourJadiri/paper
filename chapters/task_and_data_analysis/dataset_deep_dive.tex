@@ -17,20 +17,14 @@ Our analysis reveals several key characteristics regarding its scale, multi-labe
 
 \textbf{Structured Label Co-occurrence.} Despite this imbalance, the relationships between labels are not random but exhibit meaningful patterns. Co-occurrence analysis reveals that while most pairs of narratives rarely appear together, certain thematically-linked pairs exhibit strong associations. For example, documents often combine \emph{attack} and \emph{counter-attack} narratives (e.g., discrediting Ukraine together with discrediting the West), or pair attacks on an adversary with \emph{praise of allies} (e.g., discrediting Ukraine alongside praise of Russia). Other recurrent patterns reflect causal framing, such as linking sanctions to economic hardship, or pairings between diplomatic failure and critiques of legitimacy. Military operations are frequently co-annotated with victim/threat framings, and conspiracy claims commonly appear together with explicit attribution to external actors. These recurring narrative couplings illustrate that co-occurrence captures structured discourse strategies in which labels reinforce one another. More advanced analysis further reveals directional dependencies (i.e., \(P(B\mid A) eq P(A\mid B)\)).
 
-% Combined co-occurrence visualizations (two panels)
+% Stacked co-occurrence visualizations (vertical)
 \begin{figure}[ht]
   \centering
-  \begin{minipage}[b]{0.49\linewidth}
-    \centering
-  \includegraphics[width=\linewidth]{images/CC_narratives_conditional_probability.png}
-  \par\medskip\centering\footnotesize (a) CC narratives heatmap\par
-  \end{minipage}\hfill
-  \begin{minipage}[b]{0.49\linewidth}
-    \centering
-  \includegraphics[width=\linewidth]{images/URW_narrative_conditional_probability.png}
+  \includegraphics[width=1\linewidth,height=0.35\textheight,keepaspectratio]{images/data_description/CC_narratives_conditional_probability.png}
+  \par\medskip\centering\footnotesize (a) CC narratives heatmap\par\medskip
+  \includegraphics[width=1\linewidth,height=0.35\textheight,keepaspectratio]{images/data_description/URW_narrative_conditional_probability.png}
   \par\medskip\centering\footnotesize (b) URW narratives conditional graph\par
-  \end{minipage}
-  \caption{Co-occurrence / conditional-probability visualizations for the most frequent narrative groups. (a) Heatmap for CC narratives (normalized cell values). (b) Heatmap for URW narratives. These paired views help identify both symmetric and directional dependencies among narratives.}
+  \caption{Co-occurrence / conditional-probability visualizations for the most frequent narrative groups. Top: heatmap for CC narratives (normalized cell values). Bottom: conditional-probability visualization for URW narratives (directional). These paired views help identify both symmetric and directional dependencies among narratives.}
   \label{fig:narrative_cooccurrence}
 \end{figure}
 

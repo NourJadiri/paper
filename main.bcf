@@ -2456,6 +2456,8 @@
     <bcf:citekey order="60" intorder="1">propaganda_site2025</bcf:citekey>
     <bcf:citekey order="61" intorder="1">leaderboard2025</bcf:citekey>
     <bcf:citekey order="62" intorder="1">Piskorski2025</bcf:citekey>
+    <bcf:citekey order="63" intorder="1">conneau_unsupervised_2020</bcf:citekey>
+    <bcf:citekey order="64" intorder="1">devlin_bert_2018</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="nyt">
