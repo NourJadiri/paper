@@ -26,7 +26,7 @@ The primary advantage of the global approach is that it inherently avoids the er
 
 The solution to the local-versus-global problem came from combining two methods: Transformer models to understand text, and Graph Neural Networks (GNNs) to understand structure. This mix made it possible to build global models that are both efficient and aware of hierarchies. \cite{wang2024graphneuralnetworkstext, zhou-etal-2020-hierarchy}
 
-GNNs are especially useful for working with label hierarchies. \cite{li2021heterogeneous} We can represent the taxonomy as a graph, where labels are nodes and parent–child links are edges. A GNN learns label representations by passing messages between connected nodes. Each node gathers information from its parents, children, and siblings. This way, the final label embeddings capture not just their own meaning, but also their place and relationships within the whole taxonomy.
+GNNs are especially useful for working with label hierarchies. \cite{li2021heterogeneous} We can represent the taxonomy as a graph, where labels are nodes and parent-child links are edges. A GNN learns label representations by passing messages between connected nodes. Each node gathers information from its parents, children, and siblings. This way, the final label embeddings capture not just their own meaning, but also their place and relationships within the whole taxonomy.
 
 A seminal work in this domain is the Hierarchy-Aware Global Model (HiAGM) by Zhou et al. (2020). HiAGM provides a blueprint for this new class of models. Its architecture consists of two main components:~\cite{zhou-etal-2020-hierarchy}
 
@@ -38,7 +38,7 @@ A seminal work in this domain is the Hierarchy-Aware Global Model (HiAGM) by Zho
 HiAGM further proposes two distinct fusion variants to combine text and structure features depending on the inference regime and efficiency/inductivity trade-offs.
 
 \paragraph{HiAGM-LA (Multi-Label Attention)}
-An inductive approach that uses a multi-label attention mechanism to compute document-specific label representations by attending from the text encoder outputs to the hierarchy-aware label embeddings. Because the attention weights are computed per document, the model can generalize to unseen instances without explicitly re-running a graph propagation step for each input — label embeddings can be pre-computed and stored, and the attention operation is applied at inference time.
+An inductive approach that uses a multi-label attention mechanism to compute document-specific label representations by attending from the text encoder outputs to the hierarchy-aware label embeddings. Because the attention weights are computed per document, the model can generalize to unseen instances without explicitly re-running a graph propagation step for each input, label embeddings can be pre-computed and stored, and the attention operation is applied at inference time.
 
 \paragraph{HiAGM-TP (Text Feature Propagation)}
 A deductive approach that propagates text features across the label hierarchy via graph propagation: document features are attached to label nodes and a GNN is run to diffuse these features through the taxonomy. This requires executing the GNN at inference time for each instance (or batch), which can be more computationally expensive but allows richer instance-specific propagation of evidence through the hierarchy.

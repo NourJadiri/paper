@@ -26,40 +26,13 @@ Despite steady progress, several critical challenges remain; addressing them wil
 	\item \textbf{Modeling richer narrative structure}
 		\begin{itemize}
 			\item Narratives include causality, temporality, and actor-event relations that are not captured by simple taxonomies.
-			\item Move toward graph-structured prediction, joint event-role-narrative models, and hybrid symbolic–neural representations.
+			\item Move toward graph-structured prediction, joint event-role-narrative models, and hybrid symbolic-neural representations.
 		\end{itemize}
 
 	\item \textbf{Governance of LLM augmentation}
 		\begin{itemize}
 			\item LLM-generated training data is a powerful but noisy resource: it may amplify biases or introduce stylistic artifacts.
 			\item Needed tools: sampling and diversity controls, human-in-the-loop filters, bias audits, and provenance tracking for synthetic examples.
-		\end{itemize}
-\end{itemize}
-
-\section{Research directions and practical recommendations}
-
-\begin{itemize}
-	\item \textbf{Evaluation and verification}
-		\begin{itemize}
-			\item Standardise hierarchical faithfulness metrics and add cultural-equivalence tests to multilingual benchmarks.
-			\item Release datasets and challenge sets that target edge cases: label drift, low-resource languages, and narrative ambiguity.
-		\end{itemize}
-
-	\item \textbf{Algorithms and architectures}
-		\begin{itemize}
-			\item Invest in modular, adapter-style components that can be recomposed for new labels or domains with minimal retraining.
-			\item Explore structured-output learners (GNNs, structured prediction layers) for richer narrative modeling.
-		\end{itemize}
-
-	\item \textbf{Responsible LLM usage}
-		\begin{itemize}
-			\item Combine automated generation with human validation and implement provenance metadata for synthetic instances.
-			\item Implement bias-detection pipelines and calibrate synthetic sampling to preserve data diversity.
-		\end{itemize}
-
-	\item \textbf{Practical tooling}
-		\begin{itemize}
-			\item Provide lightweight tooling for schema evolution (label versioning, migration scripts) and for reproducible PEFT experiments.
 		\end{itemize}
 \end{itemize}
 

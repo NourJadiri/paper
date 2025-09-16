@@ -1,0 +1,65 @@
+% !TeX spellcheck = en_US
+% !TeX encoding = UTF-8
+
+\section{Case Study: Narrative Detection in Practice}
+
+This section examines the practical application of HMLC techniques to narrative detection, drawing insights from recent shared tasks and real-world deployment experiences. We focus on SemEval-2025 Task 10 as a concrete example of the challenges and solutions in automated narrative classification.
+
+\subsection{SemEval-2025 Task 10: Multilingual Detection of Persuasion Techniques}
+
+SemEval-2025 Task 10 provides an ideal case study for HMLC applications in narrative detection~\cite{semeval2025task10}. The task requires participants to classify news articles using a two-level taxonomy of narratives and sub-narratives, where articles can belong to multiple categories simultaneously.
+
+\textbf{Task Structure} The competition employs a hierarchical taxonomy with broad narrative categories (e.g., "National Security," "Economic Policy") and specific sub-narratives (e.g., "Foreign Interference," "Trade Sanctions"). This structure naturally maps to HMLC formulations, with the additional complexity that articles can invoke multiple narratives at both levels.
+
+\textbf{Multilingual Dimension} The task encompasses multiple languages, requiring systems to handle cross-cultural variations in narrative interpretation while maintaining consistent performance across linguistic boundaries. This presents both technical challenges (handling diverse scripts and linguistic structures) and conceptual challenges (accounting for cultural differences in narrative frameworks).
+
+\textbf{Data Characteristics} The dataset exhibits typical real-world challenges including class imbalance (some narratives are much more common than others), temporal dynamics (narrative prominence shifts over time), and annotation complexity (expert annotators sometimes disagree on narrative interpretations).
+
+\subsection{Successful Approaches and Lessons Learned}
+
+Analysis of successful SemEval-2025 submissions reveals several key insights for practical HMLC deployment:
+
+\textbf{Multi-Agent LLM Systems} The approach by Eljadiri and Nurbakova (2025) demonstrates the effectiveness of decomposing complex HMLC tasks into multiple specialized sub-problems~\cite{eljadiri-nurbakova-2025-team}. Their system uses separate LLM agents for each binary classification decision (narrative present/absent), with a meta-agent for final aggregation. This architecture provides several advantages:
+
+\begin{itemize}
+    \item \textbf{Parallel Processing}: Different narrative dimensions can be evaluated simultaneously
+    \item \textbf{Specialization}: Each agent can be optimized for specific narrative types
+    \item \textbf{Interpretability}: Individual agent decisions can be inspected and debugged
+    \item \textbf{Scalability}: New narrative categories can be added by deploying additional agents
+\end{itemize}
+
+\textbf{Hybrid Fine-Tuning Strategies} successful systems typically combine multiple adaptation approaches. This might involve initial fine-tuning on general news classification, followed by narrative-specific adaptation, and finally parameter-efficient tuning on the target dataset. Such staged approaches help models develop robust representations while avoiding overfitting to limited labeled data.
+
+\textbf{Cross-Lingual Knowledge Transfer} effective multilingual systems leverage cross-lingual pre-trained models (e.g., XLM-RoBERTa) but supplement this with language-specific adaptation strategies. This might involve training separate models for high-resource languages while using shared models for low-resource languages, or employing multi-task learning across languages with careful attention to cultural narrative variations.
+
+\subsection{Production Deployment Considerations}
+
+Moving from research prototypes to production narrative detection systems introduces additional challenges that extend beyond academic evaluation metrics.
+
+\textbf{Scalability and Latency} Requirements Real-world systems must process large volumes of documents with acceptable latency. This often necessitates trade-offs between model complexity and inference speed. Successful deployments frequently employ model distillation, where knowledge from large, accurate models is transferred to smaller, faster models suitable for production deployment.
+
+\textbf{Uncertainty Quantification} Production systems must provide calibrated confidence estimates, particularly for high-stakes applications. This enables downstream systems to route low-confidence predictions to human reviewers or apply appropriate safety margins to automated decisions.
+
+\textbf{Concept Drift Monitoring} Narrative landscapes evolve rapidly, particularly during crisis periods or major events. Production systems require robust monitoring to detect when model performance degrades due to changing narrative patterns, triggering retraining or human review as appropriate.
+
+\textbf{Bias Detection and Mitigation} Automated narrative detection systems can inadvertently amplify cultural biases or political perspectives present in training data. Production deployments require comprehensive bias testing across diverse demographic groups and regular auditing to ensure fair treatment across different communities and viewpoints.
+
+\subsection{Integration with Human Expertise}
+
+Successful narrative detection systems typically employ human-in-the-loop approaches that combine automated efficiency with human expertise and oversight.
+
+\textbf{Active Learning Integration} Production systems can continuously improve by identifying instances where model confidence is low or where predictions disagree with human judgments. These cases can be prioritized for expert annotation, creating a feedback loop that improves system performance over time.
+
+\textbf{Expert Review Workflows} High-stakes applications often route automated predictions through expert review processes. The efficiency of these workflows depends critically on the quality of model uncertainty estimates and the interpretability of model predictions.
+
+\textbf{Collaborative Annotation} Large-scale narrative detection often requires annotation efforts that exceed individual expert capacity. Successful projects typically employ collaborative annotation platforms that help multiple experts work together efficiently while maintaining annotation quality and consistency.
+
+\subsection{Performance Analysis and Evaluation}
+
+Evaluating HMLC systems for narrative detection requires metrics that capture both classification accuracy and hierarchical structure awareness.
+
+\textbf{Hierarchical Evaluation Metrics} Standard metrics like F1 score can be adapted to account for hierarchical relationships. For example, errors at higher taxonomy levels might be weighted more heavily than errors at leaf nodes, and partial credit might be given for predictions that are hierarchically close to the true labels.
+
+\textbf{Cultural Sensitivity Assessment} For multilingual narrative detection, evaluation should assess whether system performance varies systematically across cultural or linguistic groups. This might involve stratified evaluation across different languages or cultural contexts, with particular attention to whether the system exhibits biases against minority perspectives.
+
+\textbf{Temporal Robustness Testing} Given the dynamic nature of narrative landscapes, evaluation should assess how system performance changes over time. This might involve testing models on held-out data from different time periods or evaluating performance on emerging narratives not present during training.

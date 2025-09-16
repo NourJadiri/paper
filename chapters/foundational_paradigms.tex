@@ -3,8 +3,6 @@ The main challenge in multi-label classification (MLC) was how to adapt algorith
 
 Classical MLC methods can be seen as different strategies for balancing computational simplicity with the need to model label correlations. Some methods, like Binary Relevance, treat each label independently for simplicity, but this can miss important relationships between labels. Others, such as Classifier Chains or Label Powerset, explicitly model these correlations, but at the cost of increased computational complexity. The choice of method reflects a trade-off between efficiency and the ability to capture the true structure of the data.
 
-To address this, early research focused on a family of techniques known as problem transformation methods, which decompose the multi-label task into one or more single-label problems. These methods are algorithm-independent, allowing any standard classifier to be applied. The three canonical approaches represent distinct strategies for managing label dependencies.
-
 \section{Binary Relevance}
 Binary Relevance (BR) is the most intuitive approach. It decomposes the MLC problem with a label set of size $|\mathcal{L}|$ into independent binary classification problems. For each label, a separate classifier is trained to predict its presence or absence, effectively ignoring all other labels. \cite{zhang_binary_2018} The primary advantage of BR is its simplicity and efficiency, as the classifiers can be trained in parallel. Its main drawback, however, is the foundational label independence assumption, which completely disregards label correlations and can lead to lower predictive accuracy and logically incoherent label set predictions. \cite{Sucar2014Multi-label}
 
