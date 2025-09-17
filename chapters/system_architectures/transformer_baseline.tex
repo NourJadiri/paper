@@ -28,3 +28,55 @@ This weight is then integrated directly into the BCE loss calculation, effective
 
 
 This ensures that the model is more heavily penalized for failing to identify a rare narrative than for misclassifying a common one. In practice we pass the vector of per-class positive weights to the BCEWithLogitsLoss (or equivalent) implementation so rare classes contribute proportionally more to the loss. The approach is intended to improve recall on tail classes and, consequently, boost Macro F1 by forcing the model to pay closer attention to underrepresented labels.
+
+\subsection{Enforcing hierarchical consistency with a regularization penalty}
+
+Our final and most sophisticated baseline variation addresses another key aspect of the data structure that is ignored by the vanilla model: the explicit parent--child relationships within the two-level narrative taxonomy. A flat multi-label classifier can produce logically inconsistent predictions, such as assigning a high probability to a sub-narrative while assigning a low probability to its parent.
+
+\medskip
+\noindent\textbf{Motivation.} To create a more coherent and logically sound model, we aim to instill an inductive bias that respects the taxonomy's structure. The fundamental rule of hierarchical classification is the true-path rule: if an instance belongs to a child class, it must also belong to its parent class. We therefore encourage the model to adhere to this rule during training.
+
+\medskip
+\noindent\textbf{Methodology.} We implement this by augmenting the training objective with a hierarchical consistency penalty, a "soft" constraint that penalizes violations of the true-path rule. During each training step, after computing the primary weighted BCE loss, we calculate an additional penalty term. This term is computed by iterating through the set $\mathcal{H}$ of all predefined (child, parent) index pairs in the taxonomy. For each pair $(c,p)\in\mathcal{H}$ we compare the model's predicted sigmoid probabilities $P(c)$ and $P(p)$ for the child and parent labels, respectively. If $P(c)>P(p)$ (a logical violation), a penalty is incurred.
+
+\medskip
+\noindent\textbf{Loss.} The final loss is a weighted sum of the primary classification loss and the hierarchical penalty:
+\[
+\mathcal{L} \,=\, \mathcal{L}_{\mathrm{BCE}}^{\mathrm{weighted}} \;+
+\; \lambda \sum_{(c,p)\in\mathcal{H}} \mathrm{mean}\bigl(\max\bigl(0,\,P(c)-P(p)\bigr)\bigr)
+\]
+
+Here $\mathcal{H}$ denotes the set of (child,parent) index pairs, $P(\cdot)$ are the sigmoid probabilities predicted by the model, and $\lambda$ is a hyperparameter controlling the strength of the regularization. The $\max(0,\cdot)$ (or clamp at zero) ensures a penalty only when $P(c)>P(p)$; if $P(c)\le P(p)$ the term is zero.
+
+\medskip
+\noindent\textbf{Intended outcome.} The approach aims to produce more logically consistent and interpretable predictions and to promote statistical strength sharing: linking parent and child labels in the loss can allow abundant parent-level data to regularize representations for rarer child labels.
+
+\subsection{Addressing data scarcity and class imbalance}
+
+\subsubsection{Data pre-processing}
+
+\noindent\textbf{Overview.} A critical first step in our methodology, applied universally before any model training or inference, was a comprehensive data pre-processing pipeline. The raw documents, sourced from online news articles, contained non-content artifacts typical of web scrapes, such as residual HTML tags, navigation links, and boilerplate phrases (e.g., ``Share this article''). This noise both dilutes the core narrative content and consumes a valuable portion of the model's input context window (XLM-RoBERTa uses up to 512 tokens).
+
+\medskip
+\noindent\textbf{Cleaning operations.} The pipeline aimed to isolate the main body of each article and produce clean, normalized prose. Typical operations included removing HTML and scripting remnants, filtering common boilerplate phrases, and normalizing whitespace to ensure consistent formatting. These steps raise the signal-to-noise ratio of the inputs and help models focus their representational capacity on semantically relevant content.
+
+\medskip
+\noindent\textbf{Implementation detail.} Rather than constructing a suite of brittle regular expressions or deterministic heuristics, we found a lightweight language model to be a highly effective and low-effort option for this task. The LLM was used to identify and excise non-content artifacts while preserving the surrounding text and authorial tone; in practice, this approach removed navigation elements and calls-to-action embedded inside paragraphs while keeping the original prose intact.
+
+\medskip
+\noindent\textbf{Intended effect.} By ensuring higher-quality input text, the pre-processing pipeline improved downstream classification accuracy across our architectures by preventing models from learning spurious correlations tied to irrelevant boilerplate.
+
+\subsubsection{Multilingual data augmentation via translation}
+
+\noindent\textbf{Motivation.} The primary challenge in training the fine-tuning baseline is the severe scarcity of training examples, particularly for the tail-end classes. While the dataset is multilingual, the number of documents in any single language is modest. To significantly expand the training corpus and expose the model to more diverse linguistic expressions of the same narratives, we implemented a data augmentation strategy centered on high-fidelity translation.
+
+\medskip
+\noindent\textbf{Methodology.} We leveraged the state-of-the-art translation capabilities of a large language model (Gemini~1.5~Flash) to augment our training data. Our process was as follows:
+
+\begin{enumerate}
+	\item \textbf{Translation to a high-resource language}: For each document in the non-English training sets (Bulgarian, Portuguese, Hindi, and Russian), we generated a corresponding English version. We chose English as the target language due to the superior performance of modern LLMs in translating into English, which helps preserve nuanced meaning, tone, and authorial intent.
+	\item \textbf{Corpus expansion}: The newly translated English documents were then added to the training set alongside the original, untranslated documents. This procedure effectively doubles the size of our non-English training data; for example, the 399 Portuguese documents yielded an additional 399 English translations, both used for training.
+\end{enumerate}
+
+\medskip
+\noindent\textbf{Intended outcome.} This augmentation strategy provides two key benefits. First, it dramatically increases the volume of training data, which helps mitigate overfitting for a large model like XLM-RoBERTa. Second, by training on both the original and translated versions, the multilingual XLM-RoBERTa model is encouraged to learn language-invariant representations of the narratives: it learns to associate a specific narrative with both its original linguistic expression (e.g., in Portuguese) and its English equivalent, pushing it to focus on the core semantic concepts rather than surface-level lexical features. The resulting classifier should be more robust and generalizable across languages.
