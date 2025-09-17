@@ -1,0 +1,40 @@
+\section{Zero-Shot Autogen architecture}
+\label{sec:autogen_architecture}
+
+\subsection{Motivation and core concepts}
+
+While the enhanced baseline models are designed to mitigate the challenges of class imbalance and hierarchical inconsistency, they are fundamentally limited by the scarcity of training data for many labels (we remind that the train set contains 22 unique narratives, while the taxonomy defines 23). To overcome this dependency on large, labeled datasets, we explored a fundamentally different paradigm that shifts from learning from examples to reasoning from instructions. This led to the development of our first contribution: a zero-shot agentic framework that leverages the pre-existing world knowledge and reasoning capabilities of Large Language Models (LLMs).
+
+\paragraph{Inspiration}
+Our design was inspired by the classical Binary Relevance (BR) method, which decomposes a multi-label problem into a set of independent binary classification tasks \cite{zhang_binary_2018}. BR's primary strength is its simplicity and modularity, but its critical weakness is the assumption of label independence. We sought to create a system that retained the modularity of BR while re-introducing a notion of label relationships in a structured, hierarchical manner. Furthermore, we were motivated to investigate the zero-shot classification capabilities of modern LLMs on this task.
+
+To implement this vision, we used AutoGen \cite{Wu2024AutoGen}, an open-source framework for multi-agent LLM conversations. AutoGen allows users to define multiple agents with specific roles and manages the conversation flow between them. In our case, we created one agent for each narrative label and used AutoGen to coordinate their interactions during the classification process.
+
+The core concept of our framework, first introduced in \cite{eljadiri-nurbakova-2025-team}, is to decompose the HMLC task into a two-stage, hierarchical query process handled by a multi-agent system.
+
+\subsection{System components and architecture}
+
+\subsubsection{Agentic multi-agent framework}
+
+The agentic framework is constructed from a set of conversational agents, each instantiated as an LLM with a narrowly defined role and area of expertise. Our architecture comprises three distinct agent types:
+
+\begin{itemize}
+  \item \textbf{User Proxy Agent.} The primary interface to the system. It receives a document for classification from an external user and initiates the workflow by passing the text to the Manager Agent. This is a AutoGen specific requirement to bootstrap the conversation.
+  \item \textbf{Manager Agent (Orchestrator).} The central coordinator that directs the classification process. The Manager selects which agents to query at each stage, manages conversational group chats, and aggregates the final predictions into a structured multi-label output.
+  \item \textbf{Narrative and Sub-narrative Agents (Specialists).} For every label in the two-level taxonomy we instantiate a dedicated specialist agent. Each such agent is initialized with a system prompt containing the label's official definition and examples, and its single task is to decide whether its assigned narrative is present in the document.
+\end{itemize}
+
+This multi-agent design enables strong specialization: each agent focuses its reasoning on a narrow, well-defined sub-problem and collectively contributes to the final, complex classification.
+
+\subsubsection{Two-stage classification workflow}
+
+The Manager Agent orchestrates a structured, two-stage workflow that mirrors the taxonomy's hierarchy (see Figure~\ref{fig:autogen-workflow}). The stages proceed as follows:
+
+\paragraph{Stage 1: Narrative-level classification.}
+Upon receiving a document from the User Proxy, the Manager creates a "group chat" and invites all top-level Narrative Agents. The Manager broadcasts the document text and requests a binary decision (1 = present, 0 = absent) from each agent. Agents analyze the text in parallel and independently return their verdicts to the Manager.
+
+\paragraph{Stage 2: Sub-narrative-level classification.}
+After collecting the Stage~1 results, the Manager inspects the positive parent narratives. For every Narrative Agent that returned a positive decision, the Manager spawns a new group chat populated exclusively with the child Sub-narrative Agents of that parent. The document text is rebroadcast and these specialists return fine-grained binary labels for their respective sub-narratives. This process is repeated for each positively identified parent narrative.
+
+\paragraph{Stage 3: Aggregation and handling of the ``Other'' label.}
+Finally, the Manager aggregates all positive predictions from both stages. The final multi-label output is the union of all parent narratives and child sub-narratives predicted as present. By construction the two-stage protocol enforces the true-path rule: a sub-narrative can only be predicted if its parent narrative was also predicted in Stage~1. As a practical rule, if no Narrative Agent returns a positive prediction in Stage~1, the document is assigned the ``Other'' label and the workflow concludes.

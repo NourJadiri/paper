@@ -2458,6 +2458,9 @@
     <bcf:citekey order="62" intorder="1">Piskorski2025</bcf:citekey>
     <bcf:citekey order="63" intorder="1">conneau_unsupervised_2020</bcf:citekey>
     <bcf:citekey order="64" intorder="1">devlin_bert_2018</bcf:citekey>
+    <bcf:citekey order="65" intorder="1">zhang_binary_2018</bcf:citekey>
+    <bcf:citekey order="66" intorder="1">Wu2024AutoGen</bcf:citekey>
+    <bcf:citekey order="67" intorder="1">eljadiri-nurbakova-2025-team</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="nyt">
