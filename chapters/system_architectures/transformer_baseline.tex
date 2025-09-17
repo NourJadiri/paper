@@ -55,23 +55,20 @@ Here $\mathcal{H}$ denotes the set of (child,parent) index pairs, $P(\cdot)$ are
 
 \subsubsection{Data pre-processing}
 
-\noindent\textbf{Overview.} A critical first step in our methodology, applied universally before any model training or inference, was a comprehensive data pre-processing pipeline. The raw documents, sourced from online news articles, contained non-content artifacts typical of web scrapes, such as residual HTML tags, navigation links, and boilerplate phrases (e.g., ``Share this article''). This noise both dilutes the core narrative content and consumes a valuable portion of the model's input context window (XLM-RoBERTa uses up to 512 tokens).
+\noindent\textbf{Overview.} A critical first step in our methodology was a simple data pre-processing pipeline. As the data is already scarce, we cannot afford to have RoBERTa learn from noisy inputs. The raw documents, sourced from online news articles, contained non-content artifacts typical of web scrapes, such as residual HTML tags, navigation links, and boilerplate phrases (e.g., ``Share this article''). This noise both dilutes the core narrative content and consumes a valuable portion of the model's input context window (XLM-RoBERTa uses up to 512 tokens).
 
 \medskip
-\noindent\textbf{Cleaning operations.} The pipeline aimed to isolate the main body of each article and produce clean, normalized prose. Typical operations included removing HTML and scripting remnants, filtering common boilerplate phrases, and normalizing whitespace to ensure consistent formatting. These steps raise the signal-to-noise ratio of the inputs and help models focus their representational capacity on semantically relevant content.
+\noindent\textbf{Cleaning operations.} The pipeline aimed to isolate the main body of each article and produce clean, normalized text. Typical operations included removing HTML and scripting remnants, filtering common boilerplate phrases, and normalizing whitespace to ensure consistent formatting. These steps raise the signal-to-noise ratio of the inputs and help models focus their representational capacity on semantically relevant content.
 
 \medskip
-\noindent\textbf{Implementation detail.} Rather than constructing a suite of brittle regular expressions or deterministic heuristics, we found a lightweight language model to be a highly effective and low-effort option for this task. The LLM was used to identify and excise non-content artifacts while preserving the surrounding text and authorial tone; in practice, this approach removed navigation elements and calls-to-action embedded inside paragraphs while keeping the original prose intact.
-
-\medskip
-\noindent\textbf{Intended effect.} By ensuring higher-quality input text, the pre-processing pipeline improved downstream classification accuracy across our architectures by preventing models from learning spurious correlations tied to irrelevant boilerplate.
+\noindent\textbf{Implementation detail.} Rather than constructing a suite of regular expressions or deterministic heuristics, we found \textbf{Qwen3-4b-Thinking-2507} to be a highly effective and low-effort option for this task. The LLM was used to identify and delete non-content artifacts while preserving the surrounding text verbatim; in practice, this approach removed navigation elements and calls-to-action embedded inside paragraphs while keeping the original article intact.
 
 \subsubsection{Multilingual data augmentation via translation}
 
 \noindent\textbf{Motivation.} The primary challenge in training the fine-tuning baseline is the severe scarcity of training examples, particularly for the tail-end classes. While the dataset is multilingual, the number of documents in any single language is modest. To significantly expand the training corpus and expose the model to more diverse linguistic expressions of the same narratives, we implemented a data augmentation strategy centered on high-fidelity translation.
 
 \medskip
-\noindent\textbf{Methodology.} We leveraged the state-of-the-art translation capabilities of a large language model (Gemini~1.5~Flash) to augment our training data. Our process was as follows:
+\noindent\textbf{Methodology.} We leveraged the state-of-the-art translation capabilities of a large language model (Gemini~2.5~Flash) to augment our training data. Our process was as follows:
 
 \begin{enumerate}
 	\item \textbf{Translation to a high-resource language}: For each document in the non-English training sets (Bulgarian, Portuguese, Hindi, and Russian), we generated a corresponding English version. We chose English as the target language due to the superior performance of modern LLMs in translating into English, which helps preserve nuanced meaning, tone, and authorial intent.
