@@ -38,6 +38,14 @@
 
 % better bibliography (biblatex style)
 % use biber to compile
+% Ensure encoding/font packages are loaded before biblatex and csquotes
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{microtype}
+\usepackage{times}
+\usepackage{latexsym}
+\usepackage{inconsolata}
+
 \usepackage[citestyle=alphabetic, bibstyle=alphabetic, sorting=nyt, backend=biber, language=english, backref=true, maxcitenames=2]{biblatex}
 
 % better quotes
@@ -53,12 +61,6 @@
 \graphicspath{{images/}}
 
 % YOUR ADDITIONAL PACKAGES
-\usepackage{times}
-\usepackage{latexsym}
-\usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
-\usepackage{microtype}
-\usepackage{inconsolata}
 
 % Make table of contents entries and references clickable
 % Load hyperref late in the preamble with hidelinks to avoid colored boxes
@@ -69,6 +71,10 @@
   pdfencoding=auto,
   bookmarksopen=true
 }
+
+% framed note box (lightweight, uses tcolorbox)
+\usepackage[most]{tcolorbox}
+\newtcolorbox{notebox}{colback=gray!8,colframe=black!50,boxrule=0.5pt,arc=2pt,left=1mm,right=1mm,top=1mm,bottom=1mm}
 
 % Title
 \title{Zero-Shot Narrative Classification via Agentic and Actor-Critic LLM Pipelines}

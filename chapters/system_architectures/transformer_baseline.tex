@@ -77,3 +77,21 @@ Here $\mathcal{H}$ denotes the set of (child,parent) index pairs, $P(\cdot)$ are
 
 \medskip
 \noindent\textbf{Intended outcome.} This augmentation strategy provides two key benefits. First, it dramatically increases the volume of training data, which helps mitigate overfitting for a large model like XLM-RoBERTa. Second, by training on both the original and translated versions, the multilingual XLM-RoBERTa model is encouraged to learn language-invariant representations of the narratives: it learns to associate a specific narrative with both its original linguistic expression (e.g., in Portuguese) and its English equivalent, pushing it to focus on the core semantic concepts rather than surface-level lexical features. The resulting classifier should be more robust and generalizable across languages.
+
+\subsubsection{Handling the ``Other'' Class}
+
+\noindent\textbf{Motivation.} The ``Other'' class represents a substantial portion of the dataset (\(\approx 8\%\)) and presents a unique modeling challenge. Unlike defined narrative labels, it signifies the \emph{absence} of any specific narrative and, in the training data, never co-occurs with other labels. Including it directly in a multi-label framework can be problematic, as the model may struggle to learn a clear decision boundary for such a broad and negatively-defined category.
+
+\medskip
+\noindent\textbf{Methodology.} To address this, we adopted a strategy of treating the ``Other'' class as an implicit negative case. We removed all instances labeled exclusively as ``Other'' from the training set. Consequently, the model was trained \emph{only} on documents that contained at least one specific, defined narrative. During inference, this training strategy translates to a simple and effective decision rule: if the model, after applying a sigmoid activation and a confidence threshold, predicts \textbf{zero} positive labels for a given document, that document is then assigned the ``Other'' label.
+
+\medskip
+\noindent\textbf{Alternative (note).}
+\begin{notebox}\itshape
+We briefly considered treating ``Other'' as an explicit class and using the model's predicted probability for it as an adaptive threshold (i.e., a candidate label must exceed the ``Other'' probability to be assigned). We leave this variant for future work.
+\end{notebox}
+
+\medskip
+\noindent\textbf{Intended outcome.} This approach simplifies the learning objective for the Transformer model. Instead of learning to positively identify the features of the ``Other'' class---a vague and potentially unbounded task---the model can focus entirely on learning the positive features of the defined narratives. This reframes the problem as learning to recognize ``something'' versus ``nothing,'' a much clearer and more constrained task intended to improve the precision of the defined narrative predictions.
+
+
