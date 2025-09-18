@@ -26,15 +26,48 @@ The agentic framework is constructed from a set of conversational agents, each i
 
 This multi-agent design enables strong specialization: each agent focuses its reasoning on a narrow, well-defined sub-problem and collectively contributes to the final, complex classification.
 
-\subsubsection{Two-stage classification workflow}
+\subsubsection{The \textit{propose and refine} classification workflow}
 
-The Manager Agent orchestrates a structured, two-stage workflow that mirrors the taxonomy's hierarchy (see Figure~\ref{fig:autogen-workflow}). The stages proceed as follows:
+The classification of a document proceeds through a structured, multi-stage workflow that mimics a "propose-and-refine" strategy, as illustrated in Figure [Your Diagram 2 Number]. Instead of a simple broadcast, the system uses Manager Agents at each level of the hierarchy to act as initial, coarse-grained classifiers, whose proposals are then validated by specialized agents.
 
-\paragraph{Stage 1: Narrative-level classification.}
-Upon receiving a document from the User Proxy, the Manager creates a "group chat" and invites all top-level Narrative Agents. The Manager broadcasts the document text and requests a binary decision (1 = present, 0 = absent) from each agent. Agents analyze the text in parallel and independently return their verdicts to the Manager.
+\paragraph{Stage 1: Narrative-Level Proposal and Refinement}
+Upon receiving a document from the User Proxy, the top-level Manager Agent initiates the classification. It first performs an internal, high-level analysis of the text to identify a small subset of the most plausible parent narratives. Functioning as a ``loose'' multi-label classifier, the Manager's goal is to propose candidate narratives rather than make a final decision.
 
-\paragraph{Stage 2: Sub-narrative-level classification.}
-After collecting the Stage~1 results, the Manager inspects the positive parent narratives. For every Narrative Agent that returned a positive decision, the Manager spawns a new group chat populated exclusively with the child Sub-narrative Agents of that parent. The document text is rebroadcast and these specialists return fine-grained binary labels for their respective sub-narratives. This process is repeated for each positively identified parent narrative.
+Once this initial set of candidates is identified, the Manager Agent initiates a ``group chat'' and invites only the Narrative Agents corresponding to its proposed narratives. It then dispatches the document to this selected group, and each specialist agent is tasked with refining the Manager's proposal. The agents perform a more detailed, focused analysis and return a definitive binary decision (1 to confirm the proposal, 0 to reject it).
 
-\paragraph{Stage 3: Aggregation and handling of the ``Other'' label.}
-Finally, the Manager aggregates all positive predictions from both stages. The final multi-label output is the union of all parent narratives and child sub-narratives predicted as present. By construction the two-stage protocol enforces the true-path rule: a sub-narrative can only be predicted if its parent narrative was also predicted in Stage~1. As a practical rule, if no Narrative Agent returns a positive prediction in Stage~1, the document is assigned the ``Other'' label and the workflow concludes.
+\paragraph{Stage 2: Sub-narrative-Level Proposal and Refinement}
+The process is then repeated for the sub-narrative level. For each narrative confirmed in Stage~1, a dedicated, second-level Manager Agent responsible for that narrative's children is activated. This sub-manager, acting as another ``loose'' classifier, analyzes the document to propose the most likely sub-narratives within its specific domain.
+
+Following the same pattern, it creates a new group chat with only the Sub-narrative Agents corresponding to its proposals. These agents then perform the final refinement step, either confirming (1) or rejecting (0) the sub-manager's hypothesis. This hierarchical and nested manager-specialist structure allows the system to progressively narrow its focus, dedicating more detailed analysis only to the most promising classification paths.
+
+\paragraph{Stage 3: Aggregation and ``Other'' Handling}
+Finally, the top-level Manager Agent aggregates all the confirmed predictions from both stages. The final output is the set of all parent narratives and child sub-narratives that were successfully proposed and then validated by their specialist agents. This workflow inherently enforces the true-path rule. If the top-level Manager proposes no narratives, or if none of its proposals are confirmed by the specialist agents, the document is automatically assigned the ``Other'' label.
+
+\subsubsection{Prompt engineering for zero-shot classification}
+
+The performance of the agentic framework is critically dependent on the quality and precision of the system prompts that guide each agent's behavior. In a zero-shot setting, the prompt is the sole source of instruction, defining the agent's role, task, and decision-making criteria. Our prompt engineering strategy was therefore meticulously designed to elicit high-precision, reliable, and parsable classifications from the LLM.
+
+\paragraph{Template structure and key components}
+Each agent, whether at the narrative or sub-narrative level, was initialized with a system prompt constructed from a consistent template. This template incorporated several key components to focus the agent's reasoning:
+
+\begin{itemize}
+  \item \textbf{Role-Playing:} The prompt begins by assigning the LLM a clear and narrow role: ``You are a highly specialized classification model. Your only task is to perform binary classification\ldots'' This instruction immediately constrains the model's behavior, discouraging it from generating conversational or explanatory text.
+  \item \textbf{Task Definition:} The core of the prompt provides the necessary domain knowledge by embedding the exact name and official definition of the agent's assigned label, sourced directly from the SemEval-2025 taxonomy. This ensures each agent is an ``expert'' on its specific narrative.
+  \item \textbf{Strict Output Formatting:} To ensure the system could function deterministically, the prompt strictly enforces the output format. Agents were explicitly instructed to respond only with the character 1 (if the narrative is present) or 0 (if absent), and to refrain from producing any other text.
+\end{itemize}
+
+\paragraph{Precision-oriented instructions}
+Perhaps the most crucial element of our prompt design was an instruction engineered to prioritize precision over recall. LLMs often exhibit a tendency to be ``overly helpful,'' identifying weak or tangential relationships that can lead to false positives. To counteract this, we included a direct and unambiguous command:
+
+\begin{quote}
+\itshape ``Only answer with 1 if there are EXPLICIT and CLEAR mentions of the narrative in the text. Some text will be ambiguous, so if you are slightly unsure, answer 0.''
+\end{quote}
+
+This conservative instruction forces the agent to adopt a high-confidence threshold for positive classifications. It is a cornerstone of our framework's design, aimed at minimizing false positives in a large and complex label space.
+
+\paragraph{Historical context and refinement challenges}
+It is worth noting that this architecture was developed before LLMs were systematically trained to produce structured output formats. Consequently, we had to refine our prompting strategy extensively to obtain consistently parsable answers. Early iterations often produced verbose explanations or inconsistent formatting, requiring multiple rounds of prompt optimization to achieve the deterministic binary outputs necessary for automated processing.
+
+The full, verbatim prompt template used to initialize the agents is provided in Appendix~A for reproducibility.
+
+
