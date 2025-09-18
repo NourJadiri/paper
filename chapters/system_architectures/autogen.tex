@@ -28,7 +28,14 @@ This multi-agent design enables strong specialization: each agent focuses its re
 
 \subsubsection{The \textit{propose and refine} classification workflow}
 
-The classification of a document proceeds through a structured, multi-stage workflow that mimics a "propose-and-refine" strategy, as illustrated in Figure [Your Diagram 2 Number]. Instead of a simple broadcast, the system uses Manager Agents at each level of the hierarchy to act as initial, coarse-grained classifiers, whose proposals are then validated by specialized agents.
+The classification of a document proceeds through a structured, multi-stage workflow that mimics a "propose-and-refine" strategy, as illustrated in Figure~\ref{fig:autogen-architecture}. Instead of a simple broadcast, the system uses Manager Agents at each level of the hierarchy to act as initial, coarse-grained classifiers, whose proposals are then validated by specialized agents.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.9\textwidth]{autogen/Architecture.jpg}
+\caption{AutoGen multi-agent architecture showing the hierarchical propose-and-refine workflow. The Proxy Agent initiates the process, the Group Chat Manager coordinates narrative-level classification, and separate sub-managers handle sub-narrative classification for each confirmed parent narrative.}
+\label{fig:autogen-architecture}
+\end{figure}
 
 \paragraph{Stage 1: Narrative-Level Proposal and Refinement}
 Upon receiving a document from the User Proxy, the top-level Manager Agent initiates the classification. It first performs an internal, high-level analysis of the text to identify a small subset of the most plausible parent narratives. Functioning as a ``loose'' multi-label classifier, the Manager's goal is to propose candidate narratives rather than make a final decision.
@@ -39,6 +46,8 @@ Once this initial set of candidates is identified, the Manager Agent initiates a
 The process is then repeated for the sub-narrative level. For each narrative confirmed in Stage~1, a dedicated, second-level Manager Agent responsible for that narrative's children is activated. This sub-manager, acting as another ``loose'' classifier, analyzes the document to propose the most likely sub-narratives within its specific domain.
 
 Following the same pattern, it creates a new group chat with only the Sub-narrative Agents corresponding to its proposals. These agents then perform the final refinement step, either confirming (1) or rejecting (0) the sub-manager's hypothesis. This hierarchical and nested manager-specialist structure allows the system to progressively narrow its focus, dedicating more detailed analysis only to the most promising classification paths.
+
+%Maybe i ll add an image of the workflow here
 
 \paragraph{Stage 3: Aggregation and ``Other'' Handling}
 Finally, the top-level Manager Agent aggregates all the confirmed predictions from both stages. The final output is the set of all parent narratives and child sub-narratives that were successfully proposed and then validated by their specialist agents. This workflow inherently enforces the true-path rule. If the top-level Manager proposes no narratives, or if none of its proposals are confirmed by the specialist agents, the document is automatically assigned the ``Other'' label.
