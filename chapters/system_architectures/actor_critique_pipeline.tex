@@ -1,0 +1,52 @@
+\section{The traceable actor-critique pipeline}
+
+\subsection{Beyond Simple Decisions to Reliable, Evidence-Grounded Reasoning}
+
+While the zero-shot agentic framework (Architecture 1) effectively addresses data scarcity by decomposing the classification task, its reliability is entirely dependent on the opaque, internal reasoning of individual agents. The binary 1/0 outputs lack transparency; we cannot know why an agent made a particular decision, making the system difficult to audit and susceptible to unverified "hallucinations."
+
+To address these limitations, we developed our most advanced system: a traceable, multi-stage pipeline based on an \textbf{actor-critic} design. This architecture fundamentally reframes the task from simple classification to \textbf{evidence-grounded claim generation and validation}.
+
+\subsection{Pipeline architecture}
+
+Our implementation uses the LangGraph framework to structure the classification process as a cyclical state graph \cite{langgraph2024}. In this approach, each processing step represents a node that operates on a shared state object. The pipeline configuration is managed by a ConfigurableGraphBuilder class, which constructs the workflow based on parameters specified in a YAML configuration file. This structure allows individual components such as validation and cleaning steps to be enabled or disabled as needed, and permits different language models to be assigned to specific nodes within the graph.
+
+\subsection{Sequential workflow and processing stages}
+
+The classification of a document proceeds through a series of sequential and conditional stages, as illustrated in Figure~\ref{fig:actor-critic-pipeline}.
+
+\paragraph{Stage 1: (Optional) Text Cleaning}
+The pipeline can be configured to begin with an LLM-powered cleaning node. This node processes the raw input text to remove web-specific artifacts and boilerplate, ensuring that subsequent stages operate on high-quality, content-focused prose.
+
+\paragraph{Stage 2: Category Classification}
+The workflow begins with a simple classifier node that determines the document's high-level topic (e.g., CC or URW). This initial routing step allows the system to load the relevant subset of the narrative taxonomy, focusing the subsequent, more computationally expensive stages on a smaller, more relevant set of potential labels.
+
+\paragraph{Stage 3: The Narrative Actor (Claim Generation)}
+This is the first core component of the actor-critic design. The ``Actor'' is an LLM agent prompted to act as an expert analyst. Its task is not merely to classify but to generate a structured set of claims. For each narrative it identifies in the text, it must produce a JSON object containing three key fields, enforced by a Pydantic schema:
+
+\begin{itemize}
+  \item \textbf{narrative\_name:} The exact name of the identified narrative.
+  \item \textbf{evidence\_quote:} A direct, verbatim quote from the text that supports the claim.
+  \item \textbf{reasoning:} A brief justification explaining how the quote supports the narrative.
+\end{itemize}
+
+\paragraph{Stage 4: The Narrative Critic (Claim Validation)}
+The output of the Actor is immediately passed to the ``Critic,'' a separate LLM agent with a distinct, skeptical persona. The Critic's sole purpose is to validate the Actor's claims against a strict set of criteria: evidence accuracy (is the quote verbatim?), relevance (does the quote directly support the narrative?), and completeness. If the Critic finds the Actor's analysis flawed, it generates structured feedback detailing the errors. The graph's conditional logic then routes the state back to the Actor for a retry, passing the Critic's feedback to a refinement prompt that instructs the Actor to correct its previous mistakes. This feedback loop can be repeated, creating a self-correction mechanism.
+
+\paragraph{Stages 5 \& 6: Sub-narrative Actor and Critic}
+Once a set of narratives has been approved by the Critic, the process is repeated hierarchically for the sub-narrative level. For each validated parent narrative, a dedicated Sub-narrative Actor generates evidence-grounded claims for its children. To improve efficiency, these claims are generated in a batch operation. The claims are then passed to a Sub-narrative Critic for validation, which also has the ability to trigger a retry loop.
+
+\paragraph{Stage 7: Finalization}
+After passing through all stages, the final set of validated narratives and sub-narratives is written to the output file.
+
+\subsection{Key advantages of the evidence-grounded pipeline}
+
+This evidence-grounded, pipeline-driven architecture offers several significant advantages over simpler classification models:
+
+\paragraph{Traceability and Auditability}
+By forcing the Actor to ground every prediction in a textual \texttt{evidence\_quote}, the system's reasoning becomes fully transparent. This is a critical feature for real-world applications where understanding the ``why'' behind a classification is as important as the classification itself. To further enhance this, we integrated LangSmith into our development workflow. LangSmith provided detailed, step-by-step traces of each agent's inputs, outputs, and internal reasoning. This fine-grained visibility was invaluable for debugging complex interactions within the graph and, most importantly, for iteratively refining our prompts. By analyzing the exact failure modes identified in the traces, we could make targeted improvements to the prompt templates, significantly accelerating the development of a robust and reliable system.
+
+\paragraph{Reliability and Reduced Hallucination}
+The Critic acts as a powerful safeguard against low-confidence predictions and LLM hallucinations. The explicit validation step, combined with the self-correction feedback loop, significantly increases the precision and trustworthiness of the final output.
+
+\paragraph{Modularity and Configurability}
+The entire pipeline is controlled by a YAML configuration file. This allows for exceptional flexibility in experimentation. Different LLMs can be swapped for each Actor and Critic node, validation can be enabled or disabled for each level of the hierarchy, and the entire workflow can be easily adapted or extended without changing the core codebase.
