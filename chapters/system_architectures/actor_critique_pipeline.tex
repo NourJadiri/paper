@@ -14,6 +14,13 @@ Our implementation uses the LangGraph framework to structure the classification 
 
 The classification of a document proceeds through a series of sequential and conditional stages, as illustrated in Figure~\ref{fig:actor-critic-pipeline}.
 
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.75\textwidth]{actor_critique/Actor refiner pipeline.png}
+\caption{Actor–Critic pipeline: a stepwise, evidence-grounded workflow. The Actor generates structured claims grounded in verbatim evidence; the Critic validates these claims and may route feedback to the Actor for iterative refinement. Sub-narrative Actors and Critics repeat this process hierarchically.}
+\label{fig:actor-critic-pipeline}
+\end{figure}
+
 \paragraph{Stage 1: (Optional) Text Cleaning}
 The pipeline can be configured to begin with an LLM-powered cleaning node. This node processes the raw input text to remove web-specific artifacts and boilerplate, ensuring that subsequent stages operate on high-quality, content-focused prose.
 
