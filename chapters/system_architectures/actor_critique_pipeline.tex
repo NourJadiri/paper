@@ -1,10 +1,17 @@
 \section{The traceable actor-critique pipeline}
 
-\subsection{Beyond Simple Decisions to Reliable, Evidence-Grounded Reasoning}
+\subsection{Motivation: From Decomposed Agents to Holistic, Reasoned Analysis}
 
-While the zero-shot agentic framework (Architecture 1) effectively addresses data scarcity by decomposing the classification task, its reliability is entirely dependent on the opaque, internal reasoning of individual agents. The binary 1/0 outputs lack transparency; we cannot know why an agent made a particular decision, making the system difficult to audit and susceptible to unverified "hallucinations."
+While the zero-shot agentic framework (\textbf{Architecture 1}) effectively addresses data scarcity by decomposing the classification task, its reliability depends on the opaque internal reasoning of individual agents. The binary 1/0 outputs lack transparency, making the system difficult to audit and susceptible to unverified hallucinations.
 
-To address these limitations, we developed our most advanced system: a traceable, multi-stage pipeline based on an \textbf{actor-critic} design. This architecture fundamentally reframes the task from simple classification to \textbf{evidence-grounded claim generation and validation}.
+To overcome these limitations, we developed a traceable, multi-stage pipeline that prioritizes two design goals:
+
+\begin{itemize}
+  \item \textbf{Efficiency.} Replace dozens of individual agent calls with a single, batched request per hierarchical level to reduce latency and operational cost.
+  \item \textbf{Reasoning depth.} Move from isolated binary decisions to holistic, evidence-grounded analysis where a single agent considers all candidate labels and produces structured, auditable claims.
+\end{itemize}
+
+Together, these goals shift the task from simple classification to \textbf{evidence-grounded claim generation and validation}, improving both interpretability and trustworthiness.
 
 \subsection{Pipeline architecture}
 
@@ -50,10 +57,13 @@ After passing through all stages, the final set of validated narratives and sub-
 This evidence-grounded, pipeline-driven architecture offers several significant advantages over simpler classification models:
 
 \paragraph{Traceability and Auditability}
-By forcing the Actor to ground every prediction in a textual \texttt{evidence\_quote}, the system's reasoning becomes fully transparent. This is a critical feature for real-world applications where understanding the ``why'' behind a classification is as important as the classification itself. To further enhance this, we integrated LangSmith into our development workflow. LangSmith provided detailed, step-by-step traces of each agent's inputs, outputs, and internal reasoning. This fine-grained visibility was invaluable for debugging complex interactions within the graph and, most importantly, for iteratively refining our prompts. By analyzing the exact failure modes identified in the traces, we could make targeted improvements to the prompt templates, significantly accelerating the development of a robust and reliable system.
+By forcing the Actor to ground every prediction in a textual \texttt{evidence\_quote}, the system's reasoning becomes fully transparent. This is a critical feature for real-world applications where understanding the ``why'' behind a classification is as important as the classification itself, especially when using LLM chains. To further enhance this, we integrated LangSmith into our development workflow. LangSmith provided detailed, step-by-step traces of each agent's inputs, outputs, and internal reasoning. This fine-grained visibility was invaluable for debugging complex interactions within the graph and, most importantly, for iteratively refining our prompts. By analyzing the exact failure modes identified in the traces, we could make targeted improvements to the prompt templates, significantly accelerating the development of a robust and reliable system.
 
 \paragraph{Reliability and Reduced Hallucination}
 The Critic acts as a powerful safeguard against low-confidence predictions and LLM hallucinations. The explicit validation step, combined with the self-correction feedback loop, significantly increases the precision and trustworthiness of the final output.
+
+\paragraph{Efficiency through Parallelization}
+By replacing the ``one agent per label'' model with a single reasoning agent per hierarchical level and leveraging asynchronous batch processing for the sub-narrative stage, the system dramatically reduces the number of sequential LLM calls. This yields a substantial improvement in processing speed and throughput while preserving the benefits of evidence-grounded validation and iterative refinement.
 
 \paragraph{Modularity and Configurability}
 The entire pipeline is controlled by a YAML configuration file. This allows for exceptional flexibility in experimentation. Different LLMs can be swapped for each Actor and Critic node, validation can be enabled or disabled for each level of the hierarchy, and the entire workflow can be easily adapted or extended without changing the core codebase.
