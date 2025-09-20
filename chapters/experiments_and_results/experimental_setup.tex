@@ -1,0 +1,23 @@
+\section{Experimental setup}
+
+\subsection{Data splits and evaluation metrics}
+
+All experiments were conducted on the official test split of the \textbf{SemEval-2025 Task 10, Subtask 2} dataset. Following the shared task's guidelines, we evaluate our models using two primary metrics: \textbf{Sample-Averaged F1-Score}, which was the official ranking metric and reflects per-document prediction accuracy, and \textbf{Macro-Averaged F1-Score}, which gives equal weight to each label class and is therefore a crucial indicator of performance on the rare, long-tail narratives.
+
+\subsection{Hierarchical deBERTa baseline}
+
+Our supervised baseline was implemented using the \textbf{Hugging Face transformers} library \cite{wolf-etal-2020-transformers} and \textbf{PyTorch}. The entire training and evaluation pipeline was designed to be reproducible and systematically address the challenges of the task.
+
+\paragraph{Model and Tokenization.}
+We used the \texttt{microsoft/mdeberta-v3-base} model as the encoder backbone for our \texttt{MultiHeadDeBERTaForHierarchicalClassification} architecture. The corresponding \texttt{AutoTokenizer} was used to process the input texts. All documents were truncated or padded to a maximum sequence length of 512 tokens.
+
+\paragraph{Training Arguments.}
+The model was fine-tuned using the \textbf{transformers Trainer API}. We configured the training for a maximum of 10 epochs with a per-device batch size of 8 and gradient accumulation over 2 steps, resulting in an effective batch size of 16. We employed the \textbf{AdamW} optimizer with a learning rate of \(2 \times 10^{-5}\) and a linear warmup schedule over the first 10\% of training steps. To prevent overfitting and select the best model checkpoint, we utilized an \texttt{EarlyStoppingCallback} with a patience of 3 epochs and a minimum improvement threshold of 0.001. The metric for selecting the best model was the \texttt{f1\_sample} score on the evaluation set, as this aligns with the competition's primary metric.
+
+\paragraph{Metrics Computation and Thresholding.}
+The evaluation of our hierarchical model required a custom \texttt{compute\_metrics} function. During evaluation, the model outputs separate logits for the parent level and for each child-level head. To compute standard F1 scores, our function first reconstructs ``flat'' ground-truth and prediction matrices for all 117 possible labels (22 parent + 95 child).
+
+A key step in this process is handling the prediction threshold. We implemented a search to find the optimal decision threshold for the parent-level predictions, as this is the entry point to the hierarchy. This optimal threshold, determined by maximizing the \texttt{f1\_score (samples)} on the evaluation set, is then used to make binary predictions for both the parent narratives and the sub-narratives.
+
+\paragraph{Hardware and Compute Resources.}
+The training process and inference were conducted on a server equipped with 1 RTX 4090 GPU with 24GB of VRAM.
