@@ -11,7 +11,7 @@ We ground our study in SemEval-2025 Task 10, Subtask 2 \cite{semeval2025task10},
 \section{Related Work}
 \paragraph{Classical MLC methods.} Foundational problem-transformation techniques include Binary Relevance (BR) \cite{zhang_binary_2018}, Classifier Chains (CC) \cite{li_relative_2024, weng_label_2020}, and Label Powerset (LP) \cite{shan_co-learning_2018}. While simple and effective in some settings, these approaches can struggle to exploit complex dependencies and often require substantial labeled data.
 
-\paragraph{Deep learning and Transformers.} The advent of Transformer-based models, such as BERT \cite{devlin_bert_2019} and XLM-RoBERTa \cite{conneau_unsupervised_2020}, established strong baselines for MLC by learning contextual representations that capture label correlations implicitly. However, in data-scarce and long-tailed regimes, fine-tuning can overfit to head classes and underperform on rare labels.
+\paragraph{Deep learning and Transformers.} The advent of Transformer-based models, such as BERT \cite{devlin_bert_2019}, established strong baselines for MLC by learning contextual representations that capture label correlations implicitly. However, in data-scarce and long-tailed regimes, fine-tuning can overfit to head classes and underperform on rare labels.
 
 \paragraph{Hierarchy-aware architectures.} Specialized HMLC methods incorporate the label hierarchy via hierarchical classifiers, structured losses, or graph-based modeling \cite{sadat_hierarchical_2022, peng_hierarchical_2021, gong_hierarchical_2020}. These approaches improve consistency across levels but typically remain supervised and sensitive to imbalance.
 
