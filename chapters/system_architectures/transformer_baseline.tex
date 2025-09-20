@@ -1,61 +1,63 @@
 \section{Transformer baseline architecture}
 \label{sec:transformer-baseline}
-To establish a robust performance baseline, we first implemented a standard fine-tuning approach, which represents the conventional state-of-the-art for supervised text classification. Given the multilingual nature of the dataset, we selected XLM-RoBERTa \cite{conneau_unsupervised_2020}, a powerful multilingual encoder, as the foundation for our model.
+To establish a robust supervised baseline, we developed a custom Transformer-based architecture explicitly designed to model the two-level taxonomy of the task. Instead of treating the label space as flat, our Multi-Head mDeBERTa for Hierarchical Classification directly encodes the parent-child relationships into its structure. This approach represents a state-of-the-art technique for Hierarchical Multi-Label Classification (HMLC), moving beyond soft regularization penalties to a more principled, hard-coded hierarchical design.
 
-The core architecture consists of the pre-trained XLM-RoBERTa model followed by a linear classification head. For each input text, the model produces a contextualized embedding for the special [CLS] token \cite{devlin_bert_2018}. This embedding, which represents the aggregated meaning of the entire input sequence, is then passed to a single feed-forward layer that projects it into a logit vector. The dimension of this vector is equal to the total number of sub-narrative labels in the taxonomy. A sigmoid activation function is applied to these logits during inference to produce a probability between 0 and 1 for each label, allowing for multi-label predictions.
+\subsection{Core architecture and model choice}
 
-We experimented with three variations of this baseline, each designed to systematically address the specific challenges identified in our data analysis.
+The foundation of our model is \textbf{mDeBERTaV2} (microsoft/mdeberta-v2-base) \cite{he2021debertav3}, a powerful Transformer encoder chosen for its architectural innovations that are particularly relevant to nuanced understanding tasks. While mDeBERTaV2 is a strong general-purpose model, its \textbf{disentangled attention mechanism} provides a compelling theoretical advantage for our specific problem.
 
-\subsection{Vanilla fine-tuning}
+Standard Transformer attention mechanisms \cite{vaswani2017attention} compute attention weights based on a single vector that combines both a token's content (what it is) and its relative position (where it is). In contrast, mDeBERTa's disentangled attention uses two separate vectors for each token: one representing its content and another representing its relative position. Attention weights are then computed based on the interactions between the content and position vectors of different tokens \cite{he2020deberta}.
 
-Our first implementation establishes a foundational baseline using a straightforward fine-tuning methodology. We use the XLM-RoBERTa (xlm-roberta-base) model for several reasons: the task is multilingual, and XLM-RoBERTa is pre-trained on a large multilingual corpus covering many languages, enabling robust, language-agnostic representations; moreover, as a RoBERTa-family model it benefits from improved pre-training (e.g., dynamic masking) compared to the original BERT, resulting in stronger contextual embeddings.
+\textbf{The intuition for our task is as follows:} Narrative classification often depends on understanding the relationships between specific keywords (content) and their structural arrangement within a sentence or paragraph (position). For example, the narrative ``URW: Blaming the war on others rather than the invader'' relies on identifying entities like ``the West'' or ``Ukraine'' (content) and their syntactic roles as agents or recipients of blame (a position-dependent relationship). By disentangling content from position, mDeBERTa can more explicitly model these types of syntactic and relational dependencies, which are crucial for distinguishing between semantically similar but structurally different narratives.
 
-The architectural setup is standard: the pre-trained XLM-RoBERTa encoder is followed by a linear classification head. During a forward pass the final hidden state of the special [CLS] token is taken as an aggregate representation of the input and passed through the classification head to produce a logit vector whose dimensionality matches the number of sub-narrative labels. At inference time a sigmoid is applied to each logit to produce independent probabilities for multi-label prediction.
-
-For this vanilla baseline we frame the problem as a set of independent binary classification tasks (one per sub-narrative) and optimize using Binary Cross-Entropy with Logits Loss (BCEWithLogitsLoss). While simple and computationally efficient, this formulation assumes label independence and therefore does not capture structured co-occurrence patterns or hierarchical parent–child relationships present in the taxonomy; as our later variations show, explicitly addressing these properties can materially improve performance on tail and dependent labels.
+While this mechanism offers a principled advantage, we also approached this choice experimentally. A key goal of implementing this advanced baseline was to test the limits of the fine-tuning paradigm: if even a model with a sophisticated, disentangled attention mechanism fails to learn from the sparse data, it provides stronger evidence that the problem lies with the learning paradigm itself, not just the specific model architecture.
 
 \medskip
-\noindent\textbf{Anticipated limitations.} Based on our data analysis, we anticipated that this vanilla approach would face significant limitations. The primary concern is its susceptibility to the severe class imbalance. By optimizing for overall accuracy, the standard BCE loss incentivizes the model to achieve high performance on the high-frequency ``head'' classes, often by simply predicting ``negative'' for the vast majority of rare ``tail'' classes.
+\noindent\textbf{Anticipated limitations.} Based on our data analysis, we anticipated that a vanilla approach to finetuning would face significant limitations. The primary concern is its susceptibility to the severe class imbalance. By optimizing for overall accuracy, the standard BCE loss incentivizes the model to achieve high performance on the high-frequency ``head'' classes, often by simply predicting ``negative'' for the vast majority of rare ``tail'' classes.
 This behavior is expected to result in poor performance on metrics sensitive to class imbalance, such as the macro-averaged F1 score, and serves as the primary motivation for the more advanced baselines and zero-shot architectures explored subsequently.
 
 \subsection{Mitigating the class imbalance}
-To directly address the class imbalance issue, our second variation enhances the loss function with positive class weighting. This technique modifies the standard BCE loss by increasing the penalty for misclassifying a positive instance of a rare class. For each class $c$ we compute a per-class weight \(\mathrm{pos\_weight}_c\) as the ratio of negative to positive training counts. Let $N_c$ and $P_c$ denote the number of negative and positive training examples for class $c$, respectively:
+To directly address the class imbalance issue, we enhance the loss function with positive class weighting. This technique modifies the standard BCE loss by increasing the penalty for misclassifying a positive instance of a rare class. For each class $c$ we compute a per-class weight \(\mathrm{pos\_weight}_c\) as the ratio of negative to positive training counts. Let $N_c$ and $P_c$ denote the number of negative and positive training examples for class $c$, respectively:
 \[
 	\mathrm{pos\_weight}_c \;=\; \frac{N_c}{P_c}.
 \]
 
 This weight is then integrated directly into the BCE loss calculation, effectively increasing the cost of a false negative for rare classes. For a common label where positive and negative samples are balanced, the weight is close to 1, behaving like the standard BCE loss. However, for a rare label with a \textbf{pos\_weight} of, for example, 65, the loss incurred for failing to predict that label when it is present is magnified 65 times.
 
+In practice we pass the vector of per-class positive weights to the BCEWithLogitsLoss (or equivalent) implementation so rare classes contribute proportionally more to the loss. The approach is intended to improve recall on tail classes and, consequently, boost Macro F1 by forcing the model to pay closer attention to underrepresented labels.
 
-This ensures that the model is more heavily penalized for failing to identify a rare narrative than for misclassifying a common one. In practice we pass the vector of per-class positive weights to the BCEWithLogitsLoss (or equivalent) implementation so rare classes contribute proportionally more to the loss. The approach is intended to improve recall on tail classes and, consequently, boost Macro F1 by forcing the model to pay closer attention to underrepresented labels.
+\subsection{Hierarchical-Conditioned training and data handling}
 
-\subsection{Enforcing hierarchical consistency with a regularization penalty}
+\subsection{Training Methodology}
 
-Our final and most sophisticated baseline variation addresses another key aspect of the data structure that is ignored by the vanilla model: the explicit parent--child relationships within the two-level narrative taxonomy. A flat multi-label classifier can produce logically inconsistent predictions, such as assigning a high probability to a sub-narrative while assigning a low probability to its parent.
+Our multi-head mDeBERTa architecture employs a training and data handling strategy designed to address the challenges of hierarchical structure, class imbalance, and data scarcity.
 
-\medskip
-\noindent\textbf{Motivation.} To create a more coherent and logically sound model, we aim to instill an inductive bias that respects the taxonomy's structure. The fundamental rule of hierarchical classification is the true-path rule: if an instance belongs to a child class, it must also belong to its parent class. We therefore encourage the model to adhere to this rule during training.
+\paragraph{Hierarchically-Conditioned Training.}
+The effectiveness of our multi-head mDeBERTa architecture is realized through a specialized training methodology designed to enforce the taxonomy's structure and combat the severe data imbalance. The total loss is a carefully calculated sum of losses from the parent-level classifier and the conditionally activated child-level heads.
 
-\medskip
-\noindent\textbf{Methodology.} We implement this by augmenting the training objective with a hierarchical consistency penalty, a "soft" constraint that penalizes violations of the true-path rule. During each training step, after computing the primary weighted BCE loss, we calculate an additional penalty term. This term is computed by iterating through the set $\mathcal{H}$ of all predefined (child, parent) index pairs in the taxonomy. For each pair $(c,p)\in\mathcal{H}$ we compare the model's predicted sigmoid probabilities $P(c)$ and $P(p)$ for the child and parent labels, respectively. If $P(c)>P(p)$ (a logical violation), a penalty is incurred.
+\paragraph{Parent-Level Training.}
+At the top level, the parent classifier is trained to predict the presence of all coarse-grained narratives. It is optimized using \textbf{Binary Cross-Entropy with Logits Loss} (BCEWithLogitsLoss). To counteract the significant class imbalance among parent narratives, we apply \textbf{positive class weighting}. For each parent label, a weight inversely proportional to its frequency is computed, compelling the model to assign a higher penalty for misclassifying rare parent narratives.
 
-\medskip
-\noindent\textbf{Loss.} The final loss is a weighted sum of the primary classification loss and the hierarchical penalty:
-\[
-\mathcal{L} \,=\, \mathcal{L}_{\mathrm{BCE}}^{\mathrm{weighted}} \;+
-\; \lambda \sum_{(c,p)\in\mathcal{H}} \mathrm{mean}\bigl(\max\bigl(0,\,P(c)-P(p)\bigr)\bigr)
-\]
+\paragraph{Child-Level Conditional Training.}
+The core of our hierarchical approach lies in the conditional training of the child-level heads. This process ensures that each specialized child classifier is trained exclusively on relevant data. For a given training document, the loss for a specific child-classifier head (for example, the head for URW: Discrediting Ukraine's children) is calculated if and only if that document is labeled with the corresponding parent narrative. If the parent label is absent, the child head is ``inactive'' for that instance and contributes zero to the total loss. This conditional activation hard-codes the true-path rule into the training loop, preventing the child classifiers from being overwhelmed by the vast majority of documents where their parent narrative is not present.
 
-Here $\mathcal{H}$ denotes the set of (child,parent) index pairs, $P(\cdot)$ are the sigmoid probabilities predicted by the model, and $\lambda$ is a hyperparameter controlling the strength of the regularization. The $\max(0,\cdot)$ (or clamp at zero) ensures a penalty only when $P(c)>P(p)$; if $P(c)\le P(p)$ the term is zero.
+\paragraph{A concrete example.}
+Consider a document labeled with the parent narrative \(P_1\) and its child sub-narrative \(C_{1a}\). During the forward pass:
+\begin{itemize}
+  \item The parent-level loss is calculated across all parent labels, with the model being rewarded for predicting \(P_1\) as positive.
+  \item The system checks the ground-truth labels. Since \(P_1\) is present, the specific child-classifier head for \(P_1\)'s children is activated.
+  \item The loss for this child head is calculated, rewarding the model for predicting \(C_{1a}\) as positive.
+  \item All other child-classifier heads (for \(P_2\), \(P_3\), etc.) remain inactive for this document.
+\end{itemize}
 
-\medskip
-\noindent\textbf{Intended outcome.} The approach aims to produce more logically consistent and interpretable predictions and to promote statistical strength sharing: linking parent and child labels in the loss can allow abundant parent-level data to regularize representations for rarer child labels.
+This focused training strategy allows each child head to become a highly specialized expert, learning the subtle distinctions between its sibling sub-narratives without being distracted by irrelevant data from other branches of the hierarchy.
+
 
 \subsection{Addressing data scarcity and class imbalance}
 
 \subsubsection{Data pre-processing}
 
-\noindent\textbf{Overview.} A critical first step in our methodology was a simple data pre-processing pipeline. As the data is already scarce, we cannot afford to have RoBERTa learn from noisy inputs. The raw documents, sourced from online news articles, contained non-content artifacts typical of web scrapes, such as residual HTML tags, navigation links, and boilerplate phrases (e.g., ``Share this article''). This noise both dilutes the core narrative content and consumes a valuable portion of the model's input context window (XLM-RoBERTa uses up to 512 tokens).
+\noindent\textbf{Overview.} Now, a critical first step in our methodology was a simple data pre-processing pipeline. As the data is already scarce, we cannot afford to have mDeBERTa learn from noisy inputs. The raw documents, sourced from online news articles, contained non-content artifacts typical of web scrapes, such as residual HTML tags, navigation links, and boilerplate phrases (e.g., ``Share this article''). This noise both dilutes the core narrative content and consumes a valuable portion of the model's input context window (mDeBERTa uses up to 512 tokens).
 
 \medskip
 \noindent\textbf{Cleaning operations.} The pipeline aimed to isolate the main body of each article and produce clean, normalized text. Typical operations included removing HTML and scripting remnants, filtering common boilerplate phrases, and normalizing whitespace to ensure consistent formatting. These steps raise the signal-to-noise ratio of the inputs and help models focus their representational capacity on semantically relevant content.
@@ -76,7 +78,7 @@ Here $\mathcal{H}$ denotes the set of (child,parent) index pairs, $P(\cdot)$ are
 \end{enumerate}
 
 \medskip
-\noindent\textbf{Intended outcome.} This augmentation strategy provides two key benefits. First, it dramatically increases the volume of training data, which helps mitigate overfitting for a large model like XLM-RoBERTa. Second, by training on both the original and translated versions, the multilingual XLM-RoBERTa model is encouraged to learn language-invariant representations of the narratives: it learns to associate a specific narrative with both its original linguistic expression (e.g., in Portuguese) and its English equivalent, pushing it to focus on the core semantic concepts rather than surface-level lexical features. The resulting classifier should be more robust and generalizable across languages.
+\noindent\textbf{Intended outcome.} This augmentation strategy provides two key benefits. First, it dramatically increases the volume of training data, which helps mitigate overfitting for a large model like mDeBERTa. Second, by training on both the original and translated versions, the multilingual mDeBERTa model is encouraged to learn language-invariant representations of the narratives: it learns to associate a specific narrative with both its original linguistic expression (e.g., in Portuguese) and its English equivalent, pushing it to focus on the core semantic concepts rather than surface-level lexical features. The resulting classifier should be more robust and generalizable across languages.
 
 \subsubsection{Handling the ``Other'' Class}
 
