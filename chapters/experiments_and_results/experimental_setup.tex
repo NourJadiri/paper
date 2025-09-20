@@ -1,10 +1,8 @@
 \section{Experimental setup}
 
-\subsection{Data splits and evaluation metrics}
+\subsection{Hierarchical deBERTa baseline}
 
 All experiments were conducted on the official test split of the \textbf{SemEval-2025 Task 10, Subtask 2} dataset. Following the shared task's guidelines, we evaluate our models using two primary metrics: \textbf{Sample-Averaged F1-Score}, which was the official ranking metric and reflects per-document prediction accuracy, and \textbf{Macro-Averaged F1-Score}, which gives equal weight to each label class and is therefore a crucial indicator of performance on the rare, long-tail narratives.
-
-\subsection{Hierarchical deBERTa baseline}
 
 Our supervised baseline was implemented using the \textbf{Hugging Face transformers} library \cite{wolf-etal-2020-transformers} and \textbf{PyTorch}. The entire training and evaluation pipeline was designed to be reproducible and systematically address the challenges of the task.
 
