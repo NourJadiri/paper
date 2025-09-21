@@ -41,6 +41,6 @@ All runs set the LLM temperature to 0 and fixed the prompt templates and random 
 For the experiments reported in this paper, the agentic pipeline was implemented using \textbf{LangGraph}. The reasoning engine for all nodes in the graph (including the Actor and the Critic) was configured to use \textbf{Gemini-2.5-flash}.
 
 \paragraph{Concurrency, batching, and tracing.}
-To maximize throughput, the pipeline leveraged LangGraph's asynchronous batching capabilities (abatch) and was configured with a maximum concurrency of 20 simultaneous requests. For traceability and prompt development, all LLM interactions were logged using \textbf{LangSmith}, producing structured traces of model inputs, outputs, and intermediate reasoning states. These traces were instrumental for debugging and prompt refinement.
+To maximize throughput, we used LangGraph's asynchronous batching capabilities (abatch) and configured it with a maximum concurrency of 20 simultaneous requests. For traceability and prompt development, all LLM interactions were logged using \textbf{LangSmith}, producing structured traces of model inputs, outputs, and intermediate reasoning states. These traces were instrumental for debugging and prompt refinement.
 
 
