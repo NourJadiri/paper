@@ -4,7 +4,7 @@ To establish a robust supervised baseline, we developed a custom Transformer-bas
 
 \subsection{Core architecture and model choice}
 
-The foundation of our model is \textbf{mDeBERTaV2} (microsoft/mdeberta-v2-base) \cite{he2021debertav3}, a powerful Transformer encoder chosen for its architectural innovations that are particularly relevant to nuanced understanding tasks. While mDeBERTaV2 is a strong general-purpose model, its \textbf{disentangled attention mechanism} provides a compelling theoretical advantage for our specific problem.
+The foundation of our model is \textbf{mDeBERTaV2} (microsoft/mdeberta-v2-base) \cite{he2020deberta}, a powerful Transformer encoder chosen for its architectural innovations that are particularly relevant to nuanced understanding tasks. While mDeBERTaV2 is a strong general-purpose model, its \textbf{disentangled attention mechanism} provides a compelling theoretical advantage for our specific problem.
 
 Standard Transformer attention mechanisms \cite{vaswani2017attention} compute attention weights based on a single vector that combines both a token's content (what it is) and its relative position (where it is). In contrast, mDeBERTa's disentangled attention uses two separate vectors for each token: one representing its content and another representing its relative position. Attention weights are then computed based on the interactions between the content and position vectors of different tokens \cite{he2020deberta}.
 
@@ -52,6 +52,14 @@ Consider a document labeled with the parent narrative \(P_1\) and its child sub-
 
 This focused training strategy allows each child head to become a highly specialized expert, learning the subtle distinctions between its sibling sub-narratives without being distracted by irrelevant data from other branches of the hierarchy.
 
+Figure~\ref{fig:multihead-mdeberta} provides a schematic overview of the Multi-Head mDeBERTa architecture and the conditional activation behaviour described above.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=0.95\textwidth]{deberta/MultiHeadNarrativeClassifier.png}
+  \caption{Multi-Head mDeBERTa architecture for hierarchical narrative classification. The shared encoder produces a pooled representation that is consumed by a parent-level classifier and multiple conditionally-activated child heads; training aggregates parent loss across all samples while child losses are computed conditionally.}
+  \label{fig:multihead-mdeberta}
+\end{figure}
 
 \subsection{Addressing data scarcity and class imbalance}
 
