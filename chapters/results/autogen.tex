@@ -1,1 +1,72 @@
 \section{Zero-shot agentic framework}
+
+This section presents the comprehensive experimental results for our zero-shot agentic framework (Architecture 1). We evaluate the model's performance on the English test set, analyze its hierarchical and multilingual characteristics, and provide a detailed error analysis based on its performance on the development set.
+
+\subsection{Overall Performance on English Test Set}
+
+The primary evaluation was conducted on the official English test set of the SemEval-2025 shared task. The results, shown in Table~\ref{tab:agentic-performance}, demonstrate the strong viability of the zero-shot, agent-based paradigm.
+
+\begin{table}[htbp]
+\centering
+\caption{Performance of the Zero-Shot Agentic Framework on the English test set, compared to the official random baseline.}
+\label{tab:agentic-performance}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Model} & \textbf{Rank} & \textbf{F1 Macro (Coarse)} & \textbf{F1 Samples (Fine)} \\
+\midrule
+Random Baseline & 26 & 0.030 & 0.013 \\
+\textbf{Agentic Framework} & \textbf{3} & \textbf{0.513} & \textbf{0.406} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The agentic framework achieved a Sample-Averaged F1 score of 0.406 on the fine-grained subnarrative labels, \textbf{securing 3rd place in the official SemEval-2025 English ranking}. This result is particularly notable as it was achieved in a purely zero-shot setting, without any task-specific fine-tuning. The model dramatically outperformed the random baseline, confirming that the LLM agents, guided by carefully engineered prompts, were able to perform complex, nuanced reasoning. The strong Macro F1 score of 0.513 on the coarse-grained narrative labels further indicates that the model was effective at identifying a broad range of narratives, not just the most frequent ones.
+
+\subsection{Hierarchical Performance Characteristics}
+
+While the overall scores are strong, a comparison between the coarse-grained and fine-grained metrics reveals the inherent challenges of hierarchical classification. The Macro F1 for parent narratives (0.513) is substantially higher than the Sample F1 for child subnarratives (0.406). This performance drop highlights a key characteristic of the two-stage agentic design: hierarchical error propagation. An error made at the narrative-level classification stage---either a false positive or a false negative---invariably propagates to the subnarrative level. If a correct parent narrative is missed in the first stage, the system has no opportunity to classify its children, directly impacting the final sample-level score.
+
+\subsection{Multilingual Performance Analysis}
+
+To assess the framework's cross-lingual capabilities, we conducted additional experiments on the Portuguese (PO) and Russian (RU) subsets. Our strategy involved translating the source documents into English before passing them to the agentic system. The results, presented in Table~\ref{tab:multilingual-performance}, show a significant performance degradation compared to the native English results.
+
+\begin{table}[htbp]
+\centering
+\caption{Multilingual performance comparison. The ``translate-to-English'' strategy results in a notable drop in performance.}
+\label{tab:multilingual-performance}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Language} & \textbf{F1 Macro (Coarse)} & \textbf{F1 Samples (Fine)} \\
+\midrule
+\textbf{English (Native)} & \textbf{0.513} & \textbf{0.406} \\
+Portuguese (Translated) & 0.285 & 0.173 \\
+Russian (Translated) & 0.247 & 0.137 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+The Sample F1 score for Portuguese (0.173) and Russian (0.137) is less than half of that achieved on the native English text. This suggests that the ``translate-then-classify'' approach, while straightforward, is a significant bottleneck. The translation process likely loses critical cultural and contextual nuances, rhetorical devices, and subtle linguistic cues that are essential for accurate narrative detection. This finding underscores the limitation of relying on a single-language system for a truly multilingual task.
+
+\subsection{Detailed Error Analysis (on English DEV Set)}
+
+A detailed analysis of the model's predictions on the English development set reveals two primary failure modes, which are characteristic of long-tailed, semantically complex classification tasks.
+
+\subsubsection{Systematic Failures on Rare Narratives}
+
+Despite the strong Macro F1 score, the model completely failed to identify any positive instances for several of the rarest narratives. On the development set, 9 out of 22 narratives (41\%) had zero true positives. These included both climate-related narratives (e.g., ``Amplifying Climate Fears'') and war-related narratives (e.g., ``Russia is the Victim''). This indicates that while the zero-shot approach is not dependent on training examples, the LLM's internal knowledge or the provided prompt definitions were still insufficient to detect these highly infrequent or subtly expressed narratives.
+
+\subsubsection{Challenges with Semantically Similar Narratives}
+
+The model also exhibited confusion between semantically adjacent categories, leading to a high number of false positives. A notable example is the confusion between ``CC: Criticism of climate policies'' and ``CC: Criticism of institutions and authorities''. The linguistic features that distinguish these two narratives are often subtle and co-exist within the same document, making it difficult for the agent to make a clean distinction based on a general definition. This highlights the limitations of the binary decision approach when faced with a fine-grained and overlapping label space.
+
+\subsection{Key Insights and Limitations}
+
+The results from the zero-shot agentic framework provide several key insights:
+
+\paragraph{Viability of Zero-Shot Paradigm.} The competitive performance demonstrates that zero-shot LLM-based systems are a powerful and viable alternative to fine-tuning for complex, data-scarce HMLC tasks.
+
+\paragraph{Limitations of Decomposition.} While effective, the ``one agent per label'' design is susceptible to hierarchical error propagation and struggles to model the relationships between semantically close labels.
+
+\paragraph{Insufficiency of ``Translate-then-Classify''.} The significant performance drop in multilingual settings reveals that a simple translation-based strategy is inadequate for tasks requiring deep cultural and linguistic nuance.
+
+These findings directly motivate the need for our third architecture. The challenges of error propagation and semantic ambiguity point to the need for a more holistic reasoning process with built-in validation, while the multilingual failures highlight the importance of architectures that can handle source languages directly.
