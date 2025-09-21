@@ -2,45 +2,36 @@
 
 \subsection{Hierarchical deBERTa baseline}
 
-All experiments were conducted on the official test split of the \textbf{SemEval-2025 Task 10, Subtask 2} dataset. Following the shared task's guidelines, we evaluate our models using two primary metrics: \textbf{Sample-Averaged F1-Score}, which was the official ranking metric and reflects per-document prediction accuracy, and \textbf{Macro-Averaged F1-Score}, which gives equal weight to each label class and is therefore a crucial indicator of performance on the rare, long-tail narratives.
-
-Our supervised baseline was implemented using the \textbf{Hugging Face transformers} library \cite{wolf-etal-2020-transformers} and \textbf{PyTorch}. The entire training and evaluation pipeline was designed to be reproducible and systematically address the challenges of the task.
+The hierarchical DeBERTa model was implemented using \textbf{Hugging Face transformers} \cite{wolf-etal-2020-transformers} and \textbf{PyTorch}.
 
 \paragraph{Model and Tokenization.}
-We used the \texttt{microsoft/mdeberta-v2-base} model as the encoder backbone for our \texttt{MultiHeadDeBERTaForHierarchicalClassification} architecture. The corresponding \texttt{AutoTokenizer} was used to process the input texts. All documents were truncated or padded to a maximum sequence length of 512 tokens.
+We used the \texttt{microsoft/mdeberta-v2-base} model as the encoder backbone. The corresponding \texttt{AutoTokenizer} was used with a maximum sequence length of 512 tokens.
 
-\paragraph{Training Arguments.}
-The model was fine-tuned using the \textbf{transformers Trainer API}. We configured the training for a maximum of 10 epochs with a per-device batch size of 8 and gradient accumulation over 2 steps, resulting in an effective batch size of 16. We employed the \textbf{AdamW} optimizer with a learning rate of \(2 \times 10^{-5}\) and a linear warmup schedule over the first 10\% of training steps. To prevent overfitting and select the best model checkpoint, we utilized an \texttt{EarlyStoppingCallback} with a patience of 3 epochs and a minimum improvement threshold of 0.001. The metric for selecting the best model was the \texttt{f1\_sample} score on the evaluation set, as this aligns with the competition's primary metric.
+\paragraph{Training Configuration.}
+The model was trained for a maximum of 10 epochs using the \textbf{Trainer API} with a batch size of 8 and 2 gradient accumulation steps. We used the \textbf{AdamW} optimizer with a learning rate of \(2 \times 10^{-5}\) and a linear warmup schedule for the first 10\% of steps.
 
-\paragraph{Metrics Computation and Thresholding.}
-The evaluation of our hierarchical model required a custom \texttt{compute\_metrics} function. During evaluation, the model outputs separate logits for the parent level and for each child-level head. To compute standard F1 scores, our function first reconstructs ``flat'' ground-truth and prediction matrices for all 117 possible labels (22 parent + 95 child).
-
-A key step in this process is handling the prediction threshold. We implemented a search to find the optimal decision threshold for the parent-level predictions, as this is the entry point to the hierarchy. This optimal threshold, determined by maximizing the \texttt{f1\_score (samples)} on the evaluation set, is then used to make binary predictions for both the parent narratives and the sub-narratives.
-
-\paragraph{Hardware and Compute Resources.}
-The training process and inference were conducted on a server equipped with 1 RTX 4090 GPU with 24GB of VRAM.
+\paragraph{Model Selection and Inference.}
+Early stopping was configured with a patience of 3 epochs, selecting the best checkpoint based on the \texttt{f1\_sample} score on the evaluation set. An optimal decision threshold was determined via a search on the parent-level predictions of the evaluation set.
 
 \subsection{Zero-Shot Agentic framework}
-This system was implemented in Python using the \textbf{AutoGen} framework to orchestrate the multi-agent workflow. The agentic pipeline decomposes the narrative classification task into smaller, specialized roles to improve robustness and traceability while operating in a zero-shot regime.
 
-\paragraph{Implementation and orchestration.}
-The pipeline was implemented in Python using AutoGen. Each stage of the workflow is represented by an agent with a clearly defined role (e.g., proposer, verifier, aggregator). Agents communicate via structured messages and a central manager that enforces the task decomposition, coordinates evidence collection, and aggregates final label decisions.
+The following models were utilized:
 
-\paragraph{Agent roles and model choices.}
-The primary classification agents for both narrative (parent) and sub-narrative (child) levels used the \textbf{GPT-4o} model due to its high-quality zero-shot reasoning. To reduce operational costs for the higher-volume control roles, the \textbf{user proxy} and \textbf{manager} agents used the smaller \textbf{GPT-4o-mini} model. All LLM API calls were configured with a temperature of \(0\) to ensure deterministic outputs.
+\begin{itemize}
+  \item \textbf{GPT-4o/GPT-4o-mini:} Used as the primary classification agent for narrative and sub-narrative labeling. A temperature of 0 was set to ensure deterministic responses.
+  \item \textbf{GPT-4o Mini:} Used as a user proxy agent to relay text to classification agents, chosen for cost efficiency.
+  \item \textbf{Zero-Shot/Few-Shot Setup:} Agents classify text based on carefully designed prompts. No fine-tuning was performed.
+\end{itemize}
 
-\paragraph{Zero-shot operation.}
-No task-specific training was performed for the agentic system; classification decisions were made entirely from the prompts and the agents' reasoning. Prompts were engineered to (1) solicit evidence extraction from the document, (2) propose candidate parent labels, (3) propose conditional child labels, and (4) perform a concise self-check or critique step where a verifier agent validated the evidence supporting each proposed label.
+\subsection{Computational Environment}
 
-\paragraph{Determinism and reproducibility.}
-All runs set the LLM temperature to 0 and fixed the prompt templates and random seeds where applicable. The agent logs (message traces and final decisions) were stored for auditability and post-hoc analysis.
+Experiments were conducted on a machine equipped with: \textbf{Processor:} Core 9 Ultra (22 CPU at 2.5GHz), \textbf{RAM:} 32 GB, \textbf{GPU:} NVIDIA RTX 4070 (8 GB VRAM). However, all LLM inference was performed via API calls to remote servers. The local machine was used primarily to orchestrate API requests, pre-process input text, and handle classification results.
 
 \subsection{Actor-Critic pipeline}
 
 \paragraph{LangGraph implementation.}
-For the experiments reported in this paper, the agentic pipeline was implemented using \textbf{LangGraph}. The reasoning engine for all nodes in the graph (including the Actor and the Critic) was configured to use \textbf{Gemini-2.5-flash}.
+For the experiments reported in this paper, the agentic pipeline was implemented using \textbf{LangGraph} \cite{langgraph2024}, a library designed for constructing stateful, multi-actor applications. The reasoning engine for all nodes in the graph (including the Actor and the Critic) was configured to use \textbf{Gemini-2.5-flash}.
 
 \paragraph{Concurrency, batching, and tracing.}
-To maximize throughput, we used LangGraph's asynchronous batching capabilities (abatch) and configured it with a maximum concurrency of 20 simultaneous requests. For traceability and prompt development, all LLM interactions were logged using \textbf{LangSmith}, producing structured traces of model inputs, outputs, and intermediate reasoning states. These traces were instrumental for debugging and prompt refinement.
-
+To maximize throughput, we used LangGraph's asynchronous batching capabilities (abatch) and configured it with a maximum concurrency of 20 simultaneous requests. For traceability and prompt development, all LLM interactions were logged using \textbf{LangSmith} \cite{langsmith2024}, producing structured traces of model inputs, outputs, and intermediate reasoning states. These traces were instrumental for debugging and prompt refinement.
 
