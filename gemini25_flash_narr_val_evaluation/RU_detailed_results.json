@@ -1,0 +1,1483 @@
+{
+  "experiment_name": "Gemini 2.5 Flash - Narrative Validation Devset",
+  "model": "Google Gemini 2.5 Flash",
+  "language": "RU",
+  "ground_truth_file": "devset/RU/subtask-2-annotations.txt",
+  "predictions_file": "results/devset/gemini25_flash_narr_val/ru_dev_results.txt",
+  "results": {
+    "language": "RU",
+    "model": "Google Gemini 2.5 Flash",
+    "total_files": 32,
+    "narratives": {
+      "f1_macro": 0.5802209284967905,
+      "f1_micro": 0.6928104575163399,
+      "f1_samples": 0.7079951298701298,
+      "total_labels": 11,
+      "label_distribution": {
+        "URW: Discrediting Ukraine": 21,
+        "URW: Praise of Russia": 18,
+        "URW: Discrediting the West, Diplomacy": 19,
+        "URW: Blaming the war on others rather than the invader": 4,
+        "URW: Russia is the Victim": 3,
+        "Other": 4,
+        "URW: Amplifying war-related fears": 2,
+        "URW: Hidden plots by secret schemes of powerful groups": 1,
+        "URW: Distrust towards Media": 2,
+        "URW: Speculating war outcomes": 4,
+        "URW: Negative Consequences for the West": 1
+      },
+      "per_label_metrics": {
+        "Other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 4,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "tn": 28
+        },
+        "URW: Amplifying war-related fears": {
+          "precision": 0.4,
+          "recall": 1.0,
+          "f1": 0.5714285714285715,
+          "support": 2,
+          "tp": 2,
+          "fp": 3,
+          "fn": 0,
+          "tn": 27
+        },
+        "URW: Blaming the war on others rather than the invader": {
+          "precision": 0.16666666666666666,
+          "recall": 0.25,
+          "f1": 0.2,
+          "support": 4,
+          "tp": 1,
+          "fp": 5,
+          "fn": 3,
+          "tn": 23
+        },
+        "URW: Discrediting Ukraine": {
+          "precision": 0.75,
+          "recall": 1.0,
+          "f1": 0.8571428571428571,
+          "support": 15,
+          "tp": 15,
+          "fp": 5,
+          "fn": 0,
+          "tn": 12
+        },
+        "URW: Discrediting the West, Diplomacy": {
+          "precision": 0.7857142857142857,
+          "recall": 0.7333333333333333,
+          "f1": 0.7586206896551724,
+          "support": 15,
+          "tp": 11,
+          "fp": 3,
+          "fn": 4,
+          "tn": 14
+        },
+        "URW: Distrust towards Media": {
+          "precision": 0.3333333333333333,
+          "recall": 0.5,
+          "f1": 0.4,
+          "support": 2,
+          "tp": 1,
+          "fp": 2,
+          "fn": 1,
+          "tn": 28
+        },
+        "URW: Hidden plots by secret schemes of powerful groups": {
+          "precision": 0.16666666666666666,
+          "recall": 1.0,
+          "f1": 0.2857142857142857,
+          "support": 1,
+          "tp": 1,
+          "fp": 5,
+          "fn": 0,
+          "tn": 26
+        },
+        "URW: Negative Consequences for the West": {
+          "precision": 0.16666666666666666,
+          "recall": 1.0,
+          "f1": 0.2857142857142857,
+          "support": 1,
+          "tp": 1,
+          "fp": 5,
+          "fn": 0,
+          "tn": 26
+        },
+        "URW: Praise of Russia": {
+          "precision": 0.9230769230769231,
+          "recall": 0.8,
+          "f1": 0.8571428571428571,
+          "support": 15,
+          "tp": 12,
+          "fp": 1,
+          "fn": 3,
+          "tn": 16
+        },
+        "URW: Russia is the Victim": {
+          "precision": 0.4,
+          "recall": 0.6666666666666666,
+          "f1": 0.5,
+          "support": 3,
+          "tp": 2,
+          "fp": 3,
+          "fn": 1,
+          "tn": 26
+        },
+        "URW: Speculating war outcomes": {
+          "precision": 0.5,
+          "recall": 1.0,
+          "f1": 0.6666666666666666,
+          "support": 3,
+          "tp": 3,
+          "fp": 3,
+          "fn": 0,
+          "tn": 26
+        }
+      },
+      "all_labels": [
+        "Other",
+        "URW: Amplifying war-related fears",
+        "URW: Blaming the war on others rather than the invader",
+        "URW: Discrediting Ukraine",
+        "URW: Discrediting the West, Diplomacy",
+        "URW: Distrust towards Media",
+        "URW: Hidden plots by secret schemes of powerful groups",
+        "URW: Negative Consequences for the West",
+        "URW: Praise of Russia",
+        "URW: Russia is the Victim",
+        "URW: Speculating war outcomes"
+      ],
+      "confusion_matrices": {
+        "Other": {
+          "matrix": [
+            [
+              28,
+              0
+            ],
+            [
+              0,
+              4
+            ]
+          ],
+          "tn": 28,
+          "fp": 0,
+          "fn": 0,
+          "tp": 4
+        },
+        "URW: Amplifying war-related fears": {
+          "matrix": [
+            [
+              27,
+              3
+            ],
+            [
+              0,
+              2
+            ]
+          ],
+          "tn": 27,
+          "fp": 3,
+          "fn": 0,
+          "tp": 2
+        },
+        "URW: Blaming the war on others rather than the invader": {
+          "matrix": [
+            [
+              23,
+              5
+            ],
+            [
+              3,
+              1
+            ]
+          ],
+          "tn": 23,
+          "fp": 5,
+          "fn": 3,
+          "tp": 1
+        },
+        "URW: Discrediting Ukraine": {
+          "matrix": [
+            [
+              12,
+              5
+            ],
+            [
+              0,
+              15
+            ]
+          ],
+          "tn": 12,
+          "fp": 5,
+          "fn": 0,
+          "tp": 15
+        },
+        "URW: Discrediting the West, Diplomacy": {
+          "matrix": [
+            [
+              14,
+              3
+            ],
+            [
+              4,
+              11
+            ]
+          ],
+          "tn": 14,
+          "fp": 3,
+          "fn": 4,
+          "tp": 11
+        },
+        "URW: Distrust towards Media": {
+          "matrix": [
+            [
+              28,
+              2
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "tn": 28,
+          "fp": 2,
+          "fn": 1,
+          "tp": 1
+        },
+        "URW: Hidden plots by secret schemes of powerful groups": {
+          "matrix": [
+            [
+              26,
+              5
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "tn": 26,
+          "fp": 5,
+          "fn": 0,
+          "tp": 1
+        },
+        "URW: Negative Consequences for the West": {
+          "matrix": [
+            [
+              26,
+              5
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "tn": 26,
+          "fp": 5,
+          "fn": 0,
+          "tp": 1
+        },
+        "URW: Praise of Russia": {
+          "matrix": [
+            [
+              16,
+              1
+            ],
+            [
+              3,
+              12
+            ]
+          ],
+          "tn": 16,
+          "fp": 1,
+          "fn": 3,
+          "tp": 12
+        },
+        "URW: Russia is the Victim": {
+          "matrix": [
+            [
+              26,
+              3
+            ],
+            [
+              1,
+              2
+            ]
+          ],
+          "tn": 26,
+          "fp": 3,
+          "fn": 1,
+          "tp": 2
+        },
+        "URW: Speculating war outcomes": {
+          "matrix": [
+            [
+              26,
+              3
+            ],
+            [
+              0,
+              3
+            ]
+          ],
+          "tn": 26,
+          "fp": 3,
+          "fn": 0,
+          "tp": 3
+        }
+      }
+    },
+    "subnarratives": {
+      "f1_macro": 0.3322912318034269,
+      "f1_micro": 0.4392156862745098,
+      "f1_samples": 0.4786000457875458,
+      "total_labels": 41,
+      "label_distribution": {
+        "URW: Discrediting Ukraine: Discrediting Ukrainian military": 5,
+        "URW: Praise of Russia: Other": 1,
+        "URW: Discrediting the West, Diplomacy: Other": 4,
+        "URW: Praise of Russia: Russia has international support from a number of countries and people": 5,
+        "URW: Blaming the war on others rather than the invader: The West are the aggressors": 3,
+        "URW: Russia is the Victim: The West is russophobic": 2,
+        "URW: Discrediting the West, Diplomacy: The EU is divided": 2,
+        "Other": 4,
+        "URW: Discrediting Ukraine: Ukraine is a hub for criminal activities": 2,
+        "URW: Discrediting Ukraine: Discrediting Ukrainian government and officials and policies": 9,
+        "URW: Discrediting the West, Diplomacy: Diplomacy does/will not work": 2,
+        "URW: Discrediting the West, Diplomacy: The West does not care about Ukraine, only about its interests": 5,
+        "URW: Amplifying war-related fears: NATO should/will directly intervene": 2,
+        "URW: Praise of Russia: Russia is a guarantor of peace and prosperity": 5,
+        "URW: Discrediting Ukraine: Ukraine is a puppet of the West": 4,
+        "URW: Praise of Russia: Praise of Russian military might": 5,
+        "URW: Hidden plots by secret schemes of powerful groups: Other": 1,
+        "URW: Discrediting the West, Diplomacy: The West is weak": 2,
+        "URW: Discrediting the West, Diplomacy: West is tired of Ukraine": 2,
+        "URW: Distrust towards Media: Western media is an instrument of propaganda": 2,
+        "URW: Praise of Russia: Praise of Russian President Vladimir Putin": 2,
+        "URW: Speculating war outcomes: Ukrainian army is collapsing": 2,
+        "URW: Discrediting Ukraine: Ukraine is associated with nazism": 1,
+        "URW: Russia is the Victim: UA is anti-RU extremists": 1,
+        "URW: Blaming the war on others rather than the invader: Ukraine is the aggressor": 1,
+        "URW: Speculating war outcomes: Other": 2,
+        "URW: Negative Consequences for the West: Sanctions imposed by Western countries will backfire": 1,
+        "URW: Discrediting the West, Diplomacy: The West is overreacting": 2
+      },
+      "per_label_metrics": {
+        "Other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 4,
+          "tp": 4,
+          "fp": 0,
+          "fn": 0,
+          "tn": 28
+        },
+        "URW: Amplifying war-related fears: By continuing the war we risk WWIII": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0,
+          "tp": 0,
+          "fp": 2,
+          "fn": 0,
+          "tn": 30
+        },
+        "URW: Amplifying war-related fears: NATO should/will directly intervene": {
+          "precision": 0.5,
+          "recall": 0.5,
+          "f1": 0.5,
+          "support": 2,
+          "tp": 1,
+          "fp": 1,
+          "fn": 1,
+          "tn": 29
+        },
+        "URW: Amplifying war-related fears: Other": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0,
+          "tp": 0,
+          "fp": 5,
+          "fn": 0,
+          "tn": 27
+        },
+        "URW: Amplifying war-related fears: There is a real possibility that nuclear weapons will be employed": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 0,
+          "tn": 31
+        },
+        "URW: Blaming the war on others rather than the invader: Other": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0,
+          "tp": 0,
+          "fp": 2,
+          "fn": 0,
+          "tn": 30
+        },
+        "URW: Blaming the war on others rather than the invader: The West are the aggressors": {
+          "precision": 0.2,
+          "recall": 0.3333333333333333,
+          "f1": 0.25,
+          "support": 3,
+          "tp": 1,
+          "fp": 4,
+          "fn": 2,
+          "tn": 25
+        },
+        "URW: Blaming the war on others rather than the invader: Ukraine is the aggressor": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 1,
+          "tp": 0,
+          "fp": 5,
+          "fn": 1,
+          "tn": 26
+        },
+        "URW: Discrediting Ukraine: Discrediting Ukrainian government and officials and policies": {
+          "precision": 0.5625,
+          "recall": 1.0,
+          "f1": 0.72,
+          "support": 9,
+          "tp": 9,
+          "fp": 7,
+          "fn": 0,
+          "tn": 16
+        },
+        "URW: Discrediting Ukraine: Discrediting Ukrainian military": {
+          "precision": 0.4444444444444444,
+          "recall": 0.8,
+          "f1": 0.5714285714285714,
+          "support": 5,
+          "tp": 4,
+          "fp": 5,
+          "fn": 1,
+          "tn": 22
+        },
+        "URW: Discrediting Ukraine: Discrediting Ukrainian nation and society": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0,
+          "tp": 0,
+          "fp": 4,
+          "fn": 0,
+          "tn": 28
+        },
+        "URW: Discrediting Ukraine: Other": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0,
+          "tp": 0,
+          "fp": 2,
+          "fn": 0,
+          "tn": 30
+        },
+        "URW: Discrediting Ukraine: Situation in Ukraine is hopeless": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0,
+          "tp": 0,
+          "fp": 5,
+          "fn": 0,
+          "tn": 27
+        },
+        "URW: Discrediting Ukraine: Ukraine is a hub for criminal activities": {
+          "precision": 1.0,
+          "recall": 0.5,
+          "f1": 0.6666666666666666,
+          "support": 2,
+          "tp": 1,
+          "fp": 0,
+          "fn": 1,
+          "tn": 30
+        },
+        "URW: Discrediting Ukraine: Ukraine is a puppet of the West": {
+          "precision": 0.4,
+          "recall": 1.0,
+          "f1": 0.5714285714285715,
+          "support": 4,
+          "tp": 4,
+          "fp": 6,
+          "fn": 0,
+          "tn": 22
+        },
+        "URW: Discrediting Ukraine: Ukraine is associated with nazism": {
+          "precision": 0.5,
+          "recall": 1.0,
+          "f1": 0.6666666666666666,
+          "support": 1,
+          "tp": 1,
+          "fp": 1,
+          "fn": 0,
+          "tn": 30
+        },
+        "URW: Discrediting the West, Diplomacy: Diplomacy does/will not work": {
+          "precision": 0.16666666666666666,
+          "recall": 0.5,
+          "f1": 0.25,
+          "support": 2,
+          "tp": 1,
+          "fp": 5,
+          "fn": 1,
+          "tn": 25
+        },
+        "URW: Discrediting the West, Diplomacy: Other": {
+          "precision": 0.2222222222222222,
+          "recall": 0.5,
+          "f1": 0.30769230769230765,
+          "support": 4,
+          "tp": 2,
+          "fp": 7,
+          "fn": 2,
+          "tn": 21
+        },
+        "URW: Discrediting the West, Diplomacy: The EU is divided": {
+          "precision": 0.5,
+          "recall": 0.5,
+          "f1": 0.5,
+          "support": 2,
+          "tp": 1,
+          "fp": 1,
+          "fn": 1,
+          "tn": 29
+        },
+        "URW: Discrediting the West, Diplomacy: The West does not care about Ukraine, only about its interests": {
+          "precision": 0.5714285714285714,
+          "recall": 0.8,
+          "f1": 0.6666666666666666,
+          "support": 5,
+          "tp": 4,
+          "fp": 3,
+          "fn": 1,
+          "tn": 24
+        },
+        "URW: Discrediting the West, Diplomacy: The West is overreacting": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 2,
+          "tp": 0,
+          "fp": 0,
+          "fn": 2,
+          "tn": 30
+        },
+        "URW: Discrediting the West, Diplomacy: The West is weak": {
+          "precision": 0.14285714285714285,
+          "recall": 0.5,
+          "f1": 0.22222222222222224,
+          "support": 2,
+          "tp": 1,
+          "fp": 6,
+          "fn": 1,
+          "tn": 24
+        },
+        "URW: Discrediting the West, Diplomacy: West is tired of Ukraine": {
+          "precision": 1.0,
+          "recall": 0.5,
+          "f1": 0.6666666666666666,
+          "support": 2,
+          "tp": 1,
+          "fp": 0,
+          "fn": 1,
+          "tn": 30
+        },
+        "URW: Distrust towards Media: Other": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 0,
+          "tn": 31
+        },
+        "URW: Distrust towards Media: Ukrainian media cannot be trusted": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0,
+          "tp": 0,
+          "fp": 3,
+          "fn": 0,
+          "tn": 29
+        },
+        "URW: Distrust towards Media: Western media is an instrument of propaganda": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 2,
+          "tp": 0,
+          "fp": 0,
+          "fn": 2,
+          "tn": 30
+        },
+        "URW: Hidden plots by secret schemes of powerful groups: Other": {
+          "precision": 0.16666666666666666,
+          "recall": 1.0,
+          "f1": 0.2857142857142857,
+          "support": 1,
+          "tp": 1,
+          "fp": 5,
+          "fn": 0,
+          "tn": 26
+        },
+        "URW: Negative Consequences for the West: Other": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0,
+          "tp": 0,
+          "fp": 5,
+          "fn": 0,
+          "tn": 27
+        },
+        "URW: Negative Consequences for the West: Sanctions imposed by Western countries will backfire": {
+          "precision": 0.5,
+          "recall": 1.0,
+          "f1": 0.6666666666666666,
+          "support": 1,
+          "tp": 1,
+          "fp": 1,
+          "fn": 0,
+          "tn": 30
+        },
+        "URW: Praise of Russia: Other": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 1,
+          "tp": 0,
+          "fp": 7,
+          "fn": 1,
+          "tn": 24
+        },
+        "URW: Praise of Russia: Praise of Russian President Vladimir Putin": {
+          "precision": 0.5,
+          "recall": 1.0,
+          "f1": 0.6666666666666666,
+          "support": 2,
+          "tp": 2,
+          "fp": 2,
+          "fn": 0,
+          "tn": 28
+        },
+        "URW: Praise of Russia: Praise of Russian military might": {
+          "precision": 0.7142857142857143,
+          "recall": 1.0,
+          "f1": 0.8333333333333333,
+          "support": 5,
+          "tp": 5,
+          "fp": 2,
+          "fn": 0,
+          "tn": 25
+        },
+        "URW: Praise of Russia: Russia has international support from a number of countries and people": {
+          "precision": 0.6,
+          "recall": 0.6,
+          "f1": 0.6,
+          "support": 5,
+          "tp": 3,
+          "fp": 2,
+          "fn": 2,
+          "tn": 25
+        },
+        "URW: Praise of Russia: Russia is a guarantor of peace and prosperity": {
+          "precision": 0.5,
+          "recall": 0.6,
+          "f1": 0.5454545454545454,
+          "support": 5,
+          "tp": 3,
+          "fp": 3,
+          "fn": 2,
+          "tn": 24
+        },
+        "URW: Praise of Russia: Russian invasion has strong national support": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0,
+          "tp": 0,
+          "fp": 3,
+          "fn": 0,
+          "tn": 29
+        },
+        "URW: Russia is the Victim: Other": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0,
+          "tp": 0,
+          "fp": 5,
+          "fn": 0,
+          "tn": 27
+        },
+        "URW: Russia is the Victim: Russia actions in Ukraine are only self-defence": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0,
+          "tp": 0,
+          "fp": 2,
+          "fn": 0,
+          "tn": 30
+        },
+        "URW: Russia is the Victim: The West is russophobic": {
+          "precision": 1.0,
+          "recall": 0.5,
+          "f1": 0.6666666666666666,
+          "support": 2,
+          "tp": 1,
+          "fp": 0,
+          "fn": 1,
+          "tn": 30
+        },
+        "URW: Russia is the Victim: UA is anti-RU extremists": {
+          "precision": 0.3333333333333333,
+          "recall": 1.0,
+          "f1": 0.5,
+          "support": 1,
+          "tp": 1,
+          "fp": 2,
+          "fn": 0,
+          "tn": 29
+        },
+        "URW: Speculating war outcomes: Other": {
+          "precision": 0.3333333333333333,
+          "recall": 1.0,
+          "f1": 0.5,
+          "support": 2,
+          "tp": 2,
+          "fp": 4,
+          "fn": 0,
+          "tn": 26
+        },
+        "URW: Speculating war outcomes: Ukrainian army is collapsing": {
+          "precision": 0.6666666666666666,
+          "recall": 1.0,
+          "f1": 0.8,
+          "support": 2,
+          "tp": 2,
+          "fp": 1,
+          "fn": 0,
+          "tn": 29
+        }
+      },
+      "all_labels": [
+        "Other",
+        "URW: Amplifying war-related fears: By continuing the war we risk WWIII",
+        "URW: Amplifying war-related fears: NATO should/will directly intervene",
+        "URW: Amplifying war-related fears: Other",
+        "URW: Amplifying war-related fears: There is a real possibility that nuclear weapons will be employed",
+        "URW: Blaming the war on others rather than the invader: Other",
+        "URW: Blaming the war on others rather than the invader: The West are the aggressors",
+        "URW: Blaming the war on others rather than the invader: Ukraine is the aggressor",
+        "URW: Discrediting Ukraine: Discrediting Ukrainian government and officials and policies",
+        "URW: Discrediting Ukraine: Discrediting Ukrainian military",
+        "URW: Discrediting Ukraine: Discrediting Ukrainian nation and society",
+        "URW: Discrediting Ukraine: Other",
+        "URW: Discrediting Ukraine: Situation in Ukraine is hopeless",
+        "URW: Discrediting Ukraine: Ukraine is a hub for criminal activities",
+        "URW: Discrediting Ukraine: Ukraine is a puppet of the West",
+        "URW: Discrediting Ukraine: Ukraine is associated with nazism",
+        "URW: Discrediting the West, Diplomacy: Diplomacy does/will not work",
+        "URW: Discrediting the West, Diplomacy: Other",
+        "URW: Discrediting the West, Diplomacy: The EU is divided",
+        "URW: Discrediting the West, Diplomacy: The West does not care about Ukraine, only about its interests",
+        "URW: Discrediting the West, Diplomacy: The West is overreacting",
+        "URW: Discrediting the West, Diplomacy: The West is weak",
+        "URW: Discrediting the West, Diplomacy: West is tired of Ukraine",
+        "URW: Distrust towards Media: Other",
+        "URW: Distrust towards Media: Ukrainian media cannot be trusted",
+        "URW: Distrust towards Media: Western media is an instrument of propaganda",
+        "URW: Hidden plots by secret schemes of powerful groups: Other",
+        "URW: Negative Consequences for the West: Other",
+        "URW: Negative Consequences for the West: Sanctions imposed by Western countries will backfire",
+        "URW: Praise of Russia: Other",
+        "URW: Praise of Russia: Praise of Russian President Vladimir Putin",
+        "URW: Praise of Russia: Praise of Russian military might",
+        "URW: Praise of Russia: Russia has international support from a number of countries and people",
+        "URW: Praise of Russia: Russia is a guarantor of peace and prosperity",
+        "URW: Praise of Russia: Russian invasion has strong national support",
+        "URW: Russia is the Victim: Other",
+        "URW: Russia is the Victim: Russia actions in Ukraine are only self-defence",
+        "URW: Russia is the Victim: The West is russophobic",
+        "URW: Russia is the Victim: UA is anti-RU extremists",
+        "URW: Speculating war outcomes: Other",
+        "URW: Speculating war outcomes: Ukrainian army is collapsing"
+      ],
+      "confusion_matrices": {
+        "Other": {
+          "matrix": [
+            [
+              28,
+              0
+            ],
+            [
+              0,
+              4
+            ]
+          ],
+          "tn": 28,
+          "fp": 0,
+          "fn": 0,
+          "tp": 4
+        },
+        "URW: Amplifying war-related fears: By continuing the war we risk WWIII": {
+          "matrix": [
+            [
+              30,
+              2
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "tn": 30,
+          "fp": 2,
+          "fn": 0,
+          "tp": 0
+        },
+        "URW: Amplifying war-related fears: NATO should/will directly intervene": {
+          "matrix": [
+            [
+              29,
+              1
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "tn": 29,
+          "fp": 1,
+          "fn": 1,
+          "tp": 1
+        },
+        "URW: Amplifying war-related fears: Other": {
+          "matrix": [
+            [
+              27,
+              5
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "tn": 27,
+          "fp": 5,
+          "fn": 0,
+          "tp": 0
+        },
+        "URW: Amplifying war-related fears: There is a real possibility that nuclear weapons will be employed": {
+          "matrix": [
+            [
+              31,
+              1
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "tn": 31,
+          "fp": 1,
+          "fn": 0,
+          "tp": 0
+        },
+        "URW: Blaming the war on others rather than the invader: Other": {
+          "matrix": [
+            [
+              30,
+              2
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "tn": 30,
+          "fp": 2,
+          "fn": 0,
+          "tp": 0
+        },
+        "URW: Blaming the war on others rather than the invader: The West are the aggressors": {
+          "matrix": [
+            [
+              25,
+              4
+            ],
+            [
+              2,
+              1
+            ]
+          ],
+          "tn": 25,
+          "fp": 4,
+          "fn": 2,
+          "tp": 1
+        },
+        "URW: Blaming the war on others rather than the invader: Ukraine is the aggressor": {
+          "matrix": [
+            [
+              26,
+              5
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          "tn": 26,
+          "fp": 5,
+          "fn": 1,
+          "tp": 0
+        },
+        "URW: Discrediting Ukraine: Discrediting Ukrainian government and officials and policies": {
+          "matrix": [
+            [
+              16,
+              7
+            ],
+            [
+              0,
+              9
+            ]
+          ],
+          "tn": 16,
+          "fp": 7,
+          "fn": 0,
+          "tp": 9
+        },
+        "URW: Discrediting Ukraine: Discrediting Ukrainian military": {
+          "matrix": [
+            [
+              22,
+              5
+            ],
+            [
+              1,
+              4
+            ]
+          ],
+          "tn": 22,
+          "fp": 5,
+          "fn": 1,
+          "tp": 4
+        },
+        "URW: Discrediting Ukraine: Discrediting Ukrainian nation and society": {
+          "matrix": [
+            [
+              28,
+              4
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "tn": 28,
+          "fp": 4,
+          "fn": 0,
+          "tp": 0
+        },
+        "URW: Discrediting Ukraine: Other": {
+          "matrix": [
+            [
+              30,
+              2
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "tn": 30,
+          "fp": 2,
+          "fn": 0,
+          "tp": 0
+        },
+        "URW: Discrediting Ukraine: Situation in Ukraine is hopeless": {
+          "matrix": [
+            [
+              27,
+              5
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "tn": 27,
+          "fp": 5,
+          "fn": 0,
+          "tp": 0
+        },
+        "URW: Discrediting Ukraine: Ukraine is a hub for criminal activities": {
+          "matrix": [
+            [
+              30,
+              0
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "tn": 30,
+          "fp": 0,
+          "fn": 1,
+          "tp": 1
+        },
+        "URW: Discrediting Ukraine: Ukraine is a puppet of the West": {
+          "matrix": [
+            [
+              22,
+              6
+            ],
+            [
+              0,
+              4
+            ]
+          ],
+          "tn": 22,
+          "fp": 6,
+          "fn": 0,
+          "tp": 4
+        },
+        "URW: Discrediting Ukraine: Ukraine is associated with nazism": {
+          "matrix": [
+            [
+              30,
+              1
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "tn": 30,
+          "fp": 1,
+          "fn": 0,
+          "tp": 1
+        },
+        "URW: Discrediting the West, Diplomacy: Diplomacy does/will not work": {
+          "matrix": [
+            [
+              25,
+              5
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "tn": 25,
+          "fp": 5,
+          "fn": 1,
+          "tp": 1
+        },
+        "URW: Discrediting the West, Diplomacy: Other": {
+          "matrix": [
+            [
+              21,
+              7
+            ],
+            [
+              2,
+              2
+            ]
+          ],
+          "tn": 21,
+          "fp": 7,
+          "fn": 2,
+          "tp": 2
+        },
+        "URW: Discrediting the West, Diplomacy: The EU is divided": {
+          "matrix": [
+            [
+              29,
+              1
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "tn": 29,
+          "fp": 1,
+          "fn": 1,
+          "tp": 1
+        },
+        "URW: Discrediting the West, Diplomacy: The West does not care about Ukraine, only about its interests": {
+          "matrix": [
+            [
+              24,
+              3
+            ],
+            [
+              1,
+              4
+            ]
+          ],
+          "tn": 24,
+          "fp": 3,
+          "fn": 1,
+          "tp": 4
+        },
+        "URW: Discrediting the West, Diplomacy: The West is overreacting": {
+          "matrix": [
+            [
+              30,
+              0
+            ],
+            [
+              2,
+              0
+            ]
+          ],
+          "tn": 30,
+          "fp": 0,
+          "fn": 2,
+          "tp": 0
+        },
+        "URW: Discrediting the West, Diplomacy: The West is weak": {
+          "matrix": [
+            [
+              24,
+              6
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "tn": 24,
+          "fp": 6,
+          "fn": 1,
+          "tp": 1
+        },
+        "URW: Discrediting the West, Diplomacy: West is tired of Ukraine": {
+          "matrix": [
+            [
+              30,
+              0
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "tn": 30,
+          "fp": 0,
+          "fn": 1,
+          "tp": 1
+        },
+        "URW: Distrust towards Media: Other": {
+          "matrix": [
+            [
+              31,
+              1
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "tn": 31,
+          "fp": 1,
+          "fn": 0,
+          "tp": 0
+        },
+        "URW: Distrust towards Media: Ukrainian media cannot be trusted": {
+          "matrix": [
+            [
+              29,
+              3
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "tn": 29,
+          "fp": 3,
+          "fn": 0,
+          "tp": 0
+        },
+        "URW: Distrust towards Media: Western media is an instrument of propaganda": {
+          "matrix": [
+            [
+              30,
+              0
+            ],
+            [
+              2,
+              0
+            ]
+          ],
+          "tn": 30,
+          "fp": 0,
+          "fn": 2,
+          "tp": 0
+        },
+        "URW: Hidden plots by secret schemes of powerful groups: Other": {
+          "matrix": [
+            [
+              26,
+              5
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "tn": 26,
+          "fp": 5,
+          "fn": 0,
+          "tp": 1
+        },
+        "URW: Negative Consequences for the West: Other": {
+          "matrix": [
+            [
+              27,
+              5
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "tn": 27,
+          "fp": 5,
+          "fn": 0,
+          "tp": 0
+        },
+        "URW: Negative Consequences for the West: Sanctions imposed by Western countries will backfire": {
+          "matrix": [
+            [
+              30,
+              1
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "tn": 30,
+          "fp": 1,
+          "fn": 0,
+          "tp": 1
+        },
+        "URW: Praise of Russia: Other": {
+          "matrix": [
+            [
+              24,
+              7
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          "tn": 24,
+          "fp": 7,
+          "fn": 1,
+          "tp": 0
+        },
+        "URW: Praise of Russia: Praise of Russian President Vladimir Putin": {
+          "matrix": [
+            [
+              28,
+              2
+            ],
+            [
+              0,
+              2
+            ]
+          ],
+          "tn": 28,
+          "fp": 2,
+          "fn": 0,
+          "tp": 2
+        },
+        "URW: Praise of Russia: Praise of Russian military might": {
+          "matrix": [
+            [
+              25,
+              2
+            ],
+            [
+              0,
+              5
+            ]
+          ],
+          "tn": 25,
+          "fp": 2,
+          "fn": 0,
+          "tp": 5
+        },
+        "URW: Praise of Russia: Russia has international support from a number of countries and people": {
+          "matrix": [
+            [
+              25,
+              2
+            ],
+            [
+              2,
+              3
+            ]
+          ],
+          "tn": 25,
+          "fp": 2,
+          "fn": 2,
+          "tp": 3
+        },
+        "URW: Praise of Russia: Russia is a guarantor of peace and prosperity": {
+          "matrix": [
+            [
+              24,
+              3
+            ],
+            [
+              2,
+              3
+            ]
+          ],
+          "tn": 24,
+          "fp": 3,
+          "fn": 2,
+          "tp": 3
+        },
+        "URW: Praise of Russia: Russian invasion has strong national support": {
+          "matrix": [
+            [
+              29,
+              3
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "tn": 29,
+          "fp": 3,
+          "fn": 0,
+          "tp": 0
+        },
+        "URW: Russia is the Victim: Other": {
+          "matrix": [
+            [
+              27,
+              5
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "tn": 27,
+          "fp": 5,
+          "fn": 0,
+          "tp": 0
+        },
+        "URW: Russia is the Victim: Russia actions in Ukraine are only self-defence": {
+          "matrix": [
+            [
+              30,
+              2
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "tn": 30,
+          "fp": 2,
+          "fn": 0,
+          "tp": 0
+        },
+        "URW: Russia is the Victim: The West is russophobic": {
+          "matrix": [
+            [
+              30,
+              0
+            ],
+            [
+              1,
+              1
+            ]
+          ],
+          "tn": 30,
+          "fp": 0,
+          "fn": 1,
+          "tp": 1
+        },
+        "URW: Russia is the Victim: UA is anti-RU extremists": {
+          "matrix": [
+            [
+              29,
+              2
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "tn": 29,
+          "fp": 2,
+          "fn": 0,
+          "tp": 1
+        },
+        "URW: Speculating war outcomes: Other": {
+          "matrix": [
+            [
+              26,
+              4
+            ],
+            [
+              0,
+              2
+            ]
+          ],
+          "tn": 26,
+          "fp": 4,
+          "fn": 0,
+          "tp": 2
+        },
+        "URW: Speculating war outcomes: Ukrainian army is collapsing": {
+          "matrix": [
+            [
+              29,
+              1
+            ],
+            [
+              0,
+              2
+            ]
+          ],
+          "tn": 29,
+          "fp": 1,
+          "fn": 0,
+          "tp": 2
+        }
+      }
+    }
+  }
+}

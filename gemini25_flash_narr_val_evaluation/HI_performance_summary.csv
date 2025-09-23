@@ -1,0 +1,3 @@
+Language,Model,Label_Type,F1_Macro,F1_Micro,F1_Samples,Total_Labels,Total_Files
+HI,Google Gemini 2.5 Flash,narratives,0.37949263961409707,0.4473684210526316,0.4217460317460318,13,35
+HI,Google Gemini 2.5 Flash,subnarratives,0.25294831431195064,0.31746031746031744,0.30822902494331067,44,35
