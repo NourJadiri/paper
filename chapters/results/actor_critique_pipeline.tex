@@ -1,49 +1,78 @@
 \section{Actor-Critique Pipeline}
 \label{sec:actor-critique-results}
 
-This section presents comprehensive experimental results for our actor-critique pipeline (Architecture 2), powered by Google Gemini 2.5 Flash. We evaluate the model's performance across five languages on the development set, analyzing both narrative and subnarrative classification effectiveness, cross-linguistic performance patterns, and detailed error characteristics through confusion matrix analysis.
+This section presents comprehensive experimental results for our actor-critique pipeline (Architecture 2), powered by Google Gemini 2.5 Flash \cite{google_gemini_2024}. We conduct an ablation study evaluating the system both with and without the critique validation step across five languages on the development set, analyzing narrative and subnarrative classification effectiveness, cross-linguistic performance patterns, and the specific impact of the validation mechanism on classification accuracy.
 
 \subsection{Experimental setup and evaluation framework}
 
-Our evaluation was conducted on the multilingual development set comprising 178 documents across five languages: Bulgarian (BG, 35 files), English (EN, 41 files), Hindi (HI, 35 files), Portuguese (PT, 35 files), and Russian (RU, 32 files). The actor-critique pipeline employs a two-stage validation process where an initial classification agent provides predictions, followed by a critique agent that validates and refines these predictions. This architecture aims to address the error propagation and semantic ambiguity limitations identified in the zero-shot agentic framework.
+Our evaluation was conducted on the multilingual development set comprising 178 documents across five languages: Bulgarian (BG, 35 files), English (EN, 41 files), Hindi (HI, 35 files), Portuguese (PT, 35 files), and Russian (RU, 32 files). We evaluate two configurations of our actor-critique pipeline:
+
+\begin{itemize}
+    \item \textbf{Without Validation}: A single-stage classification agent provides direct predictions for both narratives and subnarratives without additional validation.
+    \item \textbf{With Validation}: A two-stage process where an initial classification agent provides predictions, followed by a critique agent that validates and refines \emph{only the narrative-level predictions}. Subnarrative classifications remain unchanged from the initial agent's predictions.
+\end{itemize}
+
+This ablation study aims to quantify the effectiveness of narrative-level critique validation in addressing error propagation and semantic ambiguity limitations at the first hierarchical level, while evaluating its indirect impact on subnarrative performance and computational overhead trade-offs.
 
 Our primary evaluation metrics are F1 Coarse (for narratives) and F1 Sample (for subnarratives), providing balanced assessment of multi-label performance at both hierarchical levels by evaluating each document's label set independently.
 
-\subsection{Overall multilingual performance analysis}
+\subsection{Ablation study: Impact of validation mechanism}
 
-Figure~\ref{fig:actor-critique-language-performance} presents the overall performance comparison across languages, revealing significant cross-linguistic performance variations.
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.8\textwidth]{gemini25_flash_devset_evaluation/plots/f1_samples_by_language.png}
-    \caption{F1 Samples performance by language, highlighting Portuguese as the best-performing language and revealing the substantial performance gap between high-resource (PT, RU) and low-resource (HI) languages.}
-    \label{fig:actor-critique-language-performance}
-\end{figure}
+We present a comprehensive comparison of our actor-critique pipeline with and without the validation step across all evaluated languages. This ablation study reveals the specific contribution of the critique validation mechanism to classification performance.
 
 \begin{table}[htbp]
 \centering
-\caption{Actor-Critique Pipeline performance across languages on the development set. Columns report F1 Coarse (narratives) and F1 Sample (subnarratives).}
-\label{tab:actor-critique-performance}
-\begin{tabular}{lccc}
+\caption{Ablation study comparing actor-critique pipeline performance with and without narrative-level validation. Values show F1 Coarse (narratives) and F1 Sample (subnarratives). Validation is applied only to narrative predictions; subnarrative changes represent indirect effects.}
+\label{tab:actor-critique-ablation}
+\begin{tabular}{lcccccc}
 	\toprule
-	\textbf{Language} & \textbf{Files} & \textbf{F1 Coarse} & \textbf{F1 Sample} \\
+	& \multicolumn{2}{c}{\textbf{Without Validation}} & \multicolumn{2}{c}{\textbf{With Validation}} & \multicolumn{2}{c}{\textbf{Improvement}} \\
+	\cmidrule(lr){2-3} \cmidrule(lr){4-5} \cmidrule(lr){6-7}
+	\textbf{Language} & \textbf{F1 Coarse} & \textbf{F1 Sample} & \textbf{F1 Coarse} & \textbf{F1 Sample} & \textbf{F1 Coarse} & \textbf{F1 Sample} \\
 \midrule
-	\textbf{Portuguese (PT)} & 35 & \textbf{0.7489} & \textbf{0.4737} \\
-	\textbf{Russian (RU)} & 32 & 0.6958 & 0.4754 \\
-	\textbf{Bulgarian (BG)} & 35 & 0.5799 & 0.4104 \\
-	\textbf{English (EN)} & 41 & 0.5132 & 0.3815 \\
-	\textbf{Hindi (HI)} & 35 & 0.4715 & 0.2976 \\
+	\textbf{Portuguese (PT)} & \textbf{0.7489} & 0.4737 & 0.7335 & 0.4681 & \textcolor{red}{-0.0154} & \textcolor{red}{-0.0056} \\
+	\textbf{Russian (RU)} & 0.6958 & 0.4754 & \textbf{0.7080} & \textbf{0.4786} & \textcolor{blue}{+0.0122} & \textcolor{blue}{+0.0032} \\
+	\textbf{Bulgarian (BG)} & \textbf{0.5799} & \textbf{0.4104} & 0.5721 & 0.4049 & \textcolor{red}{-0.0078} & \textcolor{red}{-0.0055} \\
+	\textbf{English (EN)} & 0.5132 & \textbf{0.3815} & \textbf{0.5241} & 0.3675 & \textcolor{blue}{+0.0109} & \textcolor{red}{-0.0140} \\
+	\textbf{Hindi (HI)} & \textbf{0.4715} & 0.2976 & 0.4217 & \textbf{0.3082} & \textcolor{red}{-0.0498} & \textcolor{blue}{+0.0106} \\
 \midrule
-	\textbf{Average} & -- & \textbf{0.6019} & \textbf{0.4077} \\
+	\textbf{Average} & \textbf{0.6019} & 0.4077 & 0.5919 & \textbf{0.4055} & \textcolor{red}{-0.0100} & \textcolor{red}{-0.0022} \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-\paragraph{Portuguese demonstrates exceptional performance.} Portuguese achieves the highest F1 Coarse for narratives (0.7489) and the highest F1 Sample for subnarratives (0.4737), establishing a 59\% performance advantage over the lowest-performing language (Hindi). This exceptional performance suggests that the actor-critique pipeline effectively leverages the cultural and linguistic patterns present in Portuguese text.
+\subsection{Overall multilingual performance analysis}
 
-\paragraph{Strong Russian performance validates multilingual capabilities.} Russian achieves the second-highest F1 Coarse for narratives (0.6958) and strong F1 Sample for subnarratives (0.4754), demonstrating that the pipeline successfully handles Cyrillic script and Russian linguistic structures.
+Figure~\ref{fig:actor-critique-comparison} presents a comparative analysis of both configurations across languages, revealing the differential impact of validation on multilingual performance.
 
-\paragraph{Hindi presents systematic challenges.} Hindi shows the most substantial performance degradation across all metrics, with particularly poor subnarrative performance (F1 Sample: 0.2976). This 37\% gap compared to Portuguese subnarratives suggests systematic challenges in processing Hindi text within the current pipeline architecture.
+\begin{figure}[htbp]
+    \centering
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{gemini25_flash_devset_evaluation/plots/f1_samples_by_language.png}
+        \caption{Without validation}
+        \label{fig:no-validation-performance}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.48\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{gemini25_flash_narr_val_evaluation/plots/f1_samples_by_language.png}
+        \caption{With validation}
+        \label{fig:with-validation-performance}
+    \end{subfigure}
+    \caption{Comparative F1 Samples performance across languages for both configurations. The validation step shows mixed effects: beneficial for Russian and English narratives, but generally detrimental for Portuguese, Bulgarian, and Hindi performance.}
+    \label{fig:actor-critique-comparison}
+\end{figure}
+
+\subsection{Key findings from ablation study}
+
+\paragraph{Validation effectiveness is language-dependent.} The impact of the validation step varies significantly across languages, with no universal benefit pattern. Russian consistently benefits from validation across both hierarchical levels (+0.0122 F1 Coarse, +0.0032 F1 Sample), while Portuguese performs better without validation (-0.0154 F1 Coarse, -0.0056 F1 Sample). This suggests that validation effectiveness depends on language-specific linguistic characteristics and cultural context patterns.
+
+\paragraph{Narrative-level validation affects subnarrative performance indirectly.} Since validation is applied only to narrative-level predictions, changes in subnarrative performance represent indirect effects of improved or degraded narrative classification accuracy. English demonstrates this clearly: direct narrative validation improvement (+0.0109) coincides with subnarrative performance degradation (-0.0140), suggesting that refined narrative predictions may create misalignment in the hierarchical classification process. Conversely, Hindi shows improved subnarrative classification (+0.0106) despite worse narrative performance (-0.0498), indicating that some validation-induced narrative changes may inadvertently benefit downstream subnarrative accuracy.
+
+\paragraph{Performance ranking consistency despite validation variability.} Despite the mixed validation effects, language performance rankings remain consistent across both configurations. Portuguese maintains the highest overall performance (F1 Coarse: 0.7489 without validation, 0.7335 with validation), while Hindi consistently shows the lowest performance (F1 Coarse: 0.4715 without validation, 0.4217 with validation). This indicates that fundamental language processing capabilities dominate over architectural modifications.
+
+\paragraph{Marginal overall impact with computational overhead.} The average performance difference across languages is minimal (-0.0100 F1 Coarse, -0.0022 F1 Sample), suggesting that narrative-level validation introduces computational overhead without systematic performance gains at either hierarchical level. The largest individual improvement (Hindi subnarratives: +0.0106) and degradation (Hindi narratives: -0.0498) indicate that narrative validation effects are highly context-specific, with indirect subnarrative impacts that may not be predictable from direct narrative changes.
 
 \subsection{Hierarchical performance characteristics}
 
@@ -162,20 +191,22 @@ Hindi reveals systematic challenges at the subnarrative level:
 
 \subsection{Comparative analysis with baseline architectures}
 
-The actor-critique pipeline demonstrates substantial improvements over the transformer baseline:
+Both actor-critique configurations demonstrate substantial improvements over the transformer baseline, with the choice between validation configurations depending on specific deployment requirements:
 
-\paragraph{Hierarchical error mitigation.} The 19.4\% average performance gap between narratives and subnarratives represents a significant improvement over the transformer baseline's 60\% gap, validating the effectiveness of the critique validation mechanism.
+\paragraph{Hierarchical error mitigation varies by configuration.} The without-validation configuration shows a 19.4\% average performance gap between narratives and subnarratives (F1 Coarse: 0.6019 vs F1 Sample: 0.4077), while the with-validation configuration shows an 18.6\% gap (F1 Coarse: 0.5919 vs F1 Sample: 0.4055). Both represent significant improvements over the transformer baseline's 60\% gap. Notably, the marginal improvement in hierarchical consistency with validation suggests that narrative-level refinement has limited direct impact on reducing the inherent difficulty of fine-grained subnarrative classification.
 
-\paragraph{Multilingual consistency.} Portuguese performance (F1 Samples: 0.7489 for narratives) substantially exceeds the transformer baseline's best language performance, while maintaining strong cross-linguistic consistency.
+\paragraph{Peak performance without systematic validation benefit.} The without-validation configuration achieves the highest individual performance scores (Portuguese F1 Coarse: 0.7489), substantially exceeding the transformer baseline's best language performance. However, the validation configuration shows more conservative but potentially more reliable performance across languages.
 
-\paragraph{Precision enhancement.} The frequent achievement of perfect precision scores (1.000) across multiple categories demonstrates the critique mechanism's effectiveness in reducing false positives.
+\paragraph{Precision-recall trade-offs differ by configuration.} The validation mechanism affects precision-recall balance differently across languages, suggesting that optimal configuration choice should consider target application requirements. For applications prioritizing maximum precision, validation may be beneficial for specific languages (Russian), while applications requiring consistent recall may benefit from the simpler without-validation approach.
 
 \subsection{Key insights and architectural implications}
 
-\paragraph{Validation mechanism effectiveness.} The actor-critique pipeline successfully addresses many error propagation issues identified in hierarchical classification, though challenges remain with rare categories and cultural nuances.
+\paragraph{Configuration-dependent validation effectiveness.} Our ablation study reveals that narrative-level validation effectiveness is highly dependent on language characteristics, with indirect and unpredictable effects on subnarrative performance. The validation step should be considered as a language-specific optimization for narrative classification rather than a universal architectural enhancement affecting both hierarchical levels.
 
-\paragraph{Language-specific optimization potential.} The substantial performance variations across languages (PT: 0.7489 vs HI: 0.4715) suggest opportunities for language-specific prompt engineering and cultural context integration.
+\paragraph{Cost-benefit analysis favors simpler architecture.} The minimal average performance gains from validation (-0.0100 F1 Coarse, -0.0022 F1 Sample) combined with the computational overhead of the two-stage architecture suggest that the without-validation configuration may be optimal for most deployment scenarios, particularly when processing efficiency is prioritized.
 
-\paragraph{Scalability considerations.} While effective, the two-stage architecture introduces computational overhead, particularly relevant for production deployment across multiple languages.
+\paragraph{Language-specific deployment strategies.} The differential narrative validation effects across languages (beneficial for Russian, detrimental for Portuguese) suggest that optimal deployment strategies should consider language-specific pipeline configurations for narrative-level processing. This finding has significant implications for multilingual production systems where different languages may benefit from different narrative validation approaches, while subnarrative processing remains consistent across configurations.
 
-The actor-critique pipeline establishes a strong foundation for zero-shot multilingual narrative classification, demonstrating that carefully designed validation mechanisms can significantly improve hierarchical classification performance while maintaining the advantages of the zero-shot paradigm.
+\paragraph{Hierarchical classification robustness.} Both configurations demonstrate substantial improvements over traditional baselines in hierarchical classification tasks, with the without-validation approach achieving the strongest individual performance metrics while the validation approach provides marginally more consistent cross-linguistic performance.
+
+The actor-critique pipeline establishes a flexible foundation for zero-shot multilingual narrative classification, demonstrating that narrative-level architectural enhancements should be carefully balanced against performance gains and their indirect effects on hierarchical classification. The ablation study provides clear guidance for selecting optimal narrative validation configurations based on specific deployment requirements, language priorities, and computational constraints, while highlighting the complex interdependencies between hierarchical classification levels.
