@@ -1,0 +1,1589 @@
+{
+  "experiment_name": "Gemini 2.5 Flash - Subnarrative Validation Devset",
+  "model": "Google Gemini 2.5 Flash",
+  "language": "PT",
+  "ground_truth_file": "devset/PT/subtask-2-annotations.txt",
+  "predictions_file": "results/devset/gemini25_flash_subnarr_val/pt_dev_results.txt",
+  "results": {
+    "language": "PT",
+    "model": "Google Gemini 2.5 Flash",
+    "total_files": 35,
+    "narratives": {
+      "f1_macro": 0.4909418506658558,
+      "f1_micro": 0.7286821705426356,
+      "f1_samples": 0.6903628117913831,
+      "total_labels": 15,
+      "label_distribution": {
+        "URW: Discrediting Ukraine": 4,
+        "CC: Criticism of institutions and authorities": 11,
+        "CC: Criticism of climate policies": 9,
+        "CC: Amplifying Climate Fears": 34,
+        "URW: Amplifying war-related fears": 1,
+        "URW: Discrediting the West, Diplomacy": 8,
+        "CC: Hidden plots by secret schemes of powerful groups": 1,
+        "URW: Russia is the Victim": 4,
+        "URW: Negative Consequences for the West": 1,
+        "URW: Praise of Russia": 5,
+        "Other": 1
+      },
+      "per_label_metrics": {
+        "CC: Amplifying Climate Fears": {
+          "precision": 1.0,
+          "recall": 0.782608695652174,
+          "f1": 0.878048780487805,
+          "support": 23,
+          "tp": 18,
+          "fp": 0,
+          "fn": 5,
+          "tn": 12
+        },
+        "CC: Controversy about green technologies": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 0,
+          "tn": 34
+        },
+        "CC: Criticism of climate policies": {
+          "precision": 0.75,
+          "recall": 0.3333333333333333,
+          "f1": 0.46153846153846156,
+          "support": 9,
+          "tp": 3,
+          "fp": 1,
+          "fn": 6,
+          "tn": 25
+        },
+        "CC: Criticism of institutions and authorities": {
+          "precision": 0.6363636363636364,
+          "recall": 0.875,
+          "f1": 0.7368421052631579,
+          "support": 8,
+          "tp": 7,
+          "fp": 4,
+          "fn": 1,
+          "tn": 23
+        },
+        "CC: Green policies are geopolitical instruments": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0,
+          "tp": 0,
+          "fp": 2,
+          "fn": 0,
+          "tn": 33
+        },
+        "CC: Hidden plots by secret schemes of powerful groups": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 1,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1,
+          "tn": 34
+        },
+        "Other": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 1,
+          "tp": 0,
+          "fp": 3,
+          "fn": 1,
+          "tn": 31
+        },
+        "URW: Amplifying war-related fears": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "tn": 34
+        },
+        "URW: Blaming the war on others rather than the invader": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0,
+          "tp": 0,
+          "fp": 3,
+          "fn": 0,
+          "tn": 32
+        },
+        "URW: Discrediting Ukraine": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 3,
+          "tp": 3,
+          "fp": 0,
+          "fn": 0,
+          "tn": 32
+        },
+        "URW: Discrediting the West, Diplomacy": {
+          "precision": 0.875,
+          "recall": 0.875,
+          "f1": 0.875,
+          "support": 8,
+          "tp": 7,
+          "fp": 1,
+          "fn": 1,
+          "tn": 26
+        },
+        "URW: Negative Consequences for the West": {
+          "precision": 0.5,
+          "recall": 1.0,
+          "f1": 0.6666666666666666,
+          "support": 1,
+          "tp": 1,
+          "fp": 1,
+          "fn": 0,
+          "tn": 33
+        },
+        "URW: Praise of Russia": {
+          "precision": 0.8,
+          "recall": 1.0,
+          "f1": 0.888888888888889,
+          "support": 4,
+          "tp": 4,
+          "fp": 1,
+          "fn": 0,
+          "tn": 30
+        },
+        "URW: Russia is the Victim": {
+          "precision": 0.75,
+          "recall": 1.0,
+          "f1": 0.8571428571428571,
+          "support": 3,
+          "tp": 3,
+          "fp": 1,
+          "fn": 0,
+          "tn": 31
+        },
+        "URW: Speculating war outcomes": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0,
+          "tp": 0,
+          "fp": 2,
+          "fn": 0,
+          "tn": 33
+        }
+      },
+      "all_labels": [
+        "CC: Amplifying Climate Fears",
+        "CC: Controversy about green technologies",
+        "CC: Criticism of climate policies",
+        "CC: Criticism of institutions and authorities",
+        "CC: Green policies are geopolitical instruments",
+        "CC: Hidden plots by secret schemes of powerful groups",
+        "Other",
+        "URW: Amplifying war-related fears",
+        "URW: Blaming the war on others rather than the invader",
+        "URW: Discrediting Ukraine",
+        "URW: Discrediting the West, Diplomacy",
+        "URW: Negative Consequences for the West",
+        "URW: Praise of Russia",
+        "URW: Russia is the Victim",
+        "URW: Speculating war outcomes"
+      ],
+      "confusion_matrices": {
+        "CC: Amplifying Climate Fears": {
+          "matrix": [
+            [
+              12,
+              0
+            ],
+            [
+              5,
+              18
+            ]
+          ],
+          "tn": 12,
+          "fp": 0,
+          "fn": 5,
+          "tp": 18
+        },
+        "CC: Controversy about green technologies": {
+          "matrix": [
+            [
+              34,
+              1
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "tn": 34,
+          "fp": 1,
+          "fn": 0,
+          "tp": 0
+        },
+        "CC: Criticism of climate policies": {
+          "matrix": [
+            [
+              25,
+              1
+            ],
+            [
+              6,
+              3
+            ]
+          ],
+          "tn": 25,
+          "fp": 1,
+          "fn": 6,
+          "tp": 3
+        },
+        "CC: Criticism of institutions and authorities": {
+          "matrix": [
+            [
+              23,
+              4
+            ],
+            [
+              1,
+              7
+            ]
+          ],
+          "tn": 23,
+          "fp": 4,
+          "fn": 1,
+          "tp": 7
+        },
+        "CC: Green policies are geopolitical instruments": {
+          "matrix": [
+            [
+              33,
+              2
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "tn": 33,
+          "fp": 2,
+          "fn": 0,
+          "tp": 0
+        },
+        "CC: Hidden plots by secret schemes of powerful groups": {
+          "matrix": [
+            [
+              34,
+              0
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          "tn": 34,
+          "fp": 0,
+          "fn": 1,
+          "tp": 0
+        },
+        "Other": {
+          "matrix": [
+            [
+              31,
+              3
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          "tn": 31,
+          "fp": 3,
+          "fn": 1,
+          "tp": 0
+        },
+        "URW: Amplifying war-related fears": {
+          "matrix": [
+            [
+              34,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "tn": 34,
+          "fp": 0,
+          "fn": 0,
+          "tp": 1
+        },
+        "URW: Blaming the war on others rather than the invader": {
+          "matrix": [
+            [
+              32,
+              3
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "tn": 32,
+          "fp": 3,
+          "fn": 0,
+          "tp": 0
+        },
+        "URW: Discrediting Ukraine": {
+          "matrix": [
+            [
+              32,
+              0
+            ],
+            [
+              0,
+              3
+            ]
+          ],
+          "tn": 32,
+          "fp": 0,
+          "fn": 0,
+          "tp": 3
+        },
+        "URW: Discrediting the West, Diplomacy": {
+          "matrix": [
+            [
+              26,
+              1
+            ],
+            [
+              1,
+              7
+            ]
+          ],
+          "tn": 26,
+          "fp": 1,
+          "fn": 1,
+          "tp": 7
+        },
+        "URW: Negative Consequences for the West": {
+          "matrix": [
+            [
+              33,
+              1
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "tn": 33,
+          "fp": 1,
+          "fn": 0,
+          "tp": 1
+        },
+        "URW: Praise of Russia": {
+          "matrix": [
+            [
+              30,
+              1
+            ],
+            [
+              0,
+              4
+            ]
+          ],
+          "tn": 30,
+          "fp": 1,
+          "fn": 0,
+          "tp": 4
+        },
+        "URW: Russia is the Victim": {
+          "matrix": [
+            [
+              31,
+              1
+            ],
+            [
+              0,
+              3
+            ]
+          ],
+          "tn": 31,
+          "fp": 1,
+          "fn": 0,
+          "tp": 3
+        },
+        "URW: Speculating war outcomes": {
+          "matrix": [
+            [
+              33,
+              2
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "tn": 33,
+          "fp": 2,
+          "fn": 0,
+          "tp": 0
+        }
+      }
+    },
+    "subnarratives": {
+      "f1_macro": 0.3425231441712455,
+      "f1_micro": 0.4972375690607735,
+      "f1_samples": 0.43669346526489383,
+      "total_labels": 41,
+      "label_distribution": {
+        "URW: Discrediting Ukraine: Discrediting Ukrainian government and officials and policies": 2,
+        "URW: Discrediting Ukraine: Ukraine is a puppet of the West": 1,
+        "CC: Criticism of institutions and authorities: Criticism of national governments": 4,
+        "CC: Criticism of climate policies: Other": 6,
+        "CC: Amplifying Climate Fears: Amplifying existing fears of global warming": 14,
+        "CC: Amplifying Climate Fears: Other": 16,
+        "CC: Amplifying Climate Fears: Doomsday scenarios for humans": 3,
+        "CC: Amplifying Climate Fears: Earth will be uninhabitable soon": 1,
+        "CC: Criticism of institutions and authorities: Criticism of political organizations and figures": 4,
+        "URW: Amplifying war-related fears: Other": 1,
+        "URW: Discrediting the West, Diplomacy: Other": 7,
+        "CC: Criticism of institutions and authorities: Criticism of international entities": 1,
+        "CC: Criticism of climate policies: Climate policies are only for profit": 2,
+        "CC: Hidden plots by secret schemes of powerful groups: Other": 1,
+        "CC: Criticism of climate policies: Climate policies are ineffective": 1,
+        "CC: Criticism of institutions and authorities: Criticism of the EU": 1,
+        "CC: Criticism of institutions and authorities: Other": 1,
+        "URW: Russia is the Victim: Other": 3,
+        "URW: Negative Consequences for the West: Other": 1,
+        "URW: Praise of Russia: Russia is a guarantor of peace and prosperity": 2,
+        "URW: Russia is the Victim: The West is russophobic": 1,
+        "URW: Praise of Russia: Other": 2,
+        "Other": 1,
+        "URW: Discrediting Ukraine: Other": 1,
+        "URW: Discrediting the West, Diplomacy: Diplomacy does/will not work": 1,
+        "URW: Praise of Russia: Russia has international support from a number of countries and people": 1
+      },
+      "per_label_metrics": {
+        "CC: Amplifying Climate Fears: Amplifying existing fears of global warming": {
+          "precision": 0.6470588235294118,
+          "recall": 0.7857142857142857,
+          "f1": 0.7096774193548386,
+          "support": 14,
+          "tp": 11,
+          "fp": 6,
+          "fn": 3,
+          "tn": 15
+        },
+        "CC: Amplifying Climate Fears: Doomsday scenarios for humans": {
+          "precision": 0.375,
+          "recall": 1.0,
+          "f1": 0.5454545454545454,
+          "support": 3,
+          "tp": 3,
+          "fp": 5,
+          "fn": 0,
+          "tn": 27
+        },
+        "CC: Amplifying Climate Fears: Earth will be uninhabitable soon": {
+          "precision": 0.5,
+          "recall": 1.0,
+          "f1": 0.6666666666666666,
+          "support": 1,
+          "tp": 1,
+          "fp": 1,
+          "fn": 0,
+          "tn": 33
+        },
+        "CC: Amplifying Climate Fears: Other": {
+          "precision": 1.0,
+          "recall": 0.1875,
+          "f1": 0.3157894736842105,
+          "support": 16,
+          "tp": 3,
+          "fp": 0,
+          "fn": 13,
+          "tn": 19
+        },
+        "CC: Amplifying Climate Fears: Whatever we do it is already too late": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 0,
+          "tn": 34
+        },
+        "CC: Controversy about green technologies: Renewable energy is costly": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 0,
+          "tn": 34
+        },
+        "CC: Criticism of climate policies: Climate policies are ineffective": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 1,
+          "tp": 0,
+          "fp": 4,
+          "fn": 1,
+          "tn": 30
+        },
+        "CC: Criticism of climate policies: Climate policies are only for profit": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 2,
+          "tp": 0,
+          "fp": 0,
+          "fn": 2,
+          "tn": 33
+        },
+        "CC: Criticism of climate policies: Climate policies have negative impact on the economy": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0,
+          "tp": 0,
+          "fp": 3,
+          "fn": 0,
+          "tn": 32
+        },
+        "CC: Criticism of climate policies: Other": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 6,
+          "tp": 0,
+          "fp": 0,
+          "fn": 6,
+          "tn": 29
+        },
+        "CC: Criticism of institutions and authorities: Criticism of international entities": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "tn": 34
+        },
+        "CC: Criticism of institutions and authorities: Criticism of national governments": {
+          "precision": 0.4444444444444444,
+          "recall": 1.0,
+          "f1": 0.6153846153846153,
+          "support": 4,
+          "tp": 4,
+          "fp": 5,
+          "fn": 0,
+          "tn": 26
+        },
+        "CC: Criticism of institutions and authorities: Criticism of political organizations and figures": {
+          "precision": 1.0,
+          "recall": 0.5,
+          "f1": 0.6666666666666666,
+          "support": 4,
+          "tp": 2,
+          "fp": 0,
+          "fn": 2,
+          "tn": 31
+        },
+        "CC: Criticism of institutions and authorities: Criticism of the EU": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "tn": 34
+        },
+        "CC: Criticism of institutions and authorities: Other": {
+          "precision": 0.2,
+          "recall": 1.0,
+          "f1": 0.33333333333333337,
+          "support": 1,
+          "tp": 1,
+          "fp": 4,
+          "fn": 0,
+          "tn": 30
+        },
+        "CC: Green policies are geopolitical instruments: Climate-related international relations are abusive/exploitative": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 0,
+          "tn": 34
+        },
+        "CC: Green policies are geopolitical instruments: Green activities are a form of neo-colonialism": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 0,
+          "tn": 34
+        },
+        "CC: Green policies are geopolitical instruments: Other": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 0,
+          "tn": 34
+        },
+        "CC: Hidden plots by secret schemes of powerful groups: Other": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 1,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1,
+          "tn": 34
+        },
+        "Other": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 1,
+          "tp": 0,
+          "fp": 3,
+          "fn": 1,
+          "tn": 31
+        },
+        "URW: Amplifying war-related fears: Other": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "tn": 34
+        },
+        "URW: Blaming the war on others rather than the invader: Other": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0,
+          "tp": 0,
+          "fp": 2,
+          "fn": 0,
+          "tn": 33
+        },
+        "URW: Blaming the war on others rather than the invader: The West are the aggressors": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 0,
+          "tn": 34
+        },
+        "URW: Discrediting Ukraine: Discrediting Ukrainian government and officials and policies": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 2,
+          "tp": 2,
+          "fp": 0,
+          "fn": 0,
+          "tn": 33
+        },
+        "URW: Discrediting Ukraine: Other": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 1,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1,
+          "tn": 34
+        },
+        "URW: Discrediting Ukraine: Situation in Ukraine is hopeless": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 0,
+          "tn": 34
+        },
+        "URW: Discrediting Ukraine: Ukraine is a puppet of the West": {
+          "precision": 0.5,
+          "recall": 1.0,
+          "f1": 0.6666666666666666,
+          "support": 1,
+          "tp": 1,
+          "fp": 1,
+          "fn": 0,
+          "tn": 33
+        },
+        "URW: Discrediting the West, Diplomacy: Diplomacy does/will not work": {
+          "precision": 0.25,
+          "recall": 1.0,
+          "f1": 0.4,
+          "support": 1,
+          "tp": 1,
+          "fp": 3,
+          "fn": 0,
+          "tn": 31
+        },
+        "URW: Discrediting the West, Diplomacy: Other": {
+          "precision": 0.8,
+          "recall": 0.5714285714285714,
+          "f1": 0.6666666666666666,
+          "support": 7,
+          "tp": 4,
+          "fp": 1,
+          "fn": 3,
+          "tn": 27
+        },
+        "URW: Discrediting the West, Diplomacy: The West is overreacting": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 0,
+          "tn": 34
+        },
+        "URW: Discrediting the West, Diplomacy: The West is weak": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0,
+          "tp": 0,
+          "fp": 3,
+          "fn": 0,
+          "tn": 32
+        },
+        "URW: Negative Consequences for the West: Other": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 1,
+          "tp": 0,
+          "fp": 0,
+          "fn": 1,
+          "tn": 34
+        },
+        "URW: Negative Consequences for the West: Sanctions imposed by Western countries will backfire": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0,
+          "tp": 0,
+          "fp": 2,
+          "fn": 0,
+          "tn": 33
+        },
+        "URW: Praise of Russia: Other": {
+          "precision": 0.6666666666666666,
+          "recall": 1.0,
+          "f1": 0.8,
+          "support": 2,
+          "tp": 2,
+          "fp": 1,
+          "fn": 0,
+          "tn": 32
+        },
+        "URW: Praise of Russia: Praise of Russian military might": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 0,
+          "tn": 34
+        },
+        "URW: Praise of Russia: Russia has international support from a number of countries and people": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "tn": 34
+        },
+        "URW: Praise of Russia: Russia is a guarantor of peace and prosperity": {
+          "precision": 0.6666666666666666,
+          "recall": 1.0,
+          "f1": 0.8,
+          "support": 2,
+          "tp": 2,
+          "fp": 1,
+          "fn": 0,
+          "tn": 32
+        },
+        "URW: Russia is the Victim: Other": {
+          "precision": 0.75,
+          "recall": 1.0,
+          "f1": 0.8571428571428571,
+          "support": 3,
+          "tp": 3,
+          "fp": 1,
+          "fn": 0,
+          "tn": 31
+        },
+        "URW: Russia is the Victim: The West is russophobic": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1": 1.0,
+          "support": 1,
+          "tp": 1,
+          "fp": 0,
+          "fn": 0,
+          "tn": 34
+        },
+        "URW: Speculating war outcomes: Other": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 0,
+          "tn": 34
+        },
+        "URW: Speculating war outcomes: Ukrainian army is collapsing": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "support": 0,
+          "tp": 0,
+          "fp": 1,
+          "fn": 0,
+          "tn": 34
+        }
+      },
+      "all_labels": [
+        "CC: Amplifying Climate Fears: Amplifying existing fears of global warming",
+        "CC: Amplifying Climate Fears: Doomsday scenarios for humans",
+        "CC: Amplifying Climate Fears: Earth will be uninhabitable soon",
+        "CC: Amplifying Climate Fears: Other",
+        "CC: Amplifying Climate Fears: Whatever we do it is already too late",
+        "CC: Controversy about green technologies: Renewable energy is costly",
+        "CC: Criticism of climate policies: Climate policies are ineffective",
+        "CC: Criticism of climate policies: Climate policies are only for profit",
+        "CC: Criticism of climate policies: Climate policies have negative impact on the economy",
+        "CC: Criticism of climate policies: Other",
+        "CC: Criticism of institutions and authorities: Criticism of international entities",
+        "CC: Criticism of institutions and authorities: Criticism of national governments",
+        "CC: Criticism of institutions and authorities: Criticism of political organizations and figures",
+        "CC: Criticism of institutions and authorities: Criticism of the EU",
+        "CC: Criticism of institutions and authorities: Other",
+        "CC: Green policies are geopolitical instruments: Climate-related international relations are abusive/exploitative",
+        "CC: Green policies are geopolitical instruments: Green activities are a form of neo-colonialism",
+        "CC: Green policies are geopolitical instruments: Other",
+        "CC: Hidden plots by secret schemes of powerful groups: Other",
+        "Other",
+        "URW: Amplifying war-related fears: Other",
+        "URW: Blaming the war on others rather than the invader: Other",
+        "URW: Blaming the war on others rather than the invader: The West are the aggressors",
+        "URW: Discrediting Ukraine: Discrediting Ukrainian government and officials and policies",
+        "URW: Discrediting Ukraine: Other",
+        "URW: Discrediting Ukraine: Situation in Ukraine is hopeless",
+        "URW: Discrediting Ukraine: Ukraine is a puppet of the West",
+        "URW: Discrediting the West, Diplomacy: Diplomacy does/will not work",
+        "URW: Discrediting the West, Diplomacy: Other",
+        "URW: Discrediting the West, Diplomacy: The West is overreacting",
+        "URW: Discrediting the West, Diplomacy: The West is weak",
+        "URW: Negative Consequences for the West: Other",
+        "URW: Negative Consequences for the West: Sanctions imposed by Western countries will backfire",
+        "URW: Praise of Russia: Other",
+        "URW: Praise of Russia: Praise of Russian military might",
+        "URW: Praise of Russia: Russia has international support from a number of countries and people",
+        "URW: Praise of Russia: Russia is a guarantor of peace and prosperity",
+        "URW: Russia is the Victim: Other",
+        "URW: Russia is the Victim: The West is russophobic",
+        "URW: Speculating war outcomes: Other",
+        "URW: Speculating war outcomes: Ukrainian army is collapsing"
+      ],
+      "confusion_matrices": {
+        "CC: Amplifying Climate Fears: Amplifying existing fears of global warming": {
+          "matrix": [
+            [
+              15,
+              6
+            ],
+            [
+              3,
+              11
+            ]
+          ],
+          "tn": 15,
+          "fp": 6,
+          "fn": 3,
+          "tp": 11
+        },
+        "CC: Amplifying Climate Fears: Doomsday scenarios for humans": {
+          "matrix": [
+            [
+              27,
+              5
+            ],
+            [
+              0,
+              3
+            ]
+          ],
+          "tn": 27,
+          "fp": 5,
+          "fn": 0,
+          "tp": 3
+        },
+        "CC: Amplifying Climate Fears: Earth will be uninhabitable soon": {
+          "matrix": [
+            [
+              33,
+              1
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "tn": 33,
+          "fp": 1,
+          "fn": 0,
+          "tp": 1
+        },
+        "CC: Amplifying Climate Fears: Other": {
+          "matrix": [
+            [
+              19,
+              0
+            ],
+            [
+              13,
+              3
+            ]
+          ],
+          "tn": 19,
+          "fp": 0,
+          "fn": 13,
+          "tp": 3
+        },
+        "CC: Amplifying Climate Fears: Whatever we do it is already too late": {
+          "matrix": [
+            [
+              34,
+              1
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "tn": 34,
+          "fp": 1,
+          "fn": 0,
+          "tp": 0
+        },
+        "CC: Controversy about green technologies: Renewable energy is costly": {
+          "matrix": [
+            [
+              34,
+              1
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "tn": 34,
+          "fp": 1,
+          "fn": 0,
+          "tp": 0
+        },
+        "CC: Criticism of climate policies: Climate policies are ineffective": {
+          "matrix": [
+            [
+              30,
+              4
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          "tn": 30,
+          "fp": 4,
+          "fn": 1,
+          "tp": 0
+        },
+        "CC: Criticism of climate policies: Climate policies are only for profit": {
+          "matrix": [
+            [
+              33,
+              0
+            ],
+            [
+              2,
+              0
+            ]
+          ],
+          "tn": 33,
+          "fp": 0,
+          "fn": 2,
+          "tp": 0
+        },
+        "CC: Criticism of climate policies: Climate policies have negative impact on the economy": {
+          "matrix": [
+            [
+              32,
+              3
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "tn": 32,
+          "fp": 3,
+          "fn": 0,
+          "tp": 0
+        },
+        "CC: Criticism of climate policies: Other": {
+          "matrix": [
+            [
+              29,
+              0
+            ],
+            [
+              6,
+              0
+            ]
+          ],
+          "tn": 29,
+          "fp": 0,
+          "fn": 6,
+          "tp": 0
+        },
+        "CC: Criticism of institutions and authorities: Criticism of international entities": {
+          "matrix": [
+            [
+              34,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "tn": 34,
+          "fp": 0,
+          "fn": 0,
+          "tp": 1
+        },
+        "CC: Criticism of institutions and authorities: Criticism of national governments": {
+          "matrix": [
+            [
+              26,
+              5
+            ],
+            [
+              0,
+              4
+            ]
+          ],
+          "tn": 26,
+          "fp": 5,
+          "fn": 0,
+          "tp": 4
+        },
+        "CC: Criticism of institutions and authorities: Criticism of political organizations and figures": {
+          "matrix": [
+            [
+              31,
+              0
+            ],
+            [
+              2,
+              2
+            ]
+          ],
+          "tn": 31,
+          "fp": 0,
+          "fn": 2,
+          "tp": 2
+        },
+        "CC: Criticism of institutions and authorities: Criticism of the EU": {
+          "matrix": [
+            [
+              34,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "tn": 34,
+          "fp": 0,
+          "fn": 0,
+          "tp": 1
+        },
+        "CC: Criticism of institutions and authorities: Other": {
+          "matrix": [
+            [
+              30,
+              4
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "tn": 30,
+          "fp": 4,
+          "fn": 0,
+          "tp": 1
+        },
+        "CC: Green policies are geopolitical instruments: Climate-related international relations are abusive/exploitative": {
+          "matrix": [
+            [
+              34,
+              1
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "tn": 34,
+          "fp": 1,
+          "fn": 0,
+          "tp": 0
+        },
+        "CC: Green policies are geopolitical instruments: Green activities are a form of neo-colonialism": {
+          "matrix": [
+            [
+              34,
+              1
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "tn": 34,
+          "fp": 1,
+          "fn": 0,
+          "tp": 0
+        },
+        "CC: Green policies are geopolitical instruments: Other": {
+          "matrix": [
+            [
+              34,
+              1
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "tn": 34,
+          "fp": 1,
+          "fn": 0,
+          "tp": 0
+        },
+        "CC: Hidden plots by secret schemes of powerful groups: Other": {
+          "matrix": [
+            [
+              34,
+              0
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          "tn": 34,
+          "fp": 0,
+          "fn": 1,
+          "tp": 0
+        },
+        "Other": {
+          "matrix": [
+            [
+              31,
+              3
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          "tn": 31,
+          "fp": 3,
+          "fn": 1,
+          "tp": 0
+        },
+        "URW: Amplifying war-related fears: Other": {
+          "matrix": [
+            [
+              34,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "tn": 34,
+          "fp": 0,
+          "fn": 0,
+          "tp": 1
+        },
+        "URW: Blaming the war on others rather than the invader: Other": {
+          "matrix": [
+            [
+              33,
+              2
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "tn": 33,
+          "fp": 2,
+          "fn": 0,
+          "tp": 0
+        },
+        "URW: Blaming the war on others rather than the invader: The West are the aggressors": {
+          "matrix": [
+            [
+              34,
+              1
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "tn": 34,
+          "fp": 1,
+          "fn": 0,
+          "tp": 0
+        },
+        "URW: Discrediting Ukraine: Discrediting Ukrainian government and officials and policies": {
+          "matrix": [
+            [
+              33,
+              0
+            ],
+            [
+              0,
+              2
+            ]
+          ],
+          "tn": 33,
+          "fp": 0,
+          "fn": 0,
+          "tp": 2
+        },
+        "URW: Discrediting Ukraine: Other": {
+          "matrix": [
+            [
+              34,
+              0
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          "tn": 34,
+          "fp": 0,
+          "fn": 1,
+          "tp": 0
+        },
+        "URW: Discrediting Ukraine: Situation in Ukraine is hopeless": {
+          "matrix": [
+            [
+              34,
+              1
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "tn": 34,
+          "fp": 1,
+          "fn": 0,
+          "tp": 0
+        },
+        "URW: Discrediting Ukraine: Ukraine is a puppet of the West": {
+          "matrix": [
+            [
+              33,
+              1
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "tn": 33,
+          "fp": 1,
+          "fn": 0,
+          "tp": 1
+        },
+        "URW: Discrediting the West, Diplomacy: Diplomacy does/will not work": {
+          "matrix": [
+            [
+              31,
+              3
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "tn": 31,
+          "fp": 3,
+          "fn": 0,
+          "tp": 1
+        },
+        "URW: Discrediting the West, Diplomacy: Other": {
+          "matrix": [
+            [
+              27,
+              1
+            ],
+            [
+              3,
+              4
+            ]
+          ],
+          "tn": 27,
+          "fp": 1,
+          "fn": 3,
+          "tp": 4
+        },
+        "URW: Discrediting the West, Diplomacy: The West is overreacting": {
+          "matrix": [
+            [
+              34,
+              1
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "tn": 34,
+          "fp": 1,
+          "fn": 0,
+          "tp": 0
+        },
+        "URW: Discrediting the West, Diplomacy: The West is weak": {
+          "matrix": [
+            [
+              32,
+              3
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "tn": 32,
+          "fp": 3,
+          "fn": 0,
+          "tp": 0
+        },
+        "URW: Negative Consequences for the West: Other": {
+          "matrix": [
+            [
+              34,
+              0
+            ],
+            [
+              1,
+              0
+            ]
+          ],
+          "tn": 34,
+          "fp": 0,
+          "fn": 1,
+          "tp": 0
+        },
+        "URW: Negative Consequences for the West: Sanctions imposed by Western countries will backfire": {
+          "matrix": [
+            [
+              33,
+              2
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "tn": 33,
+          "fp": 2,
+          "fn": 0,
+          "tp": 0
+        },
+        "URW: Praise of Russia: Other": {
+          "matrix": [
+            [
+              32,
+              1
+            ],
+            [
+              0,
+              2
+            ]
+          ],
+          "tn": 32,
+          "fp": 1,
+          "fn": 0,
+          "tp": 2
+        },
+        "URW: Praise of Russia: Praise of Russian military might": {
+          "matrix": [
+            [
+              34,
+              1
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "tn": 34,
+          "fp": 1,
+          "fn": 0,
+          "tp": 0
+        },
+        "URW: Praise of Russia: Russia has international support from a number of countries and people": {
+          "matrix": [
+            [
+              34,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "tn": 34,
+          "fp": 0,
+          "fn": 0,
+          "tp": 1
+        },
+        "URW: Praise of Russia: Russia is a guarantor of peace and prosperity": {
+          "matrix": [
+            [
+              32,
+              1
+            ],
+            [
+              0,
+              2
+            ]
+          ],
+          "tn": 32,
+          "fp": 1,
+          "fn": 0,
+          "tp": 2
+        },
+        "URW: Russia is the Victim: Other": {
+          "matrix": [
+            [
+              31,
+              1
+            ],
+            [
+              0,
+              3
+            ]
+          ],
+          "tn": 31,
+          "fp": 1,
+          "fn": 0,
+          "tp": 3
+        },
+        "URW: Russia is the Victim: The West is russophobic": {
+          "matrix": [
+            [
+              34,
+              0
+            ],
+            [
+              0,
+              1
+            ]
+          ],
+          "tn": 34,
+          "fp": 0,
+          "fn": 0,
+          "tp": 1
+        },
+        "URW: Speculating war outcomes: Other": {
+          "matrix": [
+            [
+              34,
+              1
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "tn": 34,
+          "fp": 1,
+          "fn": 0,
+          "tp": 0
+        },
+        "URW: Speculating war outcomes: Ukrainian army is collapsing": {
+          "matrix": [
+            [
+              34,
+              1
+            ],
+            [
+              0,
+              0
+            ]
+          ],
+          "tn": 34,
+          "fp": 1,
+          "fn": 0,
+          "tp": 0
+        }
+      }
+    }
+  }
+}
