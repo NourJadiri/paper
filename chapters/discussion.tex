@@ -1,0 +1,48 @@
+\chapter{Discussion}
+
+This work systematically evaluated three distinct architectural paradigms for hierarchical multi-label classification (HMLC) on the challenging SemEval-2025 narrative detection task. Our investigation, spanning from a supervised Transformer baseline to two zero-shot Large Language Model (LLM) frameworks, yields several critical insights into the current state and future direction of HMLC for nuanced, data-scarce problems. In this chapter, we synthesize our findings, discuss their implications, and critically examine the limitations of our study.
+
+\section{The Paradigm Shift: From Fine-Tuning to Zero-Shot Reasoning}
+
+The most striking result of our comparative analysis is the dramatic performance gap between the supervised fine-tuning paradigm (Architecture 0) and the zero-shot LLM-based paradigms (Architectures 1 and 2). Our Multi-Head mDeBERTa baseline, despite being enhanced with class weighting and a hierarchically-conditioned architecture, achieved modest F1 Samples scores of 0.290 for narratives and 0.175 for subnarratives. In stark contrast, both the AutoGen framework and the Actor-Critique pipeline achieved substantially higher performance (e.g., F1 scores >0.400 on the English test set) without any task-specific training.
+
+This disparity confirms a central hypothesis motivated by our initial data analysis: for tasks characterized by extreme class imbalance and a long tail of rare labels, the traditional fine-tuning paradigm is fundamentally constrained. Even with sophisticated mechanisms like disentangled attention and class weighting, the model struggles to learn effective representations from the handful of examples available for most classes. The LLM-based systems, however, bypass this data bottleneck by leveraging vast pre-existing world knowledge and reasoning capabilities, activated through carefully engineered prompts. This allows them to classify narratives based on their semantic definitions rather than on statistical patterns learned from a small, skewed dataset. This finding strongly suggests that for complex, low-resource HMLC tasks like narrative detection, the field is undergoing a decisive shift away from data-hungry supervised learning toward knowledge-driven, zero-shot reasoning.
+
+\section{Architectural Divergence in LLM-Based Systems}
+
+While both LLM-based architectures outperformed the baseline, their comparison reveals crucial design trade-offs with significant implications for multilingual performance, traceability, and efficiency.
+
+\paragraph{The Critical Flaw of the "Translate-then-Classify" Approach.}
+Architecture 1 (AutoGen) employed a "translate-to-English" strategy for non-English texts, a common and seemingly pragmatic approach. However, our results demonstrate its profound inadequacy. While achieving a competitive 3rd place on the native English test set (F1 Sample: 0.406), its performance plummeted on translated Portuguese and Russian texts (0.173 and 0.137, respectively). In contrast, Architecture 2 (Actor-Critique), which processed each language directly, achieved massive gains of +0.464 F1 Coarse for Portuguese and +0.449 for Russian over Architecture 1.
+
+This stark difference highlights that machine translation, even when using state-of-the-art models, acts as a destructive filter for the subtle linguistic and cultural nuances essential for propaganda detection. Rhetorical devices, idiomatic expressions, and culturally-specific framing are lost, leaving the classification agent with a semantically impoverished input. This finding provides a clear directive for future multilingual HMLC research: systems must be designed for direct, native-language processing to be effective.
+
+\paragraph{Revisiting the Transformer Baseline's Methodology.}
+This insight has a critical retrospective implication for our own methodology. The data augmentation strategy for the Transformer baseline, which relied on translation to expand the training set, was likely fundamentally flawed. As demonstrated by the AutoGen experiments, this process may have introduced corrupted, nuance-stripped examples into the training data, potentially degrading rather than enhancing the model's multilingual capabilities. This self-critique reinforces the conclusion that the performance limitations of the fine-tuning approach may be even more severe than the results initially suggest.
+
+\paragraph{Decomposition vs. Holistic Analysis: A Trade-off in Complexity and Traceability.}
+The two LLM architectures also represent different philosophical approaches to task decomposition. The AutoGen framework, inspired by Binary Relevance, decomposes the task into dozens of independent binary decisions ("one agent per label"). The Actor-Critique pipeline, conversely, uses a single, powerful agent per hierarchical level to perform a holistic analysis, considering all labels simultaneously.
+
+While the decomposed approach proved effective for English, its complexity may have contributed to error accumulation in the more challenging multilingual setting. More importantly, its binary outputs offer limited traceability. The Actor-Critique pipeline was designed specifically to address this, shifting the task from classification to evidence-grounded claim generation. By forcing the model to produce a verbatim \texttt{evidence\_quote} and \texttt{reasoning} for each prediction, the system's outputs become fully auditable. This architectural choice is not merely an academic exercise; for high-stakes applications like monitoring disinformation, such transparency is a non-negotiable requirement.
+
+\section{The Surprising Ineffectiveness of the Critique Mechanism}
+
+One of the most counter-intuitive findings emerged from the ablation study of the Actor-Critique pipeline. We hypothesized that a second "Critic" agent, tasked with validating the "Actor's" claims, would improve precision and robustness. The results proved the opposite: across most languages, enabling the validation step \emph{degraded} performance compared to the single-pass Actor-only configuration. On average, narrative validation reduced F1 Coarse by 0.0100, with some languages like Portuguese showing substantial drops.
+
+This suggests several possibilities. First, the base model (Gemini 2.5 Flash) may already be well-calibrated, and its initial, single-pass judgments are more accurate than a subsequent, potentially over-correcting, validation step. Second, the validation process itself might introduce "noise" or systematic biases, where the Critic agent incorrectly refutes valid claims. This phenomenon, where multi-step reasoning chains can accumulate errors or drift from the optimal path, is a critical area for research in agentic systems. Our findings serve as a cautionary tale: architectural complexity, even when well-intentioned, does not guarantee improved performance and can be counterproductive. For this task, the simplest LLM configuration—a single, holistic, evidence-grounded agent—proved to be the most effective.
+
+\section{Limitations of the Study}
+
+Our findings should be interpreted in the context of several limitations.
+
+\paragraph{Dataset Size.}
+As noted in our results, the development set used for multilingual and ablation comparisons is relatively small (30-40 documents per language). While the performance differences between architectures are large and consistent, a larger evaluation corpus would be necessary to establish definitive statistical significance and ensure our conclusions generalize across a wider variety of documents.
+
+\paragraph{Model and API Dependency.}
+Our zero-shot architectures rely on proprietary, closed-source LLMs (OpenAI and Google models). This introduces dependencies on external APIs and limits full reproducibility. Performance is tied to the specific model versions used (e.g., GPT-4o, Gemini 2.5 Flash), and future updates to these models could alter the results. Furthermore, we did not conduct an exhaustive comparison across different model providers or sizes, which could influence architectural choices.
+
+\paragraph{Cost and Latency.}
+While computationally more efficient than training a large Transformer, inference with LLM-based systems, particularly multi-step agentic pipelines, incurs significant financial cost and latency due to API calls. This trade-off between training cost and inference cost is a critical consideration for practical, large-scale deployment.
+
+\paragraph{Prompt Sensitivity.}
+The performance of zero-shot systems is notoriously sensitive to prompt engineering. While we invested considerable effort in refining our prompts for clarity and precision, it is possible that alternative phrasing or structuring could yield different results. The "ineffectiveness" of our Critic, for example, might be an artifact of its specific prompt design rather than a fundamental flaw in the validation concept itself.
