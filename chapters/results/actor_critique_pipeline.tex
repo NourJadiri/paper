@@ -281,3 +281,31 @@ RU & AutoGen & 0.247 & 0.137 & Translate-to-English \\
 \paragraph{Statistical significance challenges for cross-architectural comparison.} The substantial performance differences observed between architectures (e.g., +0.464 F1 improvements for Portuguese) may be influenced by the small sample sizes and specific document characteristics within each language subset. While the magnitude of improvements suggests genuine architectural advantages, larger-scale evaluation would be necessary to establish statistical significance and generalizability across broader document populations and propaganda narrative distributions.
 
 \paragraph{Document-level variance impact on performance estimates.} The limited document count per language (30-40 documents) means that individual high-performing or challenging documents can disproportionately influence overall performance metrics. This is particularly relevant for rare narrative categories where only a few positive examples exist across the entire development set, making architectural comparison sensitive to document selection effects rather than fundamental design differences.
+
+\subsection{SemEval-2025 Task 10 competition performance}
+
+To contextualize our architectural evaluation within the broader research community, we present our team's (INSALyon2) official ranking in the SemEval-2025 Task 10 competition for Subtask 2 (narrative classification) across all evaluated languages.
+
+\begin{table}[htbp]
+\centering
+\caption{INSALyon2 official rankings in SemEval-2025 Task 10 Subtask 2 across all languages. Rankings reflect performance on the official test set using our Actor-Critique architecture (no validation configuration).}
+\label{tab:semeval_rankings}
+\small
+\begin{tabular}{lccc}
+\hline
+\textbf{Language} & \textbf{Rank} & \textbf{F1 Macro Coarse} & \textbf{F1 Samples} \\
+\hline
+English & 2 & 0.547 & 0.433 \\
+Portuguese & 2 & 0.679 & 0.433 \\
+Hindi & 3 & 0.515 & 0.435 \\
+Russian & 4 & 0.589 & 0.410 \\
+Bulgarian & 5 & 0.590 & 0.381 \\
+\hline
+\end{tabular}
+\end{table}
+
+\paragraph{Strong competitive performance validates architectural design.} Our Actor-Critique architecture achieved consistent top-5 rankings across all languages, with particularly strong second-place positions in English and Portuguese, validating the effectiveness of our no-validation configuration in multilingual contexts.
+
+\paragraph{Performance consistency confirms development findings.} The competition results align well with our development set analysis, particularly the strong Portuguese performance (0.679 test vs 0.749 dev) and the notable Hindi improvement from development challenges to competitive third place, demonstrating good generalization properties of the direct multilingual processing approach.
+
+\paragraph{Comparative analysis with top-performing approaches.} While our approach achieved competitive second-place performance in English, the first-place GateNLP team \cite{Singh2025} reported superior results using their hierarchical three-step prompting methodology. Despite implementing their described architectural framework based on their published approach, we were unable to replicate their reported performance levels, suggesting that implementation details, hyperparameter configurations, or specific prompt engineering techniques may play critical roles in achieving optimal results with hierarchical prompting strategies.

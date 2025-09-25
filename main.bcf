@@ -2467,6 +2467,7 @@
     <bcf:citekey order="71" intorder="1">langgraph2024</bcf:citekey>
     <bcf:citekey order="72" intorder="1">langsmith2024</bcf:citekey>
     <bcf:citekey order="73" intorder="1">google_gemini_2024</bcf:citekey>
+    <bcf:citekey order="74" intorder="1">Singh2025</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="nyt">
