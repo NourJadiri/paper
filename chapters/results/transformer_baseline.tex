@@ -175,10 +175,6 @@ Subnarrative classification reveals the granularity limitations of the transform
 
 \subsection{Key insights and limitations}
 
-\subsubsection{Model calibration and threshold optimization}
-
-Our results demonstrate that the Multi-Head mDeBERTa model was well-calibrated during training, with the training threshold (0.65) providing optimal performance for narrative classification. However, the finding that subnarratives benefit from higher thresholds (0.7-0.8) suggests that hierarchical multi-label classification requires threshold optimization at each level of the hierarchy.
-
 \subsubsection{Hierarchical classification challenges}
 
 The substantial performance gap between narrative (F1 Samples: 0.2901) and subnarrative classification (F1 Samples: 0.1750 at optimal threshold 0.8) illustrates fundamental limitations of the fine-tuning approach for hierarchical tasks with limited data. Even with optimal threshold selection for each level, subnarratives achieve only 60\% of the narrative-level performance when evaluated on a per-document basis. The model successfully learns coarse-grained narrative patterns but struggles with fine-grained distinctions, particularly in low-resource languages.
@@ -197,5 +193,3 @@ These results provide crucial insights for the development of more advanced arch
     \item \textbf{Data augmentation strategies} beyond translation may be required for fine-grained classification
     \item \textbf{Alternative paradigms} (zero-shot, few-shot) warrant investigation given the limitations observed in the fine-tuning approach
 \end{itemize}
-
-The transformer baseline establishes a solid foundation for comparison with more advanced architectures while clearly demonstrating the challenges inherent in hierarchical narrative classification with limited multilingual data.

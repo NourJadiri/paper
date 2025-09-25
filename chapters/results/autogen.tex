@@ -22,10 +22,6 @@ Random Baseline & 26 & 0.030 & 0.013 \\
 
 The agentic framework achieved a Sample-Averaged F1 score of 0.406 on the fine-grained subnarrative labels, \textbf{securing 3rd place in the official SemEval-2025 English ranking}. This result is particularly notable as it was achieved in a purely zero-shot setting, without any task-specific fine-tuning. The model dramatically outperformed the random baseline, confirming that the LLM agents, guided by carefully engineered prompts, were able to perform complex, nuanced reasoning. The strong Macro F1 score of 0.513 on the coarse-grained narrative labels further indicates that the model was effective at identifying a broad range of narratives, not just the most frequent ones.
 
-\subsection{Hierarchical Performance Characteristics}
-
-While the overall scores are strong, a comparison between the coarse-grained and fine-grained metrics reveals the inherent challenges of hierarchical classification. The Macro F1 for parent narratives (0.513) is substantially higher than the Sample F1 for child subnarratives (0.406). This performance drop highlights a key characteristic of the two-stage agentic design: hierarchical error propagation. An error made at the narrative-level classification stage---either a false positive or a false negative---invariably propagates to the subnarrative level. If a correct parent narrative is missed in the first stage, the system has no opportunity to classify its children, directly impacting the final sample-level score.
-
 \subsection{Multilingual Performance Analysis}
 
 To assess the framework's cross-lingual capabilities, we conducted additional experiments on the Portuguese (PO) and Russian (RU) subsets. Our strategy involved translating the source documents into English before passing them to the agentic system. The results, presented in Table~\ref{tab:multilingual-performance}, show a significant performance degradation compared to the native English results.
@@ -46,6 +42,18 @@ Russian (Translated) & 0.247 & 0.137 \\
 \end{table}
 
 The Sample F1 score for Portuguese (0.173) and Russian (0.137) is less than half of that achieved on the native English text. This suggests that the ``translate-then-classify'' approach, while straightforward, is a significant bottleneck. The translation process likely loses critical cultural and contextual nuances, rhetorical devices, and subtle linguistic cues that are essential for accurate narrative detection. This finding underscores the limitation of relying on a single-language system for a truly multilingual task.
+
+\subsection{Critical implications for transformer baseline methodology}
+
+\begin{tcolorbox}[colback=yellow!10,colframe=orange!75!black,title=\textbf{Important Methodological Insight}]
+These translation-induced performance degradations raise \textbf{significant concerns about our data augmentation methodology} used for the transformer baseline. The systematic performance drops (44--66\% reduction in F1 Sample scores) suggest that machine translation fundamentally alters the linguistic and cultural markers essential for propaganda detection.
+\end{tcolorbox}
+
+\paragraph{Data augmentation strategy reconsidered.} Our transformer baseline approach relied heavily on translating texts between languages within the same dataset to increase training data volume across languages. Given the substantial information loss observed in the translate-then-classify paradigm, this data augmentation process was likely \textbf{fundamentally flawed} and may have negatively impacted the transformer baseline's multilingual performance by introducing translation artifacts and degraded linguistic representations during training.
+
+\paragraph{Hypothesis for performance degradation.} If similar degradation occurred during the data augmentation process for transformer training, the baseline model may have learned from \textit{corrupted representations} of multilingual propaganda texts, potentially explaining some of the performance limitations observed in our transformer experiments. 
+
+\paragraph{Future work recommendation.} This hypothesis warrants investigation in future work through controlled experiments comparing transformer performance on native versus translation-augmented training data to isolate the impact of translation-based data augmentation on multilingual propaganda classification accuracy.
 
 \subsection{Detailed Error Analysis (on English DEV Set)}
 
