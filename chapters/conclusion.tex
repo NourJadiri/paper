@@ -1,14 +1,27 @@
-\chapter{Open challenges and conclusion}
+\chapter{Conclusion}
 
-Despite steady progress, several critical challenges remain; addressing them will shape the next phase of research in narrative detection and hierarchical multi-label classification (HMLC).
+This paper charted a deliberate course from traditional supervised methods to the frontier of zero-shot agentic reasoning for hierarchical multi-label classification. Our journey began with a state-of-the-art mDeBERTa baseline, which, despite architectural enhancements, confirmed the inherent limitations of fine-tuning on data-scarce, long-tailed tasks. We then demonstrated the viability of zero-shot classification through two distinct LLM-based architectures: a decomposed, multi-agent framework and a holistic, evidence-grounded pipeline.
 
-\section{Key open challenges}
+\section{Principal Findings and Implications}
+
+From this comparative analysis, we draw three principal conclusions that carry significant implications for the field. 
+\begin{enumerate}
+    \item \textbf{The necessity of zero-shot reasoning.} For nuanced, low-resource HMLC tasks like narrative detection, the paradigm of zero-shot reasoning is not merely an alternative but a necessity. LLMs' ability to classify from semantic definitions, rather than statistical patterns in sparse data, offers a decisive advantage that supervised methods struggle to overcome.
+
+    \item \textbf{The imperative of native-language processing.} For multilingual applications, direct, native-language processing is non-negotiable. Our experiments unequivocally show that the common "translate-then-classify" shortcut introduces unacceptable information loss, destroying the cultural and linguistic nuances critical for accurate analysis.
+
+    \item \textbf{The value of traceable simplicity.} In the design of agentic systems, architectural simplicity and inherent traceability can be more effective than complex, multi-step validation loops. The superior performance of our single-pass, evidence-grounded Actor over the full Actor-Critique pipeline serves as a crucial finding: forcing a model to ground its claims in evidence provides more value than adding a complex, and potentially counter-productive, validation layer.
+\end{enumerate}
+
+These conclusions directly inform the critical challenges that lie ahead, which will shape the next phase of research in narrative detection and HMLC.
+
+\section{Key Open Challenges}
 
 \begin{itemize}
 	\item \textbf{Interpretability and faithfulness}
 		\begin{itemize}
-			\item Models must provide human-understandable explanations for predictions and demonstrate structural faithfulness (e.g., obey the true-path rule).
-			\item Beyond loss-based penalties, we need architectures and verification methods that guarantee or certify hierarchical consistency.
+			\item Models must provide human-understandable explanations for predictions and demonstrate structural faithfulness (e.g., obey the true-path rule). Our evidence-grounded approach is a step in this direction, but more formal guarantees are needed.
+			\item Beyond loss-based penalties, we need architectures and verification methods that certify hierarchical consistency.
 		\end{itemize}
 
 	\item \textbf{Dynamic and evolving hierarchies}
@@ -19,7 +32,7 @@ Despite steady progress, several critical challenges remain; addressing them wil
 
 	\item \textbf{Robust cross-lingual and cross-cultural transfer}
 		\begin{itemize}
-			\item Transfer across typologically distant languages and across cultural framings remains unreliable.
+			\item As our results show, transfer across typologically distant languages and cultural framings remains unreliable.
 			\item Promising approaches: culture-aware adapters, contrastive cross-cultural fine-tuning, and evaluation protocols that measure cultural equivalence rather than literal translation.
 		\end{itemize}
 
@@ -36,8 +49,6 @@ Despite steady progress, several critical challenges remain; addressing them wil
 		\end{itemize}
 \end{itemize}
 
-\section{Concluding remarks}
+\section{Concluding Remarks}
 
-The field is shifting from purely representation-focused modelling toward systems that align pre-trained knowledge with downstream tasks (via prompts, adapters, or targeted synthetic data). Addressing interpretability, dynamics, cultural robustness, structured narratives and the governance of synthetic data will be the levers that determine whether HMLC methods are usable at scale in real-world narrative analysis.
-
-Progress will require integrated work across evaluation, modelling, data governance, and tooling, a multidisciplinary agenda that is both technically challenging and societally important.
+The shift from fine-tuning to zero-shot reasoning is more than a change in technique; it is a fundamental re-evaluation of how we approach complex classification. Our findings illustrate that future progress in HMLC will depend less on architectural tweaks to supervised models and more on developing robust, traceable, and culturally-aware reasoning systems. Addressing the open challenges of interpretability, dynamic hierarchies, and the responsible governance of synthetic data is therefore not an incremental step, but the central task for building narrative analysis tools that are both powerful and trustworthy in their real-world application. Progress will require integrated work across evaluation, modelling, data governance, and tooling—a multidisciplinary agenda that is both technically challenging and societally important.
