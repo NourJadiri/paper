@@ -52,6 +52,15 @@ Once a set of narratives has been approved by the Critic, the process is repeate
 \paragraph{Stage 7: Finalization}
 After passing through all stages, the final set of validated narratives and sub-narratives is written to the output file.
 
+\paragraph{Configurable validation modes (experimental settings)}\label{par:validation-modes}
+The pipeline exposes narrative- and subnarrative-level critique validation as two independent, configurable switches in the YAML specification. In principle, both validation stages can be enabled sequentially (narratives validated before generating or validating subnarratives). However, to isolate marginal effects and avoid interaction confounds, our ablation in Section~\ref{sec:actor-critique-results} evaluates the three mutually exclusive modes:
+\begin{enumerate}
+  \item \textbf{No Validation}: Actor outputs at both hierarchy levels are accepted directly (Critic nodes disabled).
+  \item \textbf{Narrative-Only Validation}: A Critic validates and (optionally) triggers refinement loops for narrative claims; subnarrative claims are taken from the initial Sub-narrative Actor without critique.
+  \item \textbf{Subnarrative-Only Validation}: Narrative Actor outputs are accepted as-is; only subnarrative claims pass through a Critic (useful for measuring whether fine-grained validation alone yields gains).
+\end{enumerate}
+This design clarifies why the results table (Table~\ref{tab:actor_critique_ablation}) lists the three configurations as alternatives: each run toggles at most one validation level to quantify its isolated contribution.
+
 \subsection{Key advantages of the evidence-grounded pipeline}
 
 This evidence-grounded, pipeline-driven architecture offers several significant advantages over simpler classification models:
