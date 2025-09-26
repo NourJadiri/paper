@@ -2463,8 +2463,11 @@
     <bcf:citekey order="65" intorder="1">eljadiri-nurbakova-2025-team</bcf:citekey>
     <bcf:citekey order="66" intorder="1">langgraph2024</bcf:citekey>
     <bcf:citekey order="67" intorder="1">langsmith2024</bcf:citekey>
-    <bcf:citekey order="68" intorder="1">google_gemini_2024</bcf:citekey>
-    <bcf:citekey order="69" intorder="1">Singh2025</bcf:citekey>
+    <bcf:citekey order="68" intorder="1">wolf-etal-2020-transformers</bcf:citekey>
+    <bcf:citekey order="69" intorder="1">langgraph2024</bcf:citekey>
+    <bcf:citekey order="70" intorder="1">langsmith2024</bcf:citekey>
+    <bcf:citekey order="71" intorder="1">google_gemini_2024</bcf:citekey>
+    <bcf:citekey order="72" intorder="1">Singh2025</bcf:citekey>
   </bcf:section>
   <!-- SORTING TEMPLATES -->
   <bcf:sortingtemplate name="nyt">
