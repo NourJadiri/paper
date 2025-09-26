@@ -1,0 +1,30 @@
+\section{Consolidated Error Analysis: Persistent Challenges Across Paradigms}
+
+While our evidence-grounded Actor-Critique pipeline (Architecture 2) marks a significant improvement over both the supervised baseline and the decomposed agentic framework, a closer examination of its predictions reveals persistent failure modes. These errors are not unique to one architecture but represent the core, unsolved challenges of applying HMLC to nuanced, multilingual narrative detection. By analyzing these recurring failures, we can delineate the frontiers of current model capabilities.
+
+\subsection{Semantic Ambiguity in Fine-Grained Classification}
+
+The most common source of error, even for our best-performing model, is the confusion between semantically adjacent or overlapping categories, particularly at the sub-narrative level. A prime example, first noted in the AutoGen analysis, is the difficulty in distinguishing between **"CC: Criticism of climate policies"** and **"CC: Criticism of institutions and authorities."** A single document often contains text that criticizes a government's climate policy. Is this an attack on the policy itself, or on the institution that created it? The distinction is subtle and often a matter of interpretation.
+
+Our analysis of Architecture 2's outputs shows that while it performs well on clearly demarcated narratives, it struggles when labels share significant lexical and conceptual overlap. The model often correctly identifies the parent narrative but then either assigns both sibling sub-narratives or incorrectly chooses one, leading to precision or recall errors. This suggests a fundamental limitation in the model's ability to disentangle the primary *intent* of a text from its secondary themes, a crucial skill for high-fidelity, fine-grained classification.
+
+\subsection{The "Hard Tail": Systematic Failure on Ultra-Rare Narratives}
+
+Despite the zero-shot paradigm's independence from training data volume, our analysis reveals a "hard tail" of narratives that all architectures systematically failed to identify. The AutoGen framework, for instance, failed to predict any true positives for 41\% of the narrative categories on the development set. While Architecture 2 showed improved coverage, it still struggled with the most infrequent or abstractly defined labels, such as **"URW: Russia is the Victim"** or narratives with only a handful of examples in the entire dataset.
+
+This indicates that even with access to vast world knowledge, an LLM's effectiveness is constrained by the specificity and clarity of the provided definitions. For narratives that are highly nuanced, subtly expressed, or culturally niche, a simple definition in a prompt is insufficient to activate the model's reasoning capabilities reliably. These "hard tail" labels represent the true frontier of zero-shot classification, likely requiring more sophisticated prompting techniques like dynamic example retrieval or chain-of-thought reasoning grounded in external knowledge bases.
+
+\subsection{Persistent Hierarchical Degradation}
+
+A consistent pattern across all three architectures is the performance degradation from the coarse-grained narrative level to the fine-grained sub-narrative level. While Architecture 2 significantly mitigated this issue compared to the baseline, the gap remains substantial.
+
+*   **Architecture 0 (Transformer):** The F1 Samples score dropped by nearly 40\% from the optimal narrative performance (0.290) to the optimal sub-narrative performance (0.175).
+*   **Architecture 2 (Actor-Critique):** This gap was halved but still significant, with a ~20\% drop from F1 Coarse (0.602) to F1 Sample (0.408) in the best configuration.
+
+This persistent degradation highlights two core challenges. First, **error propagation**, where a misclassification at the parent level makes correct sub-narrative classification impossible. Second, **data scarcity amplification**, where the already limited examples for a parent narrative are further fragmented among its children, making the distinctions between them harder to reason about, even for an LLM.
+
+\subsection{Cross-Lingual Brittleness and Cultural Nuance}
+
+The most profound limitation revealed by our study is the brittleness of models in a true multilingual context. The catastrophic failure of Architecture 1's "translate-then-classify" approach served as a stark warning. However, even Architecture 2, which processed languages directly, exhibited significant performance disparities. The model achieved an F1 Coarse of 0.749 on Portuguese but only 0.472 on Hindi.
+
+This suggests the problem runs deeper than simple translation loss. LLMs, despite being trained on multilingual corpora, may lack a deep understanding of the culturally-specific rhetorical strategies, historical contexts, and idiomatic expressions that define propaganda in different regions. For example, a narrative of "discrediting the West" may manifest as overt criticism in Russian media but through more subtle, allegorical language in Hindi sources. The model's uneven performance indicates that its reasoning capabilities are not yet culturally isotropic, and it remains more attuned to the linguistic patterns of high-resource languages like English and Portuguese. This gap in cultural nuance is arguably the single greatest barrier to deploying robust, global-scale narrative detection systems.
