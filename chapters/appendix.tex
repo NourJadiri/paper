@@ -1,13 +1,18 @@
-\chapter{Performance Visualizations and Confusion Matrices}
+\chapter{Appendix}
 
-This appendix provides key performance visualizations and complete confusion matrices from our experimental evaluation. To maintain readability while ensuring reproducibility, we present: (1) comprehensive results for the no-validation baseline configuration across all languages, (2) representative results for the validation configurations (overview plots and English examples), and (3) complete confusion matrices for all configurations. Full visualization sets for all languages and configurations are available in the project repository.
+This appendix provides key performance visualizations, complete prompt templates, and supporting materials from our experimental evaluation. Appendix A presents representative performance results across configurations and languages. Appendix B documents the complete prompt templates used in our Actor-Critique pipeline. Full visualization sets for all languages and configurations are available in the project repository.
 
-\section{Architecture 2: No Validation Configuration}
-\label{app:no-validation}
+\section{Appendix A: Performance Visualizations}
+\label{app:performance}
+
+This section presents performance visualizations organized by validation configuration: (1) comprehensive results for the no-validation baseline configuration across all languages, and (2) representative results for the validation configurations (overview plots and English examples).
+
+\subsection{A.1 No Validation Configuration}
+\label{app:a1-no-validation}
 
 This section presents results from the Actor-Critique pipeline (Architecture 2) without any validation mechanism enabled.
 
-\subsection{Overall Performance Comparison}
+\subsubsection{Overall Performance Comparison}
 
 \begin{figure}[H]
     \centering
@@ -122,8 +127,8 @@ This section presents results from the Actor-Critique pipeline (Architecture 2) 
 \end{figure}
 
 \clearpage
-\section{Architecture 2: Narrative Validation Configuration}
-\label{app:narr-validation}
+\subsection{A.2 Narrative Validation Configuration}
+\label{app:a2-narr-validation}
 
 This section presents representative results from the Actor-Critique pipeline with narrative-level validation enabled. Complete per-language breakdowns follow the same patterns as the no-validation configuration.
 
@@ -158,8 +163,8 @@ This section presents representative results from the Actor-Critique pipeline wi
 \end{figure}
 
 \clearpage
-\section{Architecture 2: Subnarrative Validation Configuration}
-\label{app:subnarr-validation}
+\subsection{A.3 Subnarrative Validation Configuration}
+\label{app:a3-subnarr-validation}
 
 This section presents representative results from the Actor-Critique pipeline with subnarrative-level validation enabled. Complete per-language breakdowns follow the same patterns as the no-validation configuration.
 
@@ -192,5 +197,343 @@ This section presents representative results from the Actor-Critique pipeline wi
     \caption{English performance breakdown for subnarrative-validation configuration, representative of per-language patterns.}
     \label{fig:app-subnarr-val-en}
 \end{figure}
+
+\clearpage
+\section{Appendix B: Prompt Templates}
+\label{app:prompts}
+
+This section provides the complete prompt templates used in our Actor-Critique pipeline (Architecture 2). All prompts are implemented in the \texttt{prompt\_template.py} module.
+
+\subsection{B.1 Category Classification Prompt}
+\label{app:b1-prompt-category}
+
+The first stage of our pipeline determines whether the text is about the Ukraine-Russia War (URW) or Climate Change (CC).
+
+\begin{tcolorbox}[breakable, colback=gray!5, colframe=gray!75!black, title=Category System Prompt]
+\small
+\begin{verbatim}
+You are a strict topical classifier. Decide whether the given text is 
+primarily about URW (Ukraine-Russia War topics) or CC (Climate Change topics).
+
+Rules (follow exactly):
+- First find the elements that indicate the topic, and reason through 
+  them step by step.
+- Output EXACTLY one label token enclosed in square brackets on the next 
+  line: [URW], [CC], or [Other].
+
+Classification guidance:
+- Use [URW] for topics clearly about the Russia-Ukraine conflict.
+- Use [CC] for topics clearly about climate change.
+- Use [Other] if neither topic is the primary focus.
+
+Exact example outputs (showing allowed formats):
+EVIDENCE: short justification
+[URW]
+
+EVIDENCE: short justification
+[CC]
+
+[Other]
+\end{verbatim}
+\end{tcolorbox}
+
+\subsection{B.2 Narrative Classification Prompt}
+\label{app:b2-prompt-narrative}
+
+After category determination, this prompt classifies the text into specific propaganda narratives. The prompt is dynamically constructed with narrative definitions loaded from CSV files.
+
+\begin{tcolorbox}[breakable, colback=gray!5, colframe=gray!75!black, title=Narrative System Prompt (Structure)]
+\small
+\begin{verbatim}
+You are an expert propaganda narrative analyst with extensive experience 
+in identifying and classifying manipulative communication patterns.
+Your task is to analyze the given text and identify which specific 
+propaganda narratives are present.
+Provide your classification as a semicolon-separated list inside square 
+brackets, e.g. [Narrative A; Narrative B].
+
+AVAILABLE NARRATIVES:
+
+- {Category}: {Narrative Name}
+  Definition: {narrative definition}
+  Example: {example text}
+  Instruction: {specific classification guidance}
+
+[... repeated for each narrative in the category ...]
+
+## INSTRUCTIONS
+
+Follow these two steps precisely:
+
+**Step 1: Chain of Thought (Internal Reasoning)**
+First, think step-by-step to analyze the provided text.
+- Identify key phrases, arguments, and themes.
+- For each potential narrative from the list, consider if it applies.
+- Find a specific, direct quote from the text that serves as the 
+  strongest evidence for each narrative you believe is present.
+- Formulate a brief reasoning for why that quote supports the narrative.
+- If no narratives apply, conclude that.
+
+**Step 2: Format the Final Output**
+After your internal reasoning is complete, provide your final analysis 
+as a single, valid JSON object.
+- The JSON should be the *only* thing in your response. Do not include 
+  your chain of thought, explanations, or any markdown formatting 
+  like '```json'.
+
+## OUTPUT FORMAT (JSON Schema)
+
+Your entire response MUST be a single JSON object. ALL fields in the 
+schema below are REQUIRED. Do not omit any fields.
+
+{
+  "narratives": [
+    {
+      "narrative_name": "string (The exact name from the list)",
+      "evidence_quote": "string (The direct quote from the text you found 
+                         as evidence)",
+      "reasoning": "string (Your justification connecting the quote to 
+                    the narrative)"
+    }
+  ]
+}
+
+- If multiple narratives are found, include one object for each in the 
+  `narratives` list.
+- If no propaganda narratives are detected, respond with an empty list 
+  for the "narratives" key: `{"narratives": []}`.
+\end{verbatim}
+\end{tcolorbox}
+
+\subsection{B.3 Subnarrative Classification Prompt}
+\label{app:b3-prompt-subnarrative}
+
+For each detected narrative, this prompt further classifies the text into more specific subnarratives. The prompt includes an ``Other'' category for content that supports the parent narrative but doesn't fit specific subnarrative definitions.
+
+\begin{tcolorbox}[breakable, colback=gray!5, colframe=gray!75!black, title=Subnarrative System Prompt (Structure)]
+\small
+\begin{verbatim}
+You are an expert propaganda narrative analyst with extensive experience 
+in identifying and classifying manipulative communication patterns.
+This text is known to contain the narrative: {parent_narrative}
+
+Your task is to analyze the given text and identify which specific 
+propaganda subnarratives are present.
+Provide your classification as a semicolon-separated list inside square 
+brackets, e.g. [Subnarrative A; Subnarrative B].
+
+AVAILABLE SUBNARRATIVES:
+
+- {Category}: {Narrative}: {Subnarrative Name}
+  Definition: {subnarrative definition}
+  Example: {example text}
+  Instruction: {specific classification guidance}
+
+[... repeated for each subnarrative ...]
+
+- {parent_narrative}: Other
+  Definition: Use this option if you find statements that clearly support 
+  the parent narrative but do not fit into any of the more specific 
+  subnarrative definitions provided above. This can be used IN ADDITION 
+  to other specific subnarratives.
+
+## INSTRUCTIONS
+
+Follow these steps precisely:
+
+**Step 1: Chain of Thought (Internal Reasoning)**
+First, think step-by-step to analyze the provided text.
+- Given that the text contains the parent narrative, look for more 
+  specific themes or arguments that match the subnarrative definitions.
+- For each potential subnarrative from the list, consider if it applies.
+- Find a specific, direct quote from the text that serves as the 
+  strongest evidence for each subnarrative you believe is present.
+- Formulate a brief reasoning for why that quote supports the 
+  subnarrative.
+
+**Step 2: Check for a Remainder**
+After identifying all the specific subnarratives, re-read the text. 
+Ask yourself: "Are there any other phrases or arguments that support 
+the parent narrative but were NOT used as evidence for the specific 
+subnarratives I already found?"
+
+**Step 3: Add "Other" if Necessary**
+If the answer to Step 2 is YES, you MUST ALSO include the 
+`{narrative}: Other` subnarrative in your final list.
+
+**Step 4: Format the Final Output**
+After your internal reasoning is complete, provide your final analysis 
+as a single, valid JSON object.
+
+## EXAMPLE OF CORRECT LOGIC
+
+- **Text says:** "Climate activists are just alarmist children. Their 
+  funding is also very suspicious."
+- **Parent Narrative:** `CC: Criticism of climate movement`
+- **Your Analysis:**
+  - "Climate activists are just alarmist children" matches 
+    `...: Climate movement is alarmist`.
+  - "Their funding is also very suspicious" supports the parent narrative 
+    but doesn't match any specific subnarrative. This is a remainder.
+  - **Correct Output:** A list containing BOTH 
+    `...: Climate movement is alarmist` AND 
+    `CC: Criticism of climate movement: Other`.
+
+## Guidelines for using "...: Other"
+
+- **DO** include `...: Other` alongside specific subnarratives if there 
+  is distinct, leftover evidence supporting the parent narrative.
+- **DO NOT** include `...: Other` if all the evidence supporting the 
+  parent narrative has already been neatly captured by the specific 
+  subnarrative(s) you identified.
+- **DO** use `...: Other` as the sole entry if the text supports the 
+  parent narrative but does not align with any of the specific 
+  definitions.
+
+## OUTPUT FORMAT (JSON Schema)
+
+Your entire response MUST be a single JSON object. ALL fields in the 
+schema below are REQUIRED. Do not omit any fields.
+
+{
+  "narratives": [
+    {
+      "subnarrative_name": "string (The exact name from the list)",
+      "evidence_quote": "string (The direct quote from the text you found 
+                         as evidence)",
+      "reasoning": "string (Your justification connecting the quote to 
+                    the narrative)"
+    }
+  ]
+}
+
+- If multiple subnarratives are found, include one object for each in the 
+  `subnarratives` list.
+- If no specific subnarratives are detected, respond with an empty list 
+  for the "subnarratives" key: `{"subnarratives": []}`.
+\end{verbatim}
+\end{tcolorbox}
+
+\subsection{B.4 Critic Prompts}
+\label{app:b4-prompt-critic}
+
+The Critic agent validates classifications by checking evidence accuracy, relevance, and completeness.
+
+\begin{tcolorbox}[breakable, colback=gray!5, colframe=gray!75!black, title=Narrative Critic Prompt]
+\small
+\begin{verbatim}
+You are a meticulous and skeptical editor. Your task is to evaluate a 
+classification of propaganda narratives applied to a text. You must be 
+extremely strict. The classification is only valid if every narrative is 
+strongly and explicitly supported by the provided evidence from the text.
+
+You will be given the original text and the classification analysis in 
+JSON format. The analysis includes the narrative name, a quote for 
+evidence, and reasoning.
+
+Here are the narratives that were available for classification:
+{list of narratives}
+
+## EVALUATION CRITERIA (Apply Strictly):
+1. **Evidence Accuracy:** Is the `evidence_quote` an exact, verbatim 
+   quote from the original text? Of course if the quote is from the text 
+   but there was just a small formatting / typography issue it is still 
+   fine (not the same unicode character used for example).
+2. **Relevance of Evidence:** Does the `evidence_quote` DIRECTLY support 
+   the `narrative_name`? The connection must not be a stretch or require 
+   deep interpretation. If the link is weak, the classification is 
+   invalid.
+3. **Completeness:** Does the analysis miss any other obvious, 
+   high-confidence narratives that are clearly present in the text? If 
+   so, the classification is invalid.
+
+## OUTPUT FORMAT
+Provide your evaluation as a single, valid JSON object conforming to the 
+specified schema. Do not include any other text or formatting.
+\end{verbatim}
+\end{tcolorbox}
+
+\begin{tcolorbox}[breakable, colback=gray!5, colframe=gray!75!black, title=Subnarrative Critic Prompt]
+\small
+\begin{verbatim}
+You are a meticulous and skeptical editor. Your task is to evaluate a 
+classification of propaganda subnarratives applied to a text. The list 
+was generated under the assumption that a specific parent narrative is 
+present. You must be extremely strict. The classification is only valid 
+if every subnarrative is strongly and explicitly supported by the 
+provided evidence from the text.
+
+You will be given the original text and the classification analysis in 
+JSON format. The analysis includes the subnarrative name, a quote for 
+evidence, and reasoning.
+
+Here is the list of subnarratives that were available to choose from:
+{list of subnarratives}
+
+## EVALUATION CRITERIA (Apply Strictly):
+1. **Evidence Accuracy:** Is the `evidence_quote` an exact, verbatim 
+   quote from the original text?
+2. **Relevance of Evidence:** Does the `evidence_quote` DIRECTLY and 
+   OBVIOUSLY support the `subnarrative_name`? The connection must not be 
+   a stretch or require deep interpretation. If the link is weak, the 
+   classification is invalid.
+3. **Completeness:** Does the analysis miss any other obvious, 
+   high-confidence subnarratives that are clearly present in the text? 
+   If so, the classification is invalid.
+
+## OUTPUT FORMAT
+Provide your evaluation as a single, valid JSON object conforming to the 
+specified schema. Do not include any other text or formatting.
+\end{verbatim}
+\end{tcolorbox}
+
+\subsection{B.5 Refinement Prompts}
+\label{app:b5-prompt-refinement}
+
+When the Critic identifies issues, these prompts guide the Actor to revise the classification.
+
+\begin{tcolorbox}[breakable, colback=gray!5, colframe=gray!75!black, title=Refinement Prompt Structure]
+\small
+\begin{verbatim}
+You previously analyzed a text, but your analysis had flaws. A meticulous 
+editor has provided the following feedback. Your task is to re-analyze 
+the text, incorporating this feedback to produce a new, corrected 
+classification.
+
+## EDITOR'S FEEDBACK TO CORRECT:
+{critic's feedback}
+
+-------------------------------------
+## ORIGINAL TASK AND DEFINITIONS (Apply these again with the feedback 
+in mind):
+
+{original classification prompt with all definitions}
+\end{verbatim}
+\end{tcolorbox}
+
+\subsection{B.6 Text Cleaning Prompt}
+\label{app:b6-prompt-cleaning}
+
+Before classification, raw web text is cleaned to remove navigation elements and boilerplate.
+
+\begin{tcolorbox}[breakable, colback=gray!5, colframe=gray!75!black, title=Cleaning System Prompt]
+\small
+\begin{verbatim}
+You are a precise text cleaner. Your job is to clean raw text scraped 
+from the web by removing UI noise and boilerplate while preserving the 
+article's content.
+
+STRICT RULES (follow exactly):
+- REMOVE: navigation menus, cookie banners, sign-up banners, button 
+  labels (e.g., 'Accept', 'Subscribe', 'Read more'), share widgets, 
+  headers/footers, unrelated CTAs, legal disclaimers, pagination 
+  artifacts, and unrelated links.
+- KEEP: the main article or post content only. Preserve sentence order, 
+  punctuation, and language.
+- DO NOT paraphrase or summarize. Do not add or remove meaning.
+- OUTPUT: Return ONLY the cleaned text with no additional commentary, 
+  headings, or JSON.
+\end{verbatim}
+\end{tcolorbox}
 
 
