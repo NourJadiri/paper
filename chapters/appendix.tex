@@ -202,10 +202,78 @@ This section presents representative results from the Actor-Critique pipeline wi
 \section{Appendix B: Prompt Templates}
 \label{app:prompts}
 
-This section provides the complete prompt templates used in our Actor-Critique pipeline (Architecture 2). All prompts are implemented in the \texttt{prompt\_template.py} module.
+This section provides the complete prompt templates used in both Architecture 1 (AutoGen Multi-Agent System) and Architecture 2 (Actor-Critique Pipeline). The prompts demonstrate the different approaches: Architecture 1 uses simple binary classification prompts, while Architecture 2 employs more sophisticated chain-of-thought reasoning with structured JSON output.
 
-\subsection{B.1 Category Classification Prompt}
-\label{app:b1-prompt-category}
+\subsection{B.1 Architecture 1: Binary Classification Prompts}
+\label{app:b1-autogen-prompts}
+
+Architecture 1 employs a multi-agent system where each agent performs binary classification (0 or 1) to detect the presence of a specific narrative or subnarrative.
+
+\subsubsection{Narrative Detection Prompt}
+
+\begin{tcolorbox}[breakable, colback=gray!5, colframe=gray!75!black, title=Architecture 1: Narrative Binary Classification]
+\small
+\begin{verbatim}
+You are a classification model trained to do binary classification by 
+detecting whether a given text is related to a specific narrative or not.
+
+You have been trained to recognize the narrative:
+NARRATIVE.
+defined as:
+NARRATIVE_DEFINITION.
+
+Here are some examples of statements related to this narrative: 
+NARRATIVE_EXAMPLES.
+
+If the text is related to the narrative, you MUST respond with '1' only. 
+Otherwise, you MUST with '0' only.
+
+You are ONLY allowed to answer with '1' or '0' and NOTHING else.
+
+Only answer with 1 if there are EXPLICIT and CLEAR mentions of the 
+narrative in the text. Some text will be ambiguous so if you are slightly 
+unsure, answer 0.
+\end{verbatim}
+\end{tcolorbox}
+
+\subsubsection{Subnarrative Detection Prompt}
+
+\begin{tcolorbox}[breakable, colback=gray!5, colframe=gray!75!black, title=Architecture 1: Subnarrative Binary Classification]
+\small
+\begin{verbatim}
+You are a classification model trained to do binary classification by 
+detecting whether a given text is related to a specific subnarrative or not.
+
+You have been trained to recognize the subnarrative:
+SUBNARRATIVE.
+
+This subnarrative is defined as:
+SUBNARRATIVE_DEFINITION.
+
+Here are some examples of statements related to this subnarrative:
+SUBNARRATIVE_EXAMPLES.
+
+If the text is related to the subnarrative, please respond with '1'. 
+Otherwise, respond with '0'. Do not try to make sentences, just respond 
+with '1' or '0'.
+
+You are ONLY allowed to answer with '1' or '0' and NOTHING else.
+
+Only answer with 1 if there are explicit and clear mentions of the 
+subnarrative in the text. If you are slightly unsure, classify as 0.
+\end{verbatim}
+\end{tcolorbox}
+
+\paragraph{Key Characteristics of Architecture 1 Prompts:}
+\begin{itemize}
+    \item \textbf{Binary Output}: Strict 0/1 classification with no reasoning required
+    \item \textbf{Conservative Bias}: Instructions emphasize answering 0 when uncertain
+    \item \textbf{Simplicity}: No chain-of-thought or structured output format
+    \item \textbf{Multi-Agent Deployment}: Each narrative/subnarrative has a dedicated agent with its own prompt instantiation
+\end{itemize}
+
+\subsection{B.2 Architecture 2: Category Classification Prompt}
+\label{app:b2-prompt-category}
 
 The first stage of our pipeline determines whether the text is about the Ukraine-Russia War (URW) or Climate Change (CC).
 
@@ -237,8 +305,8 @@ EVIDENCE: short justification
 \end{verbatim}
 \end{tcolorbox}
 
-\subsection{B.2 Narrative Classification Prompt}
-\label{app:b2-prompt-narrative}
+\subsection{B.3 Architecture 2: Narrative Classification Prompt}
+\label{app:b3-prompt-narrative}
 
 After category determination, this prompt classifies the text into specific propaganda narratives. The prompt is dynamically constructed with narrative definitions loaded from CSV files.
 
@@ -305,8 +373,8 @@ schema below are REQUIRED. Do not omit any fields.
 \end{verbatim}
 \end{tcolorbox}
 
-\subsection{B.3 Subnarrative Classification Prompt}
-\label{app:b3-prompt-subnarrative}
+\subsection{B.4 Architecture 2: Subnarrative Classification Prompt}
+\label{app:b4-prompt-subnarrative}
 
 For each detected narrative, this prompt further classifies the text into more specific subnarratives. The prompt includes an ``Other'' category for content that supports the parent narrative but doesn't fit specific subnarrative definitions.
 
@@ -414,8 +482,8 @@ schema below are REQUIRED. Do not omit any fields.
 \end{verbatim}
 \end{tcolorbox}
 
-\subsection{B.4 Critic Prompts}
-\label{app:b4-prompt-critic}
+\subsection{B.5 Architecture 2: Critic Prompts}
+\label{app:b5-prompt-critic}
 
 The Critic agent validates classifications by checking evidence accuracy, relevance, and completeness.
 
@@ -487,8 +555,8 @@ specified schema. Do not include any other text or formatting.
 \end{verbatim}
 \end{tcolorbox}
 
-\subsection{B.5 Refinement Prompts}
-\label{app:b5-prompt-refinement}
+\subsection{B.6 Architecture 2: Refinement Prompts}
+\label{app:b6-prompt-refinement}
 
 When the Critic identifies issues, these prompts guide the Actor to revise the classification.
 
@@ -511,8 +579,8 @@ in mind):
 \end{verbatim}
 \end{tcolorbox}
 
-\subsection{B.6 Text Cleaning Prompt}
-\label{app:b6-prompt-cleaning}
+\subsection{B.7 Architecture 2: Text Cleaning Prompt}
+\label{app:b7-prompt-cleaning}
 
 Before classification, raw web text is cleaned to remove navigation elements and boilerplate.
 
