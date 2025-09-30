@@ -22,6 +22,7 @@
 %\usepackage{fontspec}
 \usepackage{graphicx}
 \usepackage{subcaption}
+\usepackage{float}
 \usepackage[onehalfspacing]{setspace}
 
 % better language support
@@ -146,11 +147,11 @@
 \include{chapters/discussion}
 \include{chapters/conclusion}
 
-% -- Appendix (optional)
-%\begin{appendices}
-%    \input{appendix.tex}
-%\end{appendices}
-%\newpage
+% -- Appendix
+\begin{appendices}
+    \input{chapters/appendix.tex}
+\end{appendices}
+\newpage
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
