@@ -52,19 +52,28 @@ def convert_table_to_latex(header, data_rows, caption, label):
     """Convert markdown table to LaTeX longtable."""
     # Parse header to get column alignment
     header_parts = [h.strip() for h in header.split('|') if h.strip()]
-    num_cols = len(header_parts)
+    
+    # Filter columns: Keep Label, F1, Support, TP, FP, FN, TN (remove Precision and Recall)
+    # Original order: Label | F1 | Precision | Recall | Support | TP | FP | FN | TN
+    # Keep indices: 0, 1, 4, 5, 6, 7, 8
+    keep_indices = [0, 1, 4, 5, 6, 7, 8]
+    filtered_header_parts = [header_parts[i] for i in keep_indices if i < len(header_parts)]
+    num_cols = len(filtered_header_parts)
     
     # Create column specification (first column left-aligned, rest right-aligned for numbers)
     col_spec = 'l' + 'r' * (num_cols - 1)
     
     latex_lines = []
+    # Use small font and adjust spacing for better fit
+    latex_lines.append(r'{\small')
+    latex_lines.append(r'\setlength{\tabcolsep}{4pt}')
     latex_lines.append(r'\begin{longtable}{' + col_spec + '}')
     latex_lines.append(r'\caption{' + caption + r'}')
     latex_lines.append(r'\label{' + label + r'} \\')
     latex_lines.append(r'\toprule')
     
     # Add header
-    header_cells = [r'\textbf{' + escape_latex(h) + r'}' for h in header_parts]
+    header_cells = [r'\textbf{' + escape_latex(h) + r'}' for h in filtered_header_parts]
     latex_lines.append(' & '.join(header_cells) + r' \\')
     latex_lines.append(r'\midrule')
     latex_lines.append(r'\endfirsthead')
@@ -87,11 +96,19 @@ def convert_table_to_latex(header, data_rows, caption, label):
     # Add data rows
     for row in data_rows:
         cells = [c.strip() for c in row.split('|') if c.strip()]
+        # Filter cells to keep only selected columns
+        filtered_cells = [cells[i] for i in keep_indices if i < len(cells)]
+        
         # Escape first cell (label name), keep numbers as-is
-        escaped_cells = [escape_latex(cells[0])] + cells[1:]
+        # Truncate very long label names
+        first_cell = escape_latex(filtered_cells[0])
+        if len(first_cell) > 70:
+            first_cell = first_cell[:67] + '...'
+        escaped_cells = [first_cell] + filtered_cells[1:]
         latex_lines.append(' & '.join(escaped_cells) + r' \\')
     
     latex_lines.append(r'\end{longtable}')
+    latex_lines.append(r'}')  # Close the font size group
     
     return '\n'.join(latex_lines)
 

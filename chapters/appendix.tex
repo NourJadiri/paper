@@ -1,6 +1,6 @@
-\chapter{Appendix: Comprehensive Performance Visualizations}
+\chapter{Performance Visualizations and Confusion Matrices}
 
-This appendix provides a complete collection of all performance visualizations and confusion matrices generated during our experimental evaluation. The materials are organized by validation configuration (no validation, narrative validation, subnarrative validation) and further subdivided by language.
+This appendix provides key performance visualizations and complete confusion matrices from our experimental evaluation. To maintain readability while ensuring reproducibility, we present: (1) comprehensive results for the no-validation baseline configuration across all languages, (2) representative results for the validation configurations (overview plots and English examples), and (3) complete confusion matrices for all configurations. Full visualization sets for all languages and configurations are available in the project repository.
 
 \section{Architecture 2: No Validation Configuration}
 \label{app:no-validation}
@@ -14,13 +14,6 @@ This section presents results from the Actor-Critique pipeline (Architecture 2) 
     \includegraphics[width=0.85\textwidth]{gemini25_flash_devset_evaluation/plots/combined_performance_by_language.png}
     \caption{Combined performance across all languages for the no-validation configuration, showing F1 Coarse (narratives) and F1 Sample (subnarratives) metrics.}
     \label{fig:app-no-val-combined}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.85\textwidth]{gemini25_flash_devset_evaluation/plots/f1_samples_by_language.png}
-    \caption{F1 Samples performance by language for the no-validation configuration.}
-    \label{fig:app-no-val-f1-samples}
 \end{figure}
 
 \subsection{Bulgarian (BG) Performance}
@@ -132,7 +125,7 @@ This section presents results from the Actor-Critique pipeline (Architecture 2) 
 \section{Architecture 2: Narrative Validation Configuration}
 \label{app:narr-validation}
 
-This section presents results from the Actor-Critique pipeline with narrative-level validation enabled.
+This section presents representative results from the Actor-Critique pipeline with narrative-level validation enabled. Complete per-language breakdowns follow the same patterns as the no-validation configuration.
 
 \subsection{Overall Performance Comparison}
 
@@ -143,35 +136,7 @@ This section presents results from the Actor-Critique pipeline with narrative-le
     \label{fig:app-narr-val-combined}
 \end{figure}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.85\textwidth]{gemini25_flash_narr_val_evaluation/plots/f1_samples_by_language.png}
-    \caption{F1 Samples performance by language for the narrative-validation configuration.}
-    \label{fig:app-narr-val-f1-samples}
-\end{figure}
-
-\subsection{Bulgarian (BG) Performance}
-
-\begin{figure}[H]
-    \centering
-    \begin{subfigure}[b]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{gemini25_flash_narr_val_evaluation/plots/BG_top_narratives_f1_scores.png}
-        \caption{Top narrative F1 scores}
-        \label{fig:app-narr-val-bg-narr}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{gemini25_flash_narr_val_evaluation/plots/BG_top_subnarratives_f1_scores.png}
-        \caption{Top subnarrative F1 scores}
-        \label{fig:app-narr-val-bg-subnarr}
-    \end{subfigure}
-    \caption{Bulgarian performance breakdown for narrative-validation configuration.}
-    \label{fig:app-narr-val-bg}
-\end{figure}
-
-\subsection{English (EN) Performance}
+\subsection{Representative Example: English (EN) Performance}
 
 \begin{figure}[H]
     \centering
@@ -188,78 +153,15 @@ This section presents results from the Actor-Critique pipeline with narrative-le
         \caption{Top subnarrative F1 scores}
         \label{fig:app-narr-val-en-subnarr}
     \end{subfigure}
-    \caption{English performance breakdown for narrative-validation configuration.}
+    \caption{English performance breakdown for narrative-validation configuration, representative of per-language patterns.}
     \label{fig:app-narr-val-en}
-\end{figure}
-
-\subsection{Hindi (HI) Performance}
-
-\begin{figure}[H]
-    \centering
-    \begin{subfigure}[b]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{gemini25_flash_narr_val_evaluation/plots/HI_top_narratives_f1_scores.png}
-        \caption{Top narrative F1 scores}
-        \label{fig:app-narr-val-hi-narr}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{gemini25_flash_narr_val_evaluation/plots/HI_top_subnarratives_f1_scores.png}
-        \caption{Top subnarrative F1 scores}
-        \label{fig:app-narr-val-hi-subnarr}
-    \end{subfigure}
-    \caption{Hindi performance breakdown for narrative-validation configuration.}
-    \label{fig:app-narr-val-hi}
-\end{figure}
-
-\subsection{Portuguese (PT) Performance}
-
-\begin{figure}[H]
-    \centering
-    \begin{subfigure}[b]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{gemini25_flash_narr_val_evaluation/plots/PT_top_narratives_f1_scores.png}
-        \caption{Top narrative F1 scores}
-        \label{fig:app-narr-val-pt-narr}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{gemini25_flash_narr_val_evaluation/plots/PT_top_subnarratives_f1_scores.png}
-        \caption{Top subnarrative F1 scores}
-        \label{fig:app-narr-val-pt-subnarr}
-    \end{subfigure}
-    \caption{Portuguese performance breakdown for narrative-validation configuration.}
-    \label{fig:app-narr-val-pt}
-\end{figure}
-
-\subsection{Russian (RU) Performance}
-
-\begin{figure}[H]
-    \centering
-    \begin{subfigure}[b]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{gemini25_flash_narr_val_evaluation/plots/RU_top_narratives_f1_scores.png}
-        \caption{Top narrative F1 scores}
-        \label{fig:app-narr-val-ru-narr}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{gemini25_flash_narr_val_evaluation/plots/RU_top_subnarratives_f1_scores.png}
-        \caption{Top subnarrative F1 scores}
-        \label{fig:app-narr-val-ru-subnarr}
-    \end{subfigure}
-    \caption{Russian performance breakdown for narrative-validation configuration.}
-    \label{fig:app-narr-val-ru}
 \end{figure}
 
 \clearpage
 \section{Architecture 2: Subnarrative Validation Configuration}
 \label{app:subnarr-validation}
 
-This section presents results from the Actor-Critique pipeline with subnarrative-level validation enabled.
+This section presents representative results from the Actor-Critique pipeline with subnarrative-level validation enabled. Complete per-language breakdowns follow the same patterns as the no-validation configuration.
 
 \subsection{Overall Performance Comparison}
 
@@ -270,35 +172,7 @@ This section presents results from the Actor-Critique pipeline with subnarrative
     \label{fig:app-subnarr-val-combined}
 \end{figure}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.85\textwidth]{gemini25_flash_subnarr_val_evaluation/plots/f1_samples_by_language.png}
-    \caption{F1 Samples performance by language for the subnarrative-validation configuration.}
-    \label{fig:app-subnarr-val-f1-samples}
-\end{figure}
-
-\subsection{Bulgarian (BG) Performance}
-
-\begin{figure}[H]
-    \centering
-    \begin{subfigure}[b]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{gemini25_flash_subnarr_val_evaluation/plots/BG_top_narratives_f1_scores.png}
-        \caption{Top narrative F1 scores}
-        \label{fig:app-subnarr-val-bg-narr}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{gemini25_flash_subnarr_val_evaluation/plots/BG_top_subnarratives_f1_scores.png}
-        \caption{Top subnarrative F1 scores}
-        \label{fig:app-subnarr-val-bg-subnarr}
-    \end{subfigure}
-    \caption{Bulgarian performance breakdown for subnarrative-validation configuration.}
-    \label{fig:app-subnarr-val-bg}
-\end{figure}
-
-\subsection{English (EN) Performance}
+\subsection{Representative Example: English (EN) Performance}
 
 \begin{figure}[H]
     \centering
@@ -315,143 +189,8 @@ This section presents results from the Actor-Critique pipeline with subnarrative
         \caption{Top subnarrative F1 scores}
         \label{fig:app-subnarr-val-en-subnarr}
     \end{subfigure}
-    \caption{English performance breakdown for subnarrative-validation configuration.}
+    \caption{English performance breakdown for subnarrative-validation configuration, representative of per-language patterns.}
     \label{fig:app-subnarr-val-en}
 \end{figure}
 
-\subsection{Hindi (HI) Performance}
 
-\begin{figure}[H]
-    \centering
-    \begin{subfigure}[b]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{gemini25_flash_subnarr_val_evaluation/plots/HI_top_narratives_f1_scores.png}
-        \caption{Top narrative F1 scores}
-        \label{fig:app-subnarr-val-hi-narr}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{gemini25_flash_subnarr_val_evaluation/plots/HI_top_subnarratives_f1_scores.png}
-        \caption{Top subnarrative F1 scores}
-        \label{fig:app-subnarr-val-hi-subnarr}
-    \end{subfigure}
-    \caption{Hindi performance breakdown for subnarrative-validation configuration.}
-    \label{fig:app-subnarr-val-hi}
-\end{figure}
-
-\subsection{Portuguese (PT) Performance}
-
-\begin{figure}[H]
-    \centering
-    \begin{subfigure}[b]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{gemini25_flash_subnarr_val_evaluation/plots/PT_top_narratives_f1_scores.png}
-        \caption{Top narrative F1 scores}
-        \label{fig:app-subnarr-val-pt-narr}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{gemini25_flash_subnarr_val_evaluation/plots/PT_top_subnarratives_f1_scores.png}
-        \caption{Top subnarrative F1 scores}
-        \label{fig:app-subnarr-val-pt-subnarr}
-    \end{subfigure}
-    \caption{Portuguese performance breakdown for subnarrative-validation configuration.}
-    \label{fig:app-subnarr-val-pt}
-\end{figure}
-
-\subsection{Russian (RU) Performance}
-
-\begin{figure}[H]
-    \centering
-    \begin{subfigure}[b]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{gemini25_flash_subnarr_val_evaluation/plots/RU_top_narratives_f1_scores.png}
-        \caption{Top narrative F1 scores}
-        \label{fig:app-subnarr-val-ru-narr}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.48\textwidth}
-        \centering
-        \includegraphics[width=\textwidth]{gemini25_flash_subnarr_val_evaluation/plots/RU_top_subnarratives_f1_scores.png}
-        \caption{Top subnarrative F1 scores}
-        \label{fig:app-subnarr-val-ru-subnarr}
-    \end{subfigure}
-    \caption{Russian performance breakdown for subnarrative-validation configuration.}
-    \label{fig:app-subnarr-val-ru}
-\end{figure}
-
-\clearpage
-\section{Confusion Matrices}
-\label{app:confusion-matrices}
-
-This section provides detailed confusion matrices for all evaluated configurations. Confusion matrices show the distribution of true positives (TP), false positives (FP), false negatives (FN), and true negatives (TN) for each label, enabling fine-grained error analysis.
-
-\subsection{No-Validation Configuration Confusion Matrices}
-\label{app:confusion-no-val}
-
-The following confusion matrices correspond to the Actor-Critique pipeline without validation enabled. Complete per-label confusion matrices for all languages (BG, EN, HI, PT, RU) at both narrative and subnarrative levels are provided below.
-
-\paragraph{Performance Summary:}
-\begin{table}[H]
-\centering
-\caption{Performance overview by language for no-validation configuration}
-\label{tab:app-confusion-no-val-summary}
-\small
-\begin{tabular}{lccccc}
-\hline
-\textbf{Language} & \textbf{Files} & \textbf{F1 Coarse} & \textbf{F1 Sample} & \textbf{Narr. Labels} & \textbf{Subnarr. Labels} \\
-\hline
-BG & 35 & 0.5799 & 0.4104 & 21 & 71 \\
-EN & 41 & 0.5132 & 0.3815 & 22 & 83 \\
-HI & 35 & 0.4715 & 0.2976 & 13 & 46 \\
-PT & 35 & 0.7489 & 0.4737 & 14 & 40 \\
-RU & 32 & 0.6958 & 0.4754 & 11 & 41 \\
-\hline
-\end{tabular}
-\end{table}
-
-\input{chapters/appendix_confusion_no_val.tex}
-
-\subsection{Subnarrative-Validation Configuration Confusion Matrices}
-\label{app:confusion-subnarr-val}
-
-The following confusion matrices correspond to the Actor-Critique pipeline with subnarrative-level validation enabled. Complete per-label confusion matrices for all languages at both hierarchical levels are provided below.
-
-\paragraph{Performance Summary:}
-\begin{table}[H]
-\centering
-\caption{Performance overview by language for subnarrative-validation configuration}
-\label{tab:app-confusion-subnarr-val-summary}
-\small
-\begin{tabular}{lccccc}
-\hline
-\textbf{Language} & \textbf{Files} & \textbf{F1 Coarse} & \textbf{F1 Sample} & \textbf{Narr. Labels} & \textbf{Subnarr. Labels} \\
-\hline
-BG & 35 & 0.5521 & 0.4211 & 21 & 67 \\
-EN & 41 & 0.5319 & 0.4166 & 22 & 80 \\
-HI & 35 & 0.4354 & 0.2687 & 13 & 42 \\
-PT & 35 & 0.6904 & 0.4367 & 15 & 41 \\
-RU & 32 & 0.6693 & 0.5078 & 11 & 40 \\
-\hline
-\end{tabular}
-\end{table}
-
-\input{chapters/appendix_confusion_subnarr_val.tex}
-
-\paragraph{Confusion Matrix Interpretation:}
-Each confusion matrix provides four key metrics per label:
-\begin{itemize}
-    \item \textbf{TP (True Positives):} Correctly identified positive cases
-    \item \textbf{FP (False Positives):} Incorrectly identified positive cases (Type I error)
-    \item \textbf{FN (False Negatives):} Incorrectly identified negative cases (Type II error)
-    \item \textbf{TN (True Negatives):} Correctly identified negative cases
-\end{itemize}
-
-From these, standard metrics are derived:
-\begin{itemize}
-    \item \textbf{Precision} = TP / (TP + FP): Fraction of predicted positives that are correct
-    \item \textbf{Recall} = TP / (TP + FN): Fraction of actual positives correctly identified
-    \item \textbf{F1 Score} = 2 × (Precision × Recall) / (Precision + Recall): Harmonic mean
-\end{itemize}
