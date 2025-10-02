@@ -1,0 +1,8 @@
+PDF Color Analysis Results
+============================================================
+PDF File: main.pdf
+Total pages: 122
+Black & White pages: 103
+Color pages: 19
+
+Color page numbers: [1, 35, 37, 42, 46, 51, 59, 60, 66, 71, 73, 75, 94, 95, 96, 97, 98, 99, 100]
