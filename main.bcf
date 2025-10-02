@@ -2434,79 +2434,46 @@
     <bcf:citekey order="44" intorder="1">cegin-etal-2025-llms</bcf:citekey>
     <bcf:citekey order="45" intorder="1">cegin-etal-2025-llms</bcf:citekey>
     <bcf:citekey order="46" intorder="1">whitehouse2023llm</bcf:citekey>
-    <bcf:citekey order="47" intorder="1">Piskorski2025</bcf:citekey>
-    <bcf:citekey order="47" intorder="2">Fane2025</bcf:citekey>
-    <bcf:citekey order="47" intorder="3">Singh2025</bcf:citekey>
-    <bcf:citekey order="47" intorder="4">Fenu2025</bcf:citekey>
-    <bcf:citekey order="48" intorder="1">Piskorski2025</bcf:citekey>
-    <bcf:citekey order="49" intorder="1">Piskorski2025</bcf:citekey>
-    <bcf:citekey order="50" intorder="1">Piskorski2025</bcf:citekey>
-    <bcf:citekey order="51" intorder="1">propaganda_site2025</bcf:citekey>
-    <bcf:citekey order="52" intorder="1">Fane2025</bcf:citekey>
-    <bcf:citekey order="53" intorder="1">Singh2025</bcf:citekey>
-    <bcf:citekey order="54" intorder="1">Fenu2025</bcf:citekey>
-    <bcf:citekey order="54" intorder="2">Premnath2025</bcf:citekey>
-    <bcf:citekey order="54" intorder="3">Ronningstad2025</bcf:citekey>
-    <bcf:citekey order="54" intorder="4">Nakov2025</bcf:citekey>
-    <bcf:citekey order="55" intorder="1">Fane2025</bcf:citekey>
-    <bcf:citekey order="55" intorder="2">Singh2025</bcf:citekey>
-    <bcf:citekey order="55" intorder="3">Ronningstad2025</bcf:citekey>
-    <bcf:citekey order="56" intorder="1">Piskorski2025</bcf:citekey>
-    <bcf:citekey order="57" intorder="1">propaganda_site2025</bcf:citekey>
-    <bcf:citekey order="58" intorder="1">leaderboard2025</bcf:citekey>
+    <bcf:citekey order="47" intorder="1">SemEval2020Task11</bcf:citekey>
+    <bcf:citekey order="48" intorder="1">chernyavskiy-etal-2020-aschern</bcf:citekey>
+    <bcf:citekey order="48" intorder="2">jurkiewicz-etal-2020-applicaai</bcf:citekey>
+    <bcf:citekey order="49" intorder="1">jurkiewicz-etal-2020-applicaai</bcf:citekey>
+    <bcf:citekey order="50" intorder="1">chernyavskiy-etal-2024-unleashing</bcf:citekey>
+    <bcf:citekey order="51" intorder="1">SemEval2023Task3</bcf:citekey>
+    <bcf:citekey order="52" intorder="1">hromadka-etal-2023-kinitveraai</bcf:citekey>
+    <bcf:citekey order="52" intorder="2">modzelewski-etal-2023-dshacker</bcf:citekey>
+    <bcf:citekey order="53" intorder="1">SemEval2024Task4</bcf:citekey>
+    <bcf:citekey order="54" intorder="1">HierarchyEverywhere2024</bcf:citekey>
+    <bcf:citekey order="55" intorder="1">wunderle-etal-2024-otterlyobsessedwithsemantics</bcf:citekey>
+    <bcf:citekey order="56" intorder="1">chikoti-etal-2024-iitk</bcf:citekey>
+    <bcf:citekey order="57" intorder="1">semeval2025task10</bcf:citekey>
+    <bcf:citekey order="58" intorder="1">younus-qureshi-2025-nlptuducd</bcf:citekey>
+    <bcf:citekey order="58" intorder="2">singh-etal-2025-gatenlp</bcf:citekey>
     <bcf:citekey order="59" intorder="1">Piskorski2025</bcf:citekey>
-    <bcf:citekey order="60" intorder="1">he2020deberta</bcf:citekey>
-    <bcf:citekey order="61" intorder="1">vaswani2017attention</bcf:citekey>
-    <bcf:citekey order="62" intorder="1">he2020deberta</bcf:citekey>
-    <bcf:citekey order="63" intorder="1">zhang_binary_2018</bcf:citekey>
-    <bcf:citekey order="64" intorder="1">Wu2024AutoGen</bcf:citekey>
-    <bcf:citekey order="65" intorder="1">eljadiri-nurbakova-2025-team</bcf:citekey>
-    <bcf:citekey order="66" intorder="1">langgraph2024</bcf:citekey>
-    <bcf:citekey order="67" intorder="1">langsmith2024</bcf:citekey>
-    <bcf:citekey order="68" intorder="1">wolf-etal-2020-transformers</bcf:citekey>
-    <bcf:citekey order="69" intorder="1">langgraph2024</bcf:citekey>
-    <bcf:citekey order="70" intorder="1">langsmith2024</bcf:citekey>
-    <bcf:citekey order="71" intorder="1">google_gemini_2024</bcf:citekey>
-    <bcf:citekey order="72" intorder="1">Singh2025</bcf:citekey>
-  </bcf:section>
-  <!-- SORTING TEMPLATES -->
-  <bcf:sortingtemplate name="nyt">
-    <bcf:sort order="1">
-      <bcf:sortitem order="1">presort</bcf:sortitem>
-    </bcf:sort>
-    <bcf:sort order="2" final="1">
-      <bcf:sortitem order="1">sortkey</bcf:sortitem>
-    </bcf:sort>
-    <bcf:sort order="3">
-      <bcf:sortitem order="1">sortname</bcf:sortitem>
-      <bcf:sortitem order="2">author</bcf:sortitem>
-      <bcf:sortitem order="3">editor</bcf:sortitem>
-      <bcf:sortitem order="4">translator</bcf:sortitem>
-      <bcf:sortitem order="5">sorttitle</bcf:sortitem>
-      <bcf:sortitem order="6">title</bcf:sortitem>
-    </bcf:sort>
-    <bcf:sort order="4">
-      <bcf:sortitem order="1">sortyear</bcf:sortitem>
-      <bcf:sortitem order="2">year</bcf:sortitem>
-    </bcf:sort>
-    <bcf:sort order="5">
-      <bcf:sortitem order="1">sorttitle</bcf:sortitem>
-      <bcf:sortitem order="2">title</bcf:sortitem>
-    </bcf:sort>
-    <bcf:sort order="6">
-      <bcf:sortitem order="1">volume</bcf:sortitem>
-      <bcf:sortitem literal="1" order="2">0</bcf:sortitem>
-    </bcf:sort>
-  </bcf:sortingtemplate>
-  <!-- DATALISTS -->
-  <bcf:datalist section="0"
-                name="nyt/global//global/global/global"
-                type="entry"
-                sortingtemplatename="nyt"
-                sortingnamekeytemplatename="global"
-                labelprefix=""
-                uniquenametemplatename="global"
-                labelalphanametemplatename="global"
-                namehashtemplatename="global">
-  </bcf:datalist>
-</bcf:controlfile>
+    <bcf:citekey order="59" intorder="2">Fane2025</bcf:citekey>
+    <bcf:citekey order="59" intorder="3">Singh2025</bcf:citekey>
+    <bcf:citekey order="59" intorder="4">Fenu2025</bcf:citekey>
+    <bcf:citekey order="60" intorder="1">Piskorski2025</bcf:citekey>
+    <bcf:citekey order="61" intorder="1">Piskorski2025</bcf:citekey>
+    <bcf:citekey order="62" intorder="1">Piskorski2025</bcf:citekey>
+    <bcf:citekey order="63" intorder="1">propaganda_site2025</bcf:citekey>
+    <bcf:citekey order="64" intorder="1">Fane2025</bcf:citekey>
+    <bcf:citekey order="65" intorder="1">Singh2025</bcf:citekey>
+    <bcf:citekey order="66" intorder="1">Fenu2025</bcf:citekey>
+    <bcf:citekey order="66" intorder="2">Premnath2025</bcf:citekey>
+    <bcf:citekey order="66" intorder="3">Ronningstad2025</bcf:citekey>
+    <bcf:citekey order="66" intorder="4">Nakov2025</bcf:citekey>
+    <bcf:citekey order="67" intorder="1">Fane2025</bcf:citekey>
+    <bcf:citekey order="67" intorder="2">Singh2025</bcf:citekey>
+    <bcf:citekey order="67" intorder="3">Ronningstad2025</bcf:citekey>
+    <bcf:citekey order="68" intorder="1">Piskorski2025</bcf:citekey>
+    <bcf:citekey order="69" intorder="1">propaganda_site2025</bcf:citekey>
+    <bcf:citekey order="70" intorder="1">leaderboard2025</bcf:citekey>
+    <bcf:citekey order="71" intorder="1">Piskorski2025</bcf:citekey>
+    <bcf:citekey order="72" intorder="1">he2020deberta</bcf:citekey>
+    <bcf:citekey order="73" intorder="1">vaswani2017attention</bcf:citekey>
+    <bcf:citekey order="74" intorder="1">he2020deberta</bcf:citekey>
+    <bcf:citekey order="75" intorder="1">zhang_binary_2018</bcf:citekey>
+    <bcf:citekey order="76" intorder="1">Wu2024AutoGen</bcf:citekey>
+    <bcf:citekey order="77" intorder="1">eljadiri-nurbakova-2025-team</bcf:citekey>
+    <bcf:citekey
