@@ -289,20 +289,56 @@ def split_pdf(pdf_path: str, color_flags: List[bool], output_prefix: str = None)
     print(f"Total pages in B/W PDF: {len(bw_writer.pages)}")
     
     # Print summary
-    print("\n" + "=" * 60)
+    print("\n" + "=" * 70)
     print("SUMMARY")
-    print("=" * 60)
+    print("=" * 70)
     print(f"Original PDF: {len(reader.pages)} pages")
     print(f"Color PDF: {len(color_writer.pages)} pages ({len(color_pairs)} duplex sheets)")
-    print(f"B/W PDF: {len(bw_writer.pages)} pages")
-    print(f"\nPages in color PDF: {sorted(list(pages_in_color_pdf), key=lambda x: x + 1)}")
+    print(f"B/W PDF: {len(bw_writer.pages)} pages ({(len(bw_writer.pages) + 1) // 2} duplex sheets)")
+    
+    # Print detailed duplex pairing for COLOR PDF
+    print("\n" + "-" * 70)
+    print("COLOR PDF - DUPLEX PAIRS (Front/Back on same sheet):")
+    print("-" * 70)
+    for sheet_num, (page1, page2) in enumerate(color_pairs, 1):
+        front = f"Page {page1 + 1}" if page1 >= 0 else "N/A"
+        if page2 == -1:
+            back = "Blank page"
+        else:
+            back = f"Page {page2 + 1}"
+        
+        # Show color status
+        front_color = "COLOR" if page1 >= 0 and color_flags[page1] else "B/W"
+        back_color = "COLOR" if page2 >= 0 and color_flags[page2] else "B/W"
+        
+        print(f"  Sheet {sheet_num:2d}: [{front:8s} ({front_color:5s})] ↔ [{back:12s} ({back_color:5s})]")
+    
+    # Print detailed duplex pairing for B/W PDF
+    print("\n" + "-" * 70)
+    print("B/W PDF - DUPLEX PAIRS (Front/Back on same sheet):")
+    print("-" * 70)
     if bw_pages:
-        print(f"Pages in B/W PDF: {bw_pages}")
-    print("\nPrinting instructions:")
+        for sheet_num in range(0, len(bw_pages), 2):
+            front = f"Page {bw_pages[sheet_num]}"
+            back = f"Page {bw_pages[sheet_num + 1]}" if sheet_num + 1 < len(bw_pages) else "Blank (if duplex)"
+            print(f"  Sheet {(sheet_num // 2) + 1:2d}: [{front:8s} (B/W  )] ↔ [{back:18s} (B/W  )]")
+    
+    print("\n" + "=" * 70)
+    print("PRINTING INSTRUCTIONS:")
+    print("=" * 70)
     print(f"1. Print '{color_output}' in COLOR with DUPLEX (recto-verso)")
+    print(f"   → {len(color_pairs)} sheets will be printed")
     print(f"2. Print '{bw_output}' in BLACK & WHITE with DUPLEX (recto-verso)")
-    print("3. Reassemble pages in order based on the page numbers above")
-    print("=" * 60)
+    print(f"   → {(len(bw_writer.pages) + 1) // 2} sheets will be printed")
+    print("\n3. REASSEMBLY:")
+    print("   Each PDF maintains page sequences - interleave physical sheets by page #")
+    print("   Example: If B/W has 'Page 34 ↔ Page 39', it means pages 35-38 are")
+    print("   in the color PDF and should be physically inserted between these sheets.")
+    print("\n   Process:")
+    print("   - Start with B/W stack")
+    print("   - Insert color sheets at their page number positions")
+    print("   - Final document will be in perfect numerical order")
+    print("=" * 70)
 
 
 def main():
